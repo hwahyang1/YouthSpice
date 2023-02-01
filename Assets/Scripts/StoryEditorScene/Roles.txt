@@ -1,0 +1,21 @@
+﻿[StoryEditorScene]
+
+- Chapter: 챕터 데이터 Class
+- ChapterManager: 챕터 프로젝트 관리
+
+: UI
+ - UIManager: UI 관리
+
+: Files
+ - ChapterFileManager: 챕터 파일 IO 관리
+ - EditorDataManager: 데이터 파일 IO 관리
+
+: Element
+ - ElementManager: Element 생성 및 수정, 삭제 관리
+ - ElementConverter: Element 변환
+ - ElementGroup: 각 항목 Parent
+ : Parent
+  - (Element명): 각 항목 Child
+
+: Condition
+ - ConditionManager: 조건 관리

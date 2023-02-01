@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using UnityEngine;
 using UnityEngine.EventSystems;
+using YouthSpice.StoryEditorScene;
 
 namespace YouthSpice.PreloadScene.Alert
 {
@@ -73,6 +74,11 @@ namespace YouthSpice.PreloadScene.Alert
 			alertBox.Init(alertType, title, description, buttons, ChildDestroy);
 			alertBox.Show();
 			currentAlert.Push(alertBox);
+		}
+
+		public void Pop()
+		{
+			ChildDestroy();
 		}
 
 		private void ChildDestroy()
