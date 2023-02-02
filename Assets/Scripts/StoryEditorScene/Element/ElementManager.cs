@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -6,6 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 
 using YouthSpice.StoryEditorScene.Element.Child;
+using YouthSpice.StoryEditorScene.Files;
 
 namespace YouthSpice.StoryEditorScene.Element
 {
@@ -16,12 +16,17 @@ namespace YouthSpice.StoryEditorScene.Element
 	{
 		[SerializeField]
 		private Transform elementContentParent;
-		
+
+		public Transform ElementContentParent => elementContentParent;
+
 		[SerializeField, Tooltip("ChapterElementType와 같은 순서대로 입력합니다.")]
 		private GameObject[] elementPrefabs;
 
+		private EditorDataManager editorDataManager;
+
 		private void Start()
 		{
+			editorDataManager = GetComponent<EditorDataManager>();
 			RemoveAll();
 		}
 
@@ -33,33 +38,45 @@ namespace YouthSpice.StoryEditorScene.Element
 			}
 		}
 
-		public void NewElement(int type, string data)
+		public void NewElement(int type, Dictionary<string, string> data)
 		{
+			if (data == null) data = new Dictionary<string, string>();
+
 			GameObject child = Instantiate(elementPrefabs[type], elementContentParent);
 			switch (type)
 			{
 				case 0:
+					data.Add("AvailableNames", string.Join(" | ", editorDataManager.AvailableCharacters));
 					child.GetComponent<SpeechElementGroup>().Init(this, data);
 					break;
 				case 1:
-					child.GetComponent<BackgroundImageElementGroup>().Init(this, data);
+					data.Add("AvailableImages", string.Join(" | ", editorDataManager.AvailableDayImages));
+					child.GetComponent<DayImageElementGroup>().Init(this, data);
 					break;
 				case 2:
-					child.GetComponent<BackgroundMusicElementGroup>().Init(this, data);
+					data.Add("AvailableImages", string.Join(" | ", editorDataManager.AvailableBackgroundImages));
+					child.GetComponent<BackgroundImageElementGroup>().Init(this, data);
 					break;
 				case 3:
-					child.GetComponent<EffectMusicElementGroup>().Init(this, data);
+					data.Add("AvailableAudios", string.Join(" | ", editorDataManager.AvailableAudios));
+					child.GetComponent<BackgroundMusicElementGroup>().Init(this, data);
 					break;
 				case 4:
-					child.GetComponent<CharacterElementGroup>().Init(this, data);
+					data.Add("AvailableAudios", string.Join(" | ", editorDataManager.AvailableAudios));
+					child.GetComponent<EffectMusicElementGroup>().Init(this, data);
 					break;
 				case 5:
-					child.GetComponent<FriendshipElementGroup>().Init(this, data);
+					data.Add("AvailableCharacters", string.Join(" | ", editorDataManager.AvailableStandingIllusts));
+					child.GetComponent<CharacterElementGroup>().Init(this, data);
 					break;
 				case 6:
-					child.GetComponent<SelectionElementGroup>().Init(this, data);
+					data.Add("AvailableNames", string.Join(" | ", editorDataManager.AvailableCharacters));
+					child.GetComponent<FriendshipElementGroup>().Init(this, data);
 					break;
 				case 7:
+					child.GetComponent<SelectionElementGroup>().Init(this, data);
+					break;
+				case 8:
 					child.GetComponent<SelectionNameSubElementGroup>().Init(this, data);
 					break;
 			}
@@ -72,11 +89,10 @@ namespace YouthSpice.StoryEditorScene.Element
 			EventSystem.current?.SetSelectedGameObject(null);
 			elementContentParent.GetChild(fromIndex).SetSiblingIndex(toIndex);
 		}
-		
+
 		// 대상이 분기점 안에 있을 경우
 		public void MoveElementInSelection(Transform selectionParent, int fromIndex, int toIndex)
 		{
-			
 		}
 
 		public void DeleteElement(int index)
@@ -88,7 +104,6 @@ namespace YouthSpice.StoryEditorScene.Element
 		// 대상이 분기점 안에 있을 경우
 		public void DeleteElementInSelection(Transform selectionParent, int index)
 		{
-			
 		}
 	}
 }

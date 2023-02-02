@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 namespace YouthSpice.StoryEditorScene.Element.Child
 {
@@ -10,14 +12,29 @@ namespace YouthSpice.StoryEditorScene.Element.Child
 	/// </summary>
 	public class FriendshipElementGroup : ElementGroup
 	{
-		protected override void Init(string data)
+		[SerializeField]
+		private Dropdown characterNameDropdown;
+
+		[SerializeField]
+		private TMP_InputField characterFriendshipInputField;
+
+		protected override void Init(Dictionary<string, string> data)
 		{
-			//
+			if (data["AvailableNames"] != "")
+			{
+				foreach (string characterName in data["AvailableNames"].Split(" | "))
+				{
+					characterNameDropdown.options.Add(new Dropdown.OptionData(characterName));
+				}
+			}
+
+			if (data.ContainsKey("Character")) characterNameDropdown.value = int.Parse(data["Character"]);
+			if (data.ContainsKey("Friendship")) characterFriendshipInputField.text = data["Friendship"];
 		}
 		
-		public override void GetData()
+		public override Dictionary<string, string> GetData()
 		{
-			//
+			return new Dictionary<string, string>(){{"Character", characterNameDropdown.value.ToString()}, {"Friendship", characterFriendshipInputField.text}};
 		}
 	}
 }

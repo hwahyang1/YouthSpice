@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace YouthSpice.StoryEditorScene.Element.Child
 {
@@ -10,14 +11,25 @@ namespace YouthSpice.StoryEditorScene.Element.Child
 	/// </summary>
 	public class EffectMusicElementGroup : ElementGroup
 	{
-		protected override void Init(string data)
+		[SerializeField]
+		private Dropdown effectMusicDropdown;
+		
+		protected override void Init(Dictionary<string, string> data)
 		{
-			//
+			if (data.ContainsKey("AvailableAudios") && data["AvailableAudios"] != "")
+			{
+				foreach (string musicName in data["AvailableAudios"].Split(" | "))
+				{
+					effectMusicDropdown.options.Add(new Dropdown.OptionData(musicName));
+				}
+			}
+			
+			if (data.ContainsKey("Effect")) effectMusicDropdown.value = int.Parse(data["Effect"]);
 		}
 		
-		public override void GetData()
+		public override Dictionary<string, string> GetData()
 		{
-			//
+			return new Dictionary<string, string>(){{"Effect", effectMusicDropdown.value.ToString()}};
 		}
 	}
 }

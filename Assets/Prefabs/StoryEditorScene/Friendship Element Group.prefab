@@ -520,6 +520,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0664bea1b4c2c0a40a767f5d710113ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  characterNameDropdown: {fileID: 5013604510526783340}
+  characterFriendshipInputField: {fileID: 5013604510488015711}
 --- !u!1 &5013604510261128952
 GameObject:
   m_ObjectHideFlags: 0
@@ -849,14 +851,14 @@ MonoBehaviour:
   m_VerticalScrollbarEventHandler: {fileID: 0}
   m_LayoutGroup: {fileID: 0}
   m_ScrollSensitivity: 1
-  m_ContentType: 0
+  m_ContentType: 2
   m_InputType: 0
   m_AsteriskChar: 42
-  m_KeyboardType: 0
+  m_KeyboardType: 4
   m_LineType: 0
   m_HideMobileInput: 0
   m_HideSoftKeyboard: 0
-  m_CharacterValidation: 0
+  m_CharacterValidation: 2
   m_RegexValue: 
   m_GlobalPointSize: 14
   m_CharacterLimit: 0
@@ -912,7 +914,7 @@ GameObject:
   - component: {fileID: 5013604510526783341}
   - component: {fileID: 5013604510526783340}
   m_Layer: 5
-  m_Name: Character Name Dropdown
+  m_Name: Friendship Dropdown
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

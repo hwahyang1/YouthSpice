@@ -1570,6 +1570,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8caa4ccd0ca7164488da0813ea98f87c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  characterSlot1Dropdown: {fileID: 4327750076064349461}
+  characterSlot2Dropdown: {fileID: 4327750075536581512}
+  characterSlot3Dropdown: {fileID: 4327750076550586704}
 --- !u!1 &4327750075635935510
 GameObject:
   m_ObjectHideFlags: 0

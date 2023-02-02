@@ -11,7 +11,8 @@ namespace YouthSpice.StoryEditorScene
 	public enum ChapterCondition
 	{
 		None,
-		MinDate,
+		FormerChapter,
+		MinDay,
 		MinPlayer1Friendship,
 		MinPlayer2Friendship,
 		MinPlayer3Friendship
@@ -24,6 +25,7 @@ namespace YouthSpice.StoryEditorScene
 	public enum ChapterElementType
 	{
 		Speech,
+		DayImage,
 		BackgroundImage,
 		BackgroundMusic,
 		EffectSound,
@@ -40,9 +42,9 @@ namespace YouthSpice.StoryEditorScene
 	public class ChapterElement
 	{
 		public ChapterElementType Type;
-		public string Data;
+		public Dictionary<string, string> Data;
 
-		public ChapterElement(ChapterElementType type, string data)
+		public ChapterElement(ChapterElementType type, Dictionary<string, string> data)
 		{
 			Type = type;
 			Data = data;
@@ -56,15 +58,28 @@ namespace YouthSpice.StoryEditorScene
 	public class Chapter
 	{
 		public string ID;
+		public string Name;
 
 		public ChapterCondition[] ConditionType;
-		public int[] ConditionData;
+		public string[] ConditionData;
 
 		public ChapterElement[] Elements;
 
-		public Chapter(string id, ChapterCondition[] conditionType, int[] conditionData, ChapterElement[] elements)
+		public Chapter()
+		{
+			//
+		}
+
+		public Chapter(
+			string id,
+			string name,
+			ChapterCondition[] conditionType,
+			string[] conditionData,
+			ChapterElement[] elements
+		)
 		{
 			ID = id;
+			Name = name;
 
 			ConditionType = conditionType;
 			ConditionData = conditionData;

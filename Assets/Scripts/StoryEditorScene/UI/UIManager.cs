@@ -1,6 +1,6 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
+using DateTime = System.DateTime;
 
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,6 +16,10 @@ namespace YouthSpice.StoryEditorScene.UI
 	/// </summary>
 	public class UIManager : MonoBehaviour
 	{
+		[Header("Basic Info")]
+		[SerializeField]
+		private Text dataVersionText;
+
 		[Header("Chapter Info")]
 		[SerializeField]
 		private TMP_InputField chapterNameInputField;
@@ -44,7 +48,7 @@ namespace YouthSpice.StoryEditorScene.UI
 		{
 			conditionManager = GetComponent<ConditionManager>();
 			elementManager = GetComponent<ElementManager>();
-			
+
 			foreach (string elementName in dropdownElements)
 			{
 				elementDropdown.options.Add(new Dropdown.OptionData(elementName));
@@ -69,6 +73,15 @@ namespace YouthSpice.StoryEditorScene.UI
 		/// <returns>현재 작성된 챕터명을 반환합니다.</returns>
 		public string GetChapterName() => chapterNameInputField.text;
 
+		public void UpdateDataVersion(int editor, int data)
+		{
+			DateTime editorTime = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(editor).AddHours(9);
+			DateTime dataTime = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(data).AddHours(9);
+
+			dataVersionText.text =
+				$"에디터 최근 수정: {editorTime.ToString("yyyy/MM/dd HH:mm:ss")} (KST)\n데이터 파일 최근 수정: {dataTime.ToString("yyyy/MM/dd HH:mm:ss")} (KST)";
+		}
+
 		public void SetCustomCoverActive(bool active)
 		{
 			customAlertCanvas.SetActive(active);
@@ -79,13 +92,14 @@ namespace YouthSpice.StoryEditorScene.UI
 		{
 			customAlertCanvas.SetActive(active);
 			customAlertParent.SetActive(active);
-			if (active) conditionManager.ApplyCurrent();
+			if (active) conditionManager.ApplyReset();
 		}
 
 		public void OnNewElementDropdownChanged()
 		{
-			if (elementDropdown.value == 0) return;;
-			elementManager.NewElement(elementDropdown.value - 1, "");
+			if (elementDropdown.value == 0) return;
+			;
+			elementManager.NewElement(elementDropdown.value - 1, null);
 			elementDropdown.value = 0;
 		}
 	}

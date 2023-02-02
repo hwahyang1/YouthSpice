@@ -15,14 +15,14 @@ namespace YouthSpice.StoryEditorScene.Element
 	{
 		private ElementManager elementManager;
 
-		public void Init(ElementManager elementManager, string data)
+		public void Init(ElementManager elementManager, Dictionary<string, string> data)
 		{
 			this.elementManager = elementManager;
 			Init(data);
 		}
 
-		public abstract void GetData();
-		protected abstract void Init(string data);
+		protected abstract void Init(Dictionary<string, string> data);
+		public abstract Dictionary<string, string> GetData();
 
 		public void OnGoUpClicked()
 		{
@@ -42,5 +42,7 @@ namespace YouthSpice.StoryEditorScene.Element
 				new Dictionary<string, Action>()
 					{ { "예", () => { elementManager.DeleteElement(transform.GetSiblingIndex()); } }, { "아니요", null } });
 		}
+
+		protected ElementManager GetElementManager() => elementManager;
 	}
 }

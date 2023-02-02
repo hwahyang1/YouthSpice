@@ -1275,6 +1275,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 353ce18dbac02d444be1d80d950d5289, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  backgroundImageDropdown: {fileID: 948569127079993729}
 --- !u!1 &948569127079993731
 GameObject:
   m_ObjectHideFlags: 0

@@ -19,15 +19,17 @@ namespace YouthSpice.StoryEditorScene
 		private UIManager uiManager;
 		private ConditionManager conditionManager;
 		private ElementManager elementManager;
+		private ElementConverter elementConverter;
 
 		[SerializeField, ReadOnly]
 		private string chapterID;
-		
+
 		private void Start()
 		{
 			uiManager = GetComponent<UIManager>();
 			conditionManager = GetComponent<ConditionManager>();
 			elementManager = GetComponent<ElementManager>();
+			elementConverter = GetComponent<ElementConverter>();
 		}
 
 		/// <summary>
@@ -37,11 +39,12 @@ namespace YouthSpice.StoryEditorScene
 		{
 			ulong timestamp = (ulong)System.DateTimeOffset.Now.ToUnixTimeSeconds();
 			float random = Random.Range(0.01f, 1.2f);
-			ulong chapterId = (ulong)(timestamp * random);
-			
+			chapterID = ((ulong)(timestamp * random)).ToString();
+
 			elementManager.RemoveAll();
-			uiManager.SetChapterID(chapterId + "");
-			conditionManager.Reset = true;
+			uiManager.SetChapterName("");
+			uiManager.SetChapterID(chapterID + "");
+			conditionManager.reset = true;
 		}
 
 		/// <summary>
@@ -50,7 +53,72 @@ namespace YouthSpice.StoryEditorScene
 		/// <param name="chapter">불러올 데이터를 지정합니다.</param>
 		public void LoadData(Chapter chapter)
 		{
+			conditionManager.reset = true;
+			elementManager.RemoveAll();
 			
+			chapterID = chapter.ID;
+			
+			uiManager.SetChapterID(chapterID + "");
+			uiManager.SetChapterName(chapter.Name);
+
+			string formerChapter = null;
+			string minDay = null;
+			string friendship1 = null;
+			string friendship2 = null;
+			string friendship3 = null;
+			for (int i = 0; i < chapter.ConditionType.Length; i++)
+			{
+				switch (chapter.ConditionType[i])
+				{
+					case ChapterCondition.FormerChapter:
+						formerChapter = chapter.ConditionData[i];
+						break;
+					case ChapterCondition.MinDay:
+						minDay = chapter.ConditionData[i];
+						break;
+					case ChapterCondition.MinPlayer1Friendship:
+						friendship1 = chapter.ConditionData[i];
+						break;
+					case ChapterCondition.MinPlayer2Friendship:
+						friendship2 = chapter.ConditionData[i];
+						break;
+					case ChapterCondition.MinPlayer3Friendship:
+						friendship3 = chapter.ConditionData[i];
+						break;
+				}
+			}
+
+			conditionManager.ApplyCustom(formerChapter, minDay, friendship1, friendship2, friendship3);
+
+			elementConverter.ConvertClassToElement(chapter.Elements);
+		}
+
+		/// <summary>
+		/// 작성된 챕터 데이터를 저장용 클래스로 변환합니다.
+		/// </summary>
+		/// <returns>변환한 데이터가 반환됩니다.</returns>
+		public Chapter GetData()
+		{
+			Chapter data = new Chapter
+			{
+				ID = chapterID,
+				Name = uiManager.GetChapterName()
+			};
+
+			List<ChapterCondition> conditionType = new List<ChapterCondition>();
+			List<string> conditionData = new List<string>();
+			foreach (KeyValuePair<ChapterCondition, string> currentCondition in conditionManager.GetData())
+			{
+				conditionType.Add(currentCondition.Key);
+				conditionData.Add(currentCondition.Value);
+			}
+
+			data.ConditionType = conditionType.ToArray();
+			data.ConditionData = conditionData.ToArray();
+
+			data.Elements = elementConverter.ConvertElementToClass();
+
+			return data;
 		}
 	}
 }

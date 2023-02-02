@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 using UnityEngine;
+using TMPro;
 
 namespace YouthSpice.StoryEditorScene.Element.Child
 {
@@ -10,14 +11,20 @@ namespace YouthSpice.StoryEditorScene.Element.Child
 	/// </summary>
 	public class SelectionNameSubElementGroup : ElementGroup
 	{
-		protected override void Init(string data)
+		[SerializeField]
+		private TMP_InputField selectionNameInputField;
+
+		protected override void Init(Dictionary<string, string> data)
 		{
-			//
+			if (data != null && data.ContainsKey("SelectionName") && data["SelectionName"] != "")
+			{
+				selectionNameInputField.text = data["SelectionName"];
+			}
 		}
-		
-		public override void GetData()
+
+		public override Dictionary<string, string> GetData()
 		{
-			//
+			return new Dictionary<string, string>() { { "SelectionName", selectionNameInputField.text } };
 		}
 	}
 }
