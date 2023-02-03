@@ -20,7 +20,7 @@ namespace YouthSpice.StoryEditorScene.Files
 		private string rootPath;
 
 		private readonly string[] rootPathFolders = new string[] {"Audios", "BackgroundImages", "DayImages", "StandingIllusts"};
-		private readonly string[] rootPathFiles = new string[] { "AvailableCharacters", "Info" };
+		private readonly string[] rootPathFiles = new string[] { "AvailableAudioTransitions", "AvailableCharacters", "AvailableImageTransitions", "Info" };
 
 		[Header("Version")]
 		[SerializeField]
@@ -46,8 +46,16 @@ namespace YouthSpice.StoryEditorScene.Files
 		public  string[] AvailableStandingIllusts => availableStandingIllusts;
 
 		[SerializeField, ReadOnly]
+		private string[] availableAudioTransitions;
+		public  string[] AvailableAudioTransitions => availableAudioTransitions;
+
+		[SerializeField, ReadOnly]
 		private string[] availableCharacters;
 		public  string[] AvailableCharacters => availableCharacters;
+
+		[SerializeField, ReadOnly]
+		private string[] availableImageTransitions;
+		public  string[] AvailableImageTransitions => availableImageTransitions;
 
 		private void Awake()
 		{
@@ -81,20 +89,22 @@ namespace YouthSpice.StoryEditorScene.Files
 
 			try
 			{
-				fileVersion = int.Parse(File.ReadAllText($"{rootPath}/{rootPathFiles[1]}"));
-				availableCharacters = File.ReadAllText($"{rootPath}/{rootPathFiles[0]}").Split("\n");
+				fileVersion = int.Parse(File.ReadAllText($"{rootPath}/{rootPathFiles[3]}"));
+				availableImageTransitions = File.ReadAllText($"{rootPath}/{rootPathFiles[2]}").Split("\n");
+				availableCharacters = File.ReadAllText($"{rootPath}/{rootPathFiles[1]}").Split("\n");
+				availableAudioTransitions = File.ReadAllText($"{rootPath}/{rootPathFiles[2]}").Split("\n");
 
 				availableAudios = Directory.GetFiles($"{rootPath}/{rootPathFolders[0]}");
 				for (int i = 0; i < availableAudios.Length; i++) availableAudios[i] = availableAudios[i].Replace($@"{rootPath}/{rootPathFolders[0]}\", "");
 				
 				availableDayImages = Directory.GetFiles($"{rootPath}/{rootPathFolders[1]}");
-				for (int i = 0; i < availableDayImages.Length; i++) availableDayImages[i] = availableDayImages[i].Replace($@"{rootPath}/{rootPathFolders[0]}\", "");
+				for (int i = 0; i < availableDayImages.Length; i++) availableDayImages[i] = availableDayImages[i].Replace($@"{rootPath}/{rootPathFolders[1]}\", "");
 				
 				availableBackgroundImages = Directory.GetFiles($"{rootPath}/{rootPathFolders[2]}");
-				for (int i = 0; i < availableBackgroundImages.Length; i++) availableBackgroundImages[i] = availableBackgroundImages[i].Replace($@"{rootPath}/{rootPathFolders[1]}\", "");
+				for (int i = 0; i < availableBackgroundImages.Length; i++) availableBackgroundImages[i] = availableBackgroundImages[i].Replace($@"{rootPath}/{rootPathFolders[2]}\", "");
 				
 				availableStandingIllusts = Directory.GetFiles($"{rootPath}/{rootPathFolders[3]}");
-				for (int i = 0; i < availableStandingIllusts.Length; i++) availableStandingIllusts[i] = availableStandingIllusts[i].Replace($@"{rootPath}/{rootPathFolders[2]}\", "");
+				for (int i = 0; i < availableStandingIllusts.Length; i++) availableStandingIllusts[i] = availableStandingIllusts[i].Replace($@"{rootPath}/{rootPathFolders[3]}\", "");
 			}
 			catch (System.Exception e)
 			{

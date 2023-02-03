@@ -54,8 +54,8 @@ namespace YouthSpice.StoryEditorScene.Files
 					$"기존 파일이 존재합니다: {pastFilePath}/{pastFileName}\n기존 파일에 덮어씌울까요?",
 					new Dictionary<string, Action>()
 					{
-						{ "아니요(다른 파일에 저장)", () => { StartCoroutine(SaveNewFileCoroutine()); } },
-						{ "예(기존 파일 덮어쓰기)", () => { StartCoroutine(OverwriteFileCoroutine()); } }
+						{ "아니요\n(다른 파일에 저장)", () => { StartCoroutine(SaveNewFileCoroutine()); } },
+						{ "예\n(기존 파일 덮어쓰기)", () => { StartCoroutine(OverwriteFileCoroutine()); } }
 					});
 			}
 			else
@@ -74,7 +74,6 @@ namespace YouthSpice.StoryEditorScene.Files
 
 			yield return null;
 
-			//File.WriteAllText(path, JsonUtility.ToJson(chapterManager.GetData()));
 			File.WriteAllText(path, JsonConvert.SerializeObject(chapterManager.GetData()));
 
 			AlertManager.Instance.Pop();
@@ -94,16 +93,15 @@ namespace YouthSpice.StoryEditorScene.Files
 			uiManager.SetCustomCoverActive(true);
 			yield return FileBrowser.WaitForSaveDialog(FileBrowser.PickMode.Files, false, @"C:\", "Chapter.cpt",
 				"Select Chapter File...", "Save");
+			uiManager.SetCustomCoverActive(false);
 
 			if (FileBrowser.Success)
 			{
-				uiManager.SetCustomCoverActive(false);
 				AlertManager.Instance.Show(AlertType.None, "알림", $"파일을 저장하는 중 입니다...: {FileBrowser.Result[0]}",
 					new Dictionary<string, Action>() { });
 
 				yield return null;
 
-				//File.WriteAllText(FileBrowser.Result[0], JsonUtility.ToJson(chapterManager.GetData()));
 				File.WriteAllText(FileBrowser.Result[0], JsonConvert.SerializeObject(chapterManager.GetData()));
 
 				pastFilePath = Path.GetDirectoryName(FileBrowser.Result[0]);
@@ -147,7 +145,6 @@ namespace YouthSpice.StoryEditorScene.Files
 
 					yield return new WaitForSeconds(0.1f);
 
-					//Chapter data = JsonUtility.FromJson<Chapter>(File.ReadAllText(FileBrowser.Result[0]));
 					Chapter data = JsonConvert.DeserializeObject<Chapter>(File.ReadAllText(FileBrowser.Result[0]));
 					chapterManager.LoadData(data);
 

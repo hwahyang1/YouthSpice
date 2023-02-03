@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+using Newtonsoft.Json;
 using NaughtyAttributes;
 
 namespace YouthSpice.StoryEditorScene.Element.Child
@@ -22,36 +23,49 @@ namespace YouthSpice.StoryEditorScene.Element.Child
 		[SerializeField]
 		private Transform selectionParent;
 
+		public Transform SelectionParent => selectionParent;
+
 		[SerializeField]
 		private GameObject subElementPrefab;
 
-		public void CreateSelectionNameSubElementGroup(Dictionary<string, string> data)
-		{
-			Instantiate(subElementPrefab, selectionParent).GetComponent<SelectionNameSubElementGroup>().Init(base.GetElementManager(), data);
-		}
-		
 		protected override void Init(Dictionary<string, string> data)
 		{
 			if (data.ContainsKey("Count") && data["Count"] != "")
 			{
 				currentSelectionCount = int.Parse(data["Count"]) - 1;
 				selectionDropdown.value = currentSelectionCount;
-				for (int i = 0; i < currentSelectionCount + 1; i++)
+				// 짜피 data에 저장되는 거라 안해도 될듯?
+				/*for (int i = 0; i < currentSelectionCount + 1; i++)
 				{
-					CreateSelectionNameSubElementGroup(null);
+					base.ElementManager.NewElement(ChapterElementType.SelectionName, null, selectionParent);
+				}*/
+
+				for (int i = 0;; i++)
+				{
+					if (!data.ContainsKey(i.ToString())) break;
+					ChapterElement currentData = JsonConvert.DeserializeObject<ChapterElement>(data[i.ToString()]);
+					base.ElementManager.NewElement(currentData.Type, currentData.Data, selectionParent);
 				}
 			}
 			else
 			{
-				CreateSelectionNameSubElementGroup(null);
+				base.ElementManager.NewElement(ChapterElementType.SelectionName, null, selectionParent);
 			}
-
-			LayoutRebuilder.ForceRebuildLayoutImmediate(selectionParent.GetComponent<RectTransform>());
 		}
 
 		public override Dictionary<string, string> GetData()
 		{
-			return new Dictionary<string, string>() { { "Count", (selectionDropdown.value + 1).ToString() } };
+			Dictionary<string, string> data = new Dictionary<string, string>()
+				{ { "Count", (selectionDropdown.value + 1).ToString() } };
+			
+			for (int i = 0; i < selectionParent.childCount; i++)
+			{
+				ElementGroup targetElement = selectionParent.GetChild(i).GetComponent<ElementGroup>();
+				Dictionary<string, string> elementData = base.ElementManager.ElementConverter.GetData(targetElement);
+				data.Add(i.ToString(), JsonConvert.SerializeObject(new ChapterElement(targetElement.Type, elementData)));
+			}
+
+			return data;
 		}
 
 		public void OnDropdownValueChanged()
@@ -76,13 +90,11 @@ namespace YouthSpice.StoryEditorScene.Element.Child
 			{
 				for (int i = 0; i < diff; i++)
 				{
-					CreateSelectionNameSubElementGroup(null);
+					base.ElementManager.NewElement(ChapterElementType.SelectionName, null, selectionParent);
 				}
 			}
 
 			currentSelectionCount = newSelectionCount;
-
-			LayoutRebuilder.ForceRebuildLayoutImmediate(selectionParent.GetComponent<RectTransform>());
 		}
 	}
 }

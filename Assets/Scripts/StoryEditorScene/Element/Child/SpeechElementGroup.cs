@@ -22,6 +22,7 @@ namespace YouthSpice.StoryEditorScene.Element.Child
 		protected override void Init(Dictionary<string, string> data)
 		{
 			characterNameDropdown.options.Add(new Dropdown.OptionData("(이름 표시하지 않기)"));
+			characterNameDropdown.options.Add(new Dropdown.OptionData("???"));
 			if (data.ContainsKey("AvailableNames") && data["AvailableNames"] != "")
 			{
 				foreach (string characterName in data["AvailableNames"].Split(" | "))

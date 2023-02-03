@@ -13,6 +13,9 @@ namespace YouthSpice.StoryEditorScene.Element.Child
 	{
 		[SerializeField]
 		private Dropdown backgroundMusicDropdown;
+		
+		[SerializeField]
+		private Dropdown audioTransitionDropdown;
 
 		protected override void Init(Dictionary<string, string> data)
 		{
@@ -24,14 +27,23 @@ namespace YouthSpice.StoryEditorScene.Element.Child
 					backgroundMusicDropdown.options.Add(new Dropdown.OptionData(musicName));
 				}
 			}
+			
+			if (data.ContainsKey("AvailableTransitions") && data["AvailableTransitions"] != "")
+			{
+				foreach (string transitionName in data["AvailableTransitions"].Split(" | "))
+				{
+					audioTransitionDropdown.options.Add(new Dropdown.OptionData(transitionName));
+				}
+			}
 
 			if (data.ContainsKey("Background")) backgroundMusicDropdown.value = int.Parse(data["Background"]) + 1;
+			if (data.ContainsKey("Transition")) audioTransitionDropdown.value = int.Parse(data["Transition"]) + 1;
 		}
 
 		public override Dictionary<string, string> GetData()
 		{
 			return new Dictionary<string, string>()
-				{ { "Background", (backgroundMusicDropdown.value - 1).ToString() } };
+				{ { "Background", (backgroundMusicDropdown.value - 1).ToString() },{ "Transition", (audioTransitionDropdown.value - 1).ToString() } };
 		}
 	}
 }

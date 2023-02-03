@@ -98,7 +98,6 @@ namespace YouthSpice.StoryEditorScene.UI
 		public void OnNewElementDropdownChanged()
 		{
 			if (elementDropdown.value == 0) return;
-			;
 			elementManager.NewElement(elementDropdown.value - 1, null);
 			elementDropdown.value = 0;
 		}

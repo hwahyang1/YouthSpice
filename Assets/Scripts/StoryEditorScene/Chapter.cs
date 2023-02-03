@@ -31,8 +31,9 @@ namespace YouthSpice.StoryEditorScene
 		EffectSound,
 		StandingImage,
 		Friendship,
-		Condition,
-		ConditionTitle
+		GetPlayerName,
+		Selection,
+		SelectionName
 	}
 
 	/// <summary>

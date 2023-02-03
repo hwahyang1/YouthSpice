@@ -13,6 +13,9 @@ namespace YouthSpice.StoryEditorScene.Element.Child
 	{
 		[SerializeField]
 		private Dropdown backgroundImageDropdown;
+		
+		[SerializeField]
+		private Dropdown imageTransitionDropdown;
 
 		protected override void Init(Dictionary<string, string> data)
 		{
@@ -24,12 +27,21 @@ namespace YouthSpice.StoryEditorScene.Element.Child
 				}
 			}
 			
+			if (data.ContainsKey("AvailableTransitions") && data["AvailableTransitions"] != "")
+			{
+				foreach (string transitionName in data["AvailableTransitions"].Split(" | "))
+				{
+					imageTransitionDropdown.options.Add(new Dropdown.OptionData(transitionName));
+				}
+			}
+			
 			if (data.ContainsKey("Background")) backgroundImageDropdown.value = int.Parse(data["Background"]);
+			if (data.ContainsKey("Transition")) imageTransitionDropdown.value = int.Parse(data["Transition"]) + 1;
 		}
 		
 		public override Dictionary<string, string> GetData()
 		{
-			return new Dictionary<string, string>(){{"Background", backgroundImageDropdown.value.ToString()}};
+			return new Dictionary<string, string>(){{"Background", backgroundImageDropdown.value.ToString()},{ "Transition", (imageTransitionDropdown.value - 1).ToString() }};
 		}
 	}
 }

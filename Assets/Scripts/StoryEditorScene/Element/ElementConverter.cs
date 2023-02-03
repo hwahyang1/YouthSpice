@@ -24,7 +24,7 @@ namespace YouthSpice.StoryEditorScene.Element
 		{
 			foreach (ChapterElement element in data)
 			{
-				elementManager.NewElement((int)element.Type, element.Data);
+				elementManager.NewElement(element.Type, element.Data);
 			}
 		}
 
@@ -36,58 +36,81 @@ namespace YouthSpice.StoryEditorScene.Element
 			{
 				GameObject targetObject = elementManager.ElementContentParent.GetChild(i).gameObject;
 				ElementGroup target = null;
-				int type = 0;
+				ChapterElementType type = 0;
 
 				if (targetObject.TryGetComponent(out SpeechElementGroup comp0))
 				{
-					type = 0;
+					type = ChapterElementType.Speech;
 					target = comp0;
 				}
 				else if (targetObject.TryGetComponent(out DayImageElementGroup comp1))
 				{
-					type = 1;
+					type = ChapterElementType.DayImage;
 					target = comp1;
 				}
 				else if (targetObject.TryGetComponent(out BackgroundImageElementGroup comp2))
 				{
-					type = 2;
+					type = ChapterElementType.BackgroundImage;
 					target = comp2;
 				}
 				else if (targetObject.TryGetComponent(out BackgroundMusicElementGroup comp3))
 				{
-					type = 3;
+					type = ChapterElementType.BackgroundMusic;
 					target = comp3;
 				}
 				else if (targetObject.TryGetComponent(out EffectMusicElementGroup comp4))
 				{
-					type = 4;
+					type = ChapterElementType.EffectSound;
 					target = comp4;
 				}
 				else if (targetObject.TryGetComponent(out CharacterElementGroup comp5))
 				{
-					type = 5;
+					type = ChapterElementType.StandingImage;
 					target = comp5;
 				}
 				else if (targetObject.TryGetComponent(out FriendshipElementGroup comp6))
 				{
-					type = 6;
+					type = ChapterElementType.Friendship;
 					target = comp6;
 				}
-				else if (targetObject.TryGetComponent(out SelectionElementGroup comp7))
+				else if (targetObject.TryGetComponent(out GetPlayerNameElementGroup comp7))
 				{
-					type = 7;
+					type = ChapterElementType.GetPlayerName;
 					target = comp7;
 				}
-				else if (targetObject.TryGetComponent(out SelectionNameSubElementGroup comp8))
+				else if (targetObject.TryGetComponent(out SelectionElementGroup comp8))
 				{
-					type = 8;
+					type = ChapterElementType.Selection;
 					target = comp8;
 				}
+				else if (targetObject.TryGetComponent(out SelectionNameSubElementGroup comp9))
+				{
+					type = ChapterElementType.SelectionName;
+					target = comp9;
+				}
 
-				data.Add(new ChapterElement((ChapterElementType)type, target?.GetData()));
+				data.Add(new ChapterElement(type, target?.GetData()));
 			}
 
 			return data.ToArray();
+		}
+
+		public Dictionary<string, string> GetData(ElementGroup from)
+		{
+			ElementGroup target = null;
+
+			if (from.TryGetComponent(out SpeechElementGroup comp0)) target = comp0;
+			else if (from.TryGetComponent(out DayImageElementGroup comp1)) target = comp1;
+			else if (from.TryGetComponent(out BackgroundImageElementGroup comp2)) target = comp2;
+			else if (from.TryGetComponent(out BackgroundMusicElementGroup comp3)) target = comp3;
+			else if (from.TryGetComponent(out EffectMusicElementGroup comp4)) target = comp4;
+			else if (from.TryGetComponent(out CharacterElementGroup comp5)) target = comp5;
+			else if (from.TryGetComponent(out FriendshipElementGroup comp6)) target = comp6;
+			else if (from.TryGetComponent(out GetPlayerNameElementGroup comp7)) target = comp7;
+			else if (from.TryGetComponent(out SelectionElementGroup comp8)) target = comp8;
+			else if (from.TryGetComponent(out SelectionNameSubElementGroup comp9)) target = comp9;
+
+			return target?.GetData();
 		}
 	}
 }
