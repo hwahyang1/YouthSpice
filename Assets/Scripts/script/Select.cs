@@ -7,7 +7,6 @@ using UnityEngine.SceneManagement;
 using UnityEngine.IO;
 using UnityEngine.Windows;
 
-
 public class Select : MonoBehaviour
 	{
 		[SerializeField] private GameObject nameEnterPanel;//플레이어 닉네임 입력 ui 판

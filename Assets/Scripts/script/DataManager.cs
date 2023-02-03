@@ -24,8 +24,6 @@ public class PlayerData
 
 	public class DataManager : Singleton<DataManager>
 	{
-		//싱글톤
-		public static DataManager Instance;
 		//플레이어 데이터 생성
 		public PlayerData NowPlayer = new PlayerData();
 		
