@@ -16,19 +16,11 @@ namespace YouthSpice.PreloadScene
 		private List<GameObject> canvases = new List<GameObject>();
 
 		[SerializeField]
-		private List<GameObject> soundObjects = new List<GameObject>();
-
-		[SerializeField]
 		private SceneChange sceneChange;
 
 		private void Start()
 		{
 			foreach (GameObject obj in canvases)
-			{
-				DontDestroyOnLoad(obj);
-			}
-
-			foreach (GameObject obj in soundObjects)
 			{
 				DontDestroyOnLoad(obj);
 			}

@@ -22,8 +22,11 @@ namespace YouthSpice.StoryEditorScene.Files
 		private UIManager uiManager;
 
 		private string pastFilePath = "";
+		public string PastFilePath => pastFilePath;
 		private string pastFileName = "";
-
+		public string PastFileName => pastFileName;
+		public bool IsNewFile => pastFilePath == "" && pastFileName == "";
+		
 		private void Start()
 		{
 			chapterManager = GetComponent<ChapterManager>();
@@ -48,23 +51,23 @@ namespace YouthSpice.StoryEditorScene.Files
 		/// </summary>
 		public void SaveFile()
 		{
-			if (pastFilePath != "" && pastFileName != "")
+			if (IsNewFile)
+			{
+				StartCoroutine(nameof(SaveNewFileCoroutine));
+			}
+			else
 			{
 				AlertManager.Instance.Show(AlertType.Double, "알림",
 					$"기존 파일이 존재합니다: {pastFilePath}/{pastFileName}\n기존 파일에 덮어씌울까요?",
 					new Dictionary<string, Action>()
 					{
-						{ "아니요\n(다른 파일에 저장)", () => { StartCoroutine(SaveNewFileCoroutine()); } },
-						{ "예\n(기존 파일 덮어쓰기)", () => { StartCoroutine(OverwriteFileCoroutine()); } }
+						{ "아니요\n(다른 파일에 저장)", () => { StartCoroutine(nameof(SaveNewFileCoroutine)); } },
+						{ "예\n(기존 파일 덮어쓰기)", () => { StartCoroutine(nameof(OverwriteFileCoroutine)); } }
 					});
-			}
-			else
-			{
-				StartCoroutine(SaveNewFileCoroutine());
 			}
 		}
 
-		private IEnumerator OverwriteFileCoroutine()
+		public IEnumerator OverwriteFileCoroutine(Action callback = null)
 		{
 			yield return null;
 
@@ -80,11 +83,11 @@ namespace YouthSpice.StoryEditorScene.Files
 
 			yield return null;
 
-			AlertManager.Instance.Show(AlertType.Single, "알림", $"파일을 성공적으로 저장했습니다.: {path}",
-				new Dictionary<string, Action>() { { "확인", null } });
+			if (callback == null) AlertManager.Instance.Show(AlertType.Single, "알림", $"파일을 성공적으로 저장했습니다.: {path}", new Dictionary<string, Action>() { { "확인", null } });
+			else callback.Invoke();
 		}
 
-		private IEnumerator SaveNewFileCoroutine()
+		public IEnumerator SaveNewFileCoroutine(Action callback = null)
 		{
 			FileBrowser.SetFilters(true, new FileBrowser.Filter("Chapter File", ".cpt"));
 			FileBrowser.SetDefaultFilter(".cpt");
@@ -111,8 +114,8 @@ namespace YouthSpice.StoryEditorScene.Files
 
 				yield return null;
 
-				AlertManager.Instance.Show(AlertType.Single, "알림", $"파일을 성공적으로 저장했습니다.: {FileBrowser.Result[0]}",
-					new Dictionary<string, Action>() { { "확인", null } });
+				if (callback == null) AlertManager.Instance.Show(AlertType.Single, "알림", $"파일을 성공적으로 저장했습니다.: {FileBrowser.Result[0]}", new Dictionary<string, Action>() { { "확인", null } });
+				else callback.Invoke();
 			}
 		}
 
@@ -123,7 +126,7 @@ namespace YouthSpice.StoryEditorScene.Files
 				{ "취소", null }
 			});
 
-		private void LoadExistFile() => StartCoroutine(LoadExistFileCoroutine());
+		private void LoadExistFile() => StartCoroutine(nameof(LoadExistFileCoroutine));
 
 		private IEnumerator LoadExistFileCoroutine()
 		{
@@ -145,7 +148,7 @@ namespace YouthSpice.StoryEditorScene.Files
 
 					yield return new WaitForSeconds(0.1f);
 
-					Chapter data = JsonConvert.DeserializeObject<Chapter>(File.ReadAllText(FileBrowser.Result[0]));
+					DefineChapter data = JsonConvert.DeserializeObject<DefineChapter>(File.ReadAllText(FileBrowser.Result[0]));
 					chapterManager.LoadData(data);
 
 					pastFilePath = Path.GetDirectoryName(FileBrowser.Result[0]);

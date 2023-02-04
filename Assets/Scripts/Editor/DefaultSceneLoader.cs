@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEditor;
 
-namespace CKGame_EolAlS_GameJam_2023.Editor
+namespace YouthSpice.Editor
 {
 	/// <summary>
 	/// UnityEditor에서 PlayMode 시작 시, 시작되는 Scene을 변경합니다.

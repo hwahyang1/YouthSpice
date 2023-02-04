@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 using UnityEngine;
 using UnityEngine.EventSystems;
-using YouthSpice.StoryEditorScene;
 
 namespace YouthSpice.PreloadScene.Alert
 {
@@ -33,7 +32,11 @@ namespace YouthSpice.PreloadScene.Alert
 		private GameObject prefab;
 
 		private Stack<AlertBox> currentAlert = new Stack<AlertBox>();
-		public bool IsRunning { get { return currentAlert.Count > 0; } }
+
+		public bool IsRunning
+		{
+			get { return currentAlert.Count > 0; }
+		}
 
 		protected override void Update()
 		{
@@ -46,7 +49,8 @@ namespace YouthSpice.PreloadScene.Alert
 					current.OnButtonClicked((int)current.AlertType - 1);
 				}
 				// Space 키는 경우에 따라 사용, Enter키(NumPad 포함) 입력 시 -> 0번째 버튼 클릭과 동일하게 취급
-				else if (/*Input.GetKeyDown(KeyCode.Space) || */Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
+				else if ( /*Input.GetKeyDown(KeyCode.Space) || */
+				         Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
 				{
 					AlertBox current = currentAlert.Peek();
 					current.OnButtonClicked(0);
@@ -61,12 +65,19 @@ namespace YouthSpice.PreloadScene.Alert
 		/// <param name="title">알림창의 제목을 지정합니다.</param>
 		/// <param name="description">알림창의 설명을 지정합니다.</param>
 		/// <param name="buttons">각 버튼에 대한 Callback을 지정합니다. 왼쪽 버튼부터 차례로 지정합니다.</param>
-		public void Show(AlertType alertType, string title, string description, Dictionary<string, System.Action> buttons)
+		public void Show(
+			AlertType alertType,
+			string title,
+			string description,
+			Dictionary<string, System.Action> buttons
+		)
 		{
 			if ((int)alertType != buttons.Count)
 			{
-				Debug.LogWarning("The value of 'AlertType' and the number of 'buttons(Dictionary)' do not match each other. The notification window may not work as intended.");
+				Debug.LogWarning(
+					"The value of 'AlertType' and the number of 'buttons(Dictionary)' do not match each other. The notification window may not work as intended.");
 			}
+
 			EventSystem.current?.SetSelectedGameObject(null);
 			GameObject parent = Instantiate(prefab, parentCanvas);
 			parent.SetActive(true);

@@ -1,8 +1,7 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace YouthSpice.StoryEditorScene
+namespace YouthSpice
 {
 	/// <summary>
 	/// 챕터 조건을 정의합니다.
@@ -56,7 +55,7 @@ namespace YouthSpice.StoryEditorScene
 	/// 챕터 프로젝트 파일의 정보를 담습니다.
 	/// </summary>
 	[System.Serializable]
-	public class Chapter
+	public class DefineChapter
 	{
 		public string ID;
 		public string Name;
@@ -66,12 +65,12 @@ namespace YouthSpice.StoryEditorScene
 
 		public ChapterElement[] Elements;
 
-		public Chapter()
+		public DefineChapter()
 		{
 			//
 		}
 
-		public Chapter(
+		public DefineChapter(
 			string id,
 			string name,
 			ChapterCondition[] conditionType,

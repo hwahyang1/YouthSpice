@@ -17,17 +17,25 @@ namespace YouthSpice.PreloadScene.Alert
 		[Header("GameObject")]
 		[SerializeField]
 		private GameObject screenCover;
+
 		[SerializeField]
 		private Text titleText;
+
 		[SerializeField]
 		private Text descriptionText;
+
 		[SerializeField]
 		private Transform buttonsParent;
 
 		[Header("Info")]
 		[SerializeField, ReadOnly]
 		private AlertType alertType;
-		public AlertType AlertType { get { return alertType; } }
+
+		public AlertType AlertType
+		{
+			get { return alertType; }
+		}
+
 		private Action[] callback;
 		private Action onDestroy;
 
@@ -37,11 +45,18 @@ namespace YouthSpice.PreloadScene.Alert
 			{
 				buttonsParent.GetChild(i).gameObject.SetActive(false);
 			}
+
 			screenCover.SetActive(false);
 			gameObject.SetActive(false);
 		}
 
-		public void Init(AlertType alertType, string title, string description, Dictionary<string, Action> buttons, Action onDestroy)
+		public void Init(
+			AlertType alertType,
+			string title,
+			string description,
+			Dictionary<string, Action> buttons,
+			Action onDestroy
+		)
 		{
 			this.alertType = alertType;
 			titleText.text = title;
@@ -58,6 +73,7 @@ namespace YouthSpice.PreloadScene.Alert
 				targetButton.transform.GetChild(0).GetComponent<Text>().text = data.Key;
 				i++;
 			}
+
 			targetButtonGroup.SetActive(true);
 		}
 
@@ -75,6 +91,7 @@ namespace YouthSpice.PreloadScene.Alert
 				Debug.LogError("Not Allowed Callback");
 				return;
 			}
+
 			callback[index]?.Invoke();
 			onDestroy();
 		}

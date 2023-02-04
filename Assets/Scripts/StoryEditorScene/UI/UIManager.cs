@@ -1,13 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
+using Action = System.Action;
 using DateTime = System.DateTime;
 
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+using YouthSpice.PreloadScene.Alert;
 using YouthSpice.StoryEditorScene.Condition;
 using YouthSpice.StoryEditorScene.Element;
+using YouthSpice.StoryEditorScene.Files;
 
 namespace YouthSpice.StoryEditorScene.UI
 {
@@ -43,11 +46,15 @@ namespace YouthSpice.StoryEditorScene.UI
 
 		private ElementManager elementManager;
 		private ConditionManager conditionManager;
+		private ChapterManager chapterManager;
+		private ChapterFileManager chapterFileManager;
 
 		private void Start()
 		{
 			conditionManager = GetComponent<ConditionManager>();
 			elementManager = GetComponent<ElementManager>();
+			chapterManager = GetComponent<ChapterManager>();
+			chapterFileManager = GetComponent<ChapterFileManager>();
 
 			foreach (string elementName in dropdownElements)
 			{
@@ -100,6 +107,44 @@ namespace YouthSpice.StoryEditorScene.UI
 			if (elementDropdown.value == 0) return;
 			elementManager.NewElement(elementDropdown.value - 1, null);
 			elementDropdown.value = 0;
+		}
+
+		public void OpenChapterPreview()
+		{
+			//TODO
+			if (chapterFileManager.IsNewFile)
+			{
+				AlertManager.Instance.Show(AlertType.Double, "알림",
+					"챕터 테스트를 진행하기 전, 파일을 저장해야 합니다.",
+					new Dictionary<string, Action>()
+					{
+						{ "확인", null }
+					});
+			}
+			else
+			{
+				AlertManager.Instance.Show(AlertType.Double, "알림",
+					$"챕터 테스트를 진행하기 전, 파일을 저장해야 합니다.\n\n기존 파일이 존재합니다: {chapterFileManager.PastFilePath}/{chapterFileManager.PastFileName}\n기존 파일에 덮어씌울까요?",
+					new Dictionary<string, Action>()
+					{
+						{
+							"아니요\n(다른 파일에 저장)",
+							() =>
+							{
+								StartCoroutine(
+									chapterFileManager.SaveNewFileCoroutine(chapterManager.StartChapterPreview));
+							}
+						},
+						{
+							"예\n(기존 파일 덮어쓰기)",
+							() =>
+							{
+								StartCoroutine(
+									chapterFileManager.OverwriteFileCoroutine(chapterManager.StartChapterPreview));
+							}
+						}
+					});
+			}
 		}
 	}
 }

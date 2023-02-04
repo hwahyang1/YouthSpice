@@ -1,6 +1,5 @@
 ﻿[StoryEditorScene]
 
-- Chapter: 챕터 데이터 Class
 - ChapterManager: 챕터 프로젝트 관리
 
 : UI

@@ -1,13 +1,19 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
 using UnityEngine;
 
 using NaughtyAttributes;
-
+using YouthSpice.PreloadScene.Alert;
+using YouthSpice.PreloadScene.Files;
+using YouthSpice.PreloadScene.Scene;
 using YouthSpice.StoryEditorScene.Condition;
 using YouthSpice.StoryEditorScene.Element;
+using YouthSpice.StoryEditorScene.Files;
 using YouthSpice.StoryEditorScene.UI;
+using YouthSpice.StoryScene.Extern;
+using Random = UnityEngine.Random;
 
 namespace YouthSpice.StoryEditorScene
 {
@@ -20,6 +26,7 @@ namespace YouthSpice.StoryEditorScene
 		private ConditionManager conditionManager;
 		private ElementManager elementManager;
 		private ElementConverter elementConverter;
+		private ChapterFileManager chapterFileManager;
 
 		[SerializeField, ReadOnly]
 		private string chapterID;
@@ -30,6 +37,7 @@ namespace YouthSpice.StoryEditorScene
 			conditionManager = GetComponent<ConditionManager>();
 			elementManager = GetComponent<ElementManager>();
 			elementConverter = GetComponent<ElementConverter>();
+			chapterFileManager = GetComponent<ChapterFileManager>();
 		}
 
 		/// <summary>
@@ -51,13 +59,13 @@ namespace YouthSpice.StoryEditorScene
 		/// 기존 챕터 데이터를 불러옵니다.
 		/// </summary>
 		/// <param name="chapter">불러올 데이터를 지정합니다.</param>
-		public void LoadData(Chapter chapter)
+		public void LoadData(DefineChapter chapter)
 		{
 			conditionManager.reset = true;
 			elementManager.RemoveAll();
-			
+
 			chapterID = chapter.ID;
-			
+
 			uiManager.SetChapterID(chapterID + "");
 			uiManager.SetChapterName(chapter.Name);
 
@@ -97,9 +105,9 @@ namespace YouthSpice.StoryEditorScene
 		/// 작성된 챕터 데이터를 저장용 클래스로 변환합니다.
 		/// </summary>
 		/// <returns>변환한 데이터가 반환됩니다.</returns>
-		public Chapter GetData()
+		public DefineChapter GetData()
 		{
-			Chapter data = new Chapter
+			DefineChapter data = new DefineChapter
 			{
 				ID = chapterID,
 				Name = uiManager.GetChapterName()
@@ -119,6 +127,20 @@ namespace YouthSpice.StoryEditorScene
 			data.Elements = elementConverter.ConvertElementToClass();
 
 			return data;
+		}
+
+		/// <remarks>
+		/// 실제 메소드 실행은 UIManager를 통해야 합니다.
+		/// </remarks>
+		public async void StartChapterPreview()
+		{
+			LoadParams.Instance.chapterCustomPath = chapterFileManager.PastFilePath;
+			LoadParams.Instance.resourceCustomPath = Application.dataPath + @"/.StoryEditor_Data";
+			LoadParams.Instance.chapterID = chapterID;
+
+			await SourceFileManager.Instance.RefreshAll();
+
+			SceneChange.Instance.Add("StoryScene");
 		}
 	}
 }
