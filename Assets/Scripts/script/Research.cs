@@ -1,10 +1,10 @@
-using System;
+/*using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
+using Unity.VisualScripting;*/
 using UnityEngine;
 using UnityEngine.UI;
-using Random = System.Random;
+using UnityEngine.SceneManagement;
 
 
 namespace YouthSpice
@@ -24,66 +24,95 @@ namespace YouthSpice
 		private bool onCooldown = false;   //cooldown 중인지 여부
 		
 		//값 변경
-		[Header("성공 확률 (%)")]
-		[SerializeField] private int Percentage; //성공 확률
+		[Header("성공 확률 (%) , 미니게임성공확률과 성공 확률의 사이가")]
+		[SerializeField] private int successPercentage; //성공 확률
+                                                  
+		[Header("미니게임 성공 확률 (%) , 실패 확률 입니다")]
+		[SerializeField] private int minigamePercentage; //미니게임성공 확률
 		[Header("탐색 시간")]
+		
 		[SerializeField] private float cooldownDuration; //탐색 시간 
+		
+		//미니게임
+		[Header("미니게임")]
+		[SerializeField] private GameObject minigamePanel;
+		[SerializeField] private int minigameCount;
+		[SerializeField] private Text minigameCountText;
+		//시스템 제어
+		[SerializeField] private bool isControl = true; //미니게임 할떄 다른 기능 사용 못하게 하는 전제 제어 불값
+		[SerializeField] private bool isMiniGameControl = false;
 
 		private void Update()
 		{
-			Researchfunction();
-			
-			TimeLimit();
-		}
-
-		void Researchfunction()
-		{
-			// spacebar가 눌렸고, cooldown이 아직 안되어있으면
-			if (Input.GetKeyDown(KeyCode.Space) && !onCooldown)
+			if (isControl)
 			{
-				researchText.text = "탐색중"; //탐색중 택스트
-				onCooldown = true; // cooldown 중
-				cooldownTimer = cooldownDuration; // cooldown 타이머 초기화
+				Researchfunction();
+
+				TimeLimit();
 			}
 
-			// cooldown 중이면
-			if (onCooldown)
+			if (isMiniGameControl)
 			{
-				cooldownTimer -= Time.deltaTime; // 타이머 감소
-				// 타이머가 0 이하면
-				if (cooldownTimer <= 0f)
+				MiniGame();
+			}
+		}
+
+		private void Researchfunction()
+		{
+			if (timer > 0)
+			{
+				// spacebar가 눌렸고, cooldown이 아직 안되어있으면
+				if (Input.GetKeyDown(KeyCode.Space) && !onCooldown)
 				{
-					Randomfunction(); //랜덤 함수 실행
-					onCooldown = false; // cooldown 완료
+					researchText.text = "탐색중"; //탐색중 택스트
+					onCooldown = true; // cooldown 중
+					cooldownTimer = cooldownDuration; // cooldown 타이머 초기화
+				}
+
+				// cooldown 중이면
+				if (onCooldown)
+				{
+					cooldownTimer -= Time.deltaTime; // 타이머 감소
+					// 타이머가 0 이하면
+					if (cooldownTimer <= 0f)
+					{
+						Randomfunction(); //랜덤 함수 실행
+						onCooldown = false; // cooldown 완료
+					}
 				}
 			}
 		}
 
-		void Randomfunction()
+		private void Randomfunction()
 		{
 			float successChance = UnityEngine.Random.Range(0f, 101f);
-			if (successChance <= Percentage)
+			if (successChance <= successPercentage)
 			{
 				Success();
 			}
-			else
+			else if(successChance > successPercentage && successChance < 100f- minigamePercentage)
 			{
 				Fail();
 			}
+			else if ( successChance >= 100f - minigamePercentage)
+			{
+				researchText.text = "미니게임!";
+				isControl = false;
+				Invoke("MiniGamePanel",3f);
+			}
 		}
-		void Success()
+		private void Success()
 		{
 			researchText.text = "탐색 성공";
 			Debug.Log("성공");
 		}
-		void Fail()
+		private void Fail()
 		{
 			researchText.text = "탐색 실패";
-			
 			Debug.Log("실패");
 		}
 
-		void TimeLimit()
+		private void TimeLimit()
 		{
 			timerText.text = "시간" + timer;
 			if (startTimerTime)
@@ -94,6 +123,41 @@ namespace YouthSpice
 			{
 				startTimerTime = true;
 			}
+		}
+
+		private void MiniGamePanel()
+		{
+			Debug.Log("미니게임창 켜짐");
+			isMiniGameControl = true;
+			minigamePanel.SetActive(true);
+		}
+
+		private void MiniGame()
+		{
+			if (minigameCount > 100)
+			{
+				startTimerTime = true;
+				minigameCountText.text = "성공";
+				Invoke("MiniGamePanelFalse" , 5f);
+			}
+			else
+			{
+				minigameCountText.text = "클릭한횟수" + minigameCount;
+			}
+
+			if (Input.anyKeyDown)
+			{
+				minigameCount++;
+			}
+		}
+
+		private void MiniGamePanelFalse()
+		{
+			isControl = true;
+			isMiniGameControl = false;
+			minigameCount = 0;
+			minigamePanel.SetActive(false);
+			Debug.Log("미니게임창 꺼짐");
 		}
 	}
 }
