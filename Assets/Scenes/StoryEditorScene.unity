@@ -1090,7 +1090,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 185.80002, y: 0}
+  m_AnchoredPosition: {x: 171.1, y: 0}
   m_SizeDelta: {x: 50, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &164529075
@@ -1525,7 +1525,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 427.8, y: -5}
+  m_AnchoredPosition: {x: 413.09998, y: -5}
   m_SizeDelta: {x: 130, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &244151369
@@ -2031,7 +2031,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 0
+  m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
   m_SortingOrder: 512
   m_TargetDisplay: 0
@@ -2342,7 +2342,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 427.8, y: -5}
+  m_AnchoredPosition: {x: 413.1, y: -5}
   m_SizeDelta: {x: 130, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &438590665
@@ -2728,7 +2728,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uD788\uB85C\uC778 2\uC758 \uD2B9\uC815 \uD638\uAC10\uB3C4\uB97C \uCDA9\uC871\uD574\uC57C
+  m_Text: "\uC18C\uC5EC\uC6B8\uC758 \uD2B9\uC815 \uD638\uAC10\uB3C4\uB97C \uCDA9\uC871\uD574\uC57C
     \uCC55\uD130\uB97C \uAC1C\uBC29\uD569\uB2C8\uB2E4."
 --- !u!222 &449146589
 CanvasRenderer:
@@ -3767,7 +3767,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 185.80002, y: 0}
+  m_AnchoredPosition: {x: 171.1, y: 0}
   m_SizeDelta: {x: 50, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &682979554
@@ -4308,7 +4308,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c594537b9d703f94a9d84c3217bd5e22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  editorVersion: 1675513372
+  editorVersion: 1675590119
   fileVersion: 0
   availableAudios: []
   availableBackgroundImages: []
@@ -5124,7 +5124,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uD788\uB85C\uC778 1\uC758 \uD2B9\uC815 \uD638\uAC10\uB3C4\uB97C \uCDA9\uC871\uD574\uC57C
+  m_Text: "\uB958\uD55C\uB098\uC758 \uD2B9\uC815 \uD638\uAC10\uB3C4\uB97C \uCDA9\uC871\uD574\uC57C
     \uCC55\uD130\uB97C \uAC1C\uBC29\uD569\uB2C8\uB2E4."
 --- !u!222 &1020561499
 CanvasRenderer:
@@ -6008,7 +6008,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 427.8, y: -5}
+  m_AnchoredPosition: {x: 413.09998, y: -5}
   m_SizeDelta: {x: 130, y: 30}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1332310927
@@ -6266,7 +6266,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 185.80002, y: 0}
+  m_AnchoredPosition: {x: 171.1, y: 0}
   m_SizeDelta: {x: 50, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1386774015
@@ -9435,7 +9435,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uD788\uB85C\uC778 3\uC758 \uD2B9\uC815 \uD638\uAC10\uB3C4\uB97C \uCDA9\uC871\uD574\uC57C
+  m_Text: "\uD0DC\uC740\uD638\uC758 \uD2B9\uC815 \uD638\uAC10\uB3C4\uB97C \uCDA9\uC871\uD574\uC57C
     \uCC55\uD130\uB97C \uAC1C\uBC29\uD569\uB2C8\uB2E4."
 --- !u!222 &2071508781
 CanvasRenderer:

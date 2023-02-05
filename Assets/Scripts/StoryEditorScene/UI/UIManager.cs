@@ -111,14 +111,17 @@ namespace YouthSpice.StoryEditorScene.UI
 
 		public void OpenChapterPreview()
 		{
-			//TODO
 			if (chapterFileManager.IsNewFile)
 			{
-				AlertManager.Instance.Show(AlertType.Double, "알림",
+				AlertManager.Instance.Show(AlertType.Single, "알림",
 					"챕터 테스트를 진행하기 전, 파일을 저장해야 합니다.",
 					new Dictionary<string, Action>()
 					{
-						{ "확인", null }
+						{ "확인", () =>
+						{
+							StartCoroutine(
+								chapterFileManager.SaveNewFileCoroutine(chapterManager.StartChapterPreview));
+						} }
 					});
 			}
 			else

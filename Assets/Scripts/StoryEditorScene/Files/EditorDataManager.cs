@@ -139,8 +139,8 @@ namespace YouthSpice.StoryEditorScene.Files
 			GetComponent<ChapterFileManager>().ShowFirstScreen();
 
 			if (availableAudios.Length == 0) ShowWarning($"{rootPath}/{rootPathFolders[0]}");
-			if (availableDayImages.Length == 0) ShowWarning($"{rootPath}/{rootPathFolders[1]}");
-			if (availableBackgroundImages.Length == 0) ShowWarning($"{rootPath}/{rootPathFolders[2]}");
+			if (availableBackgroundImages.Length == 0) ShowWarning($"{rootPath}/{rootPathFolders[1]}");
+			if (availableDayImages.Length == 0) ShowWarning($"{rootPath}/{rootPathFolders[2]}");
 			if (availableStandingIllusts.Length == 0) ShowWarning($"{rootPath}/{rootPathFolders[3]}");
 		}
 

@@ -4,6 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+using NaughtyAttributes;
+
+using YouthSpice.PreloadScene.Files;
+using YouthSpice.StoryScene.Chapter;
+
 namespace YouthSpice.StoryScene.UI
 {
 	/// <summary>
@@ -12,6 +17,177 @@ namespace YouthSpice.StoryScene.UI
 	public class StandingIllusts : MonoBehaviour
 	{
 		[SerializeField]
-		private Image[] standingIllustsAreas;
+		private Image[] frontStandingIllustAreas;
+
+		[SerializeField]
+		private Image[] backStandingIllustAreas;
+
+		[Header("Status")]
+		// false -> Back / true -> Front
+		[SerializeField, ReadOnly]
+		private bool activePosition = false;
+
+		[SerializeField, ReadOnly]
+		private bool isRunning = false;
+
+		[Header("Time")]
+		[SerializeField, Tooltip("Dissolve 기준으로, Fade의 경우 지정된 시간의 2배를 사용합니다.")]
+		private float totalAnimationTime = 1f;
+
+		[SerializeField, Tooltip("값이 높을수록 느려집니다.")]
+		private float animationDelay = 0.01f;
+
+		private Coroutine activeCoroutine = null;
+
+		private ChapterManager chapterManager;
+
+		private void Start()
+		{
+			chapterManager = GetComponent<ChapterManager>();
+		}
+
+		public void OnKeyDown()
+		{
+			if (isRunning)
+			{
+				StopCoroutine(activeCoroutine);
+
+				foreach (Image area in frontStandingIllustAreas)
+				{
+					if (area.sprite == null) area.color = new Color(1f, 1f, 1f, 0f);
+					else area.color = new Color(1f, 1f, 1f, activePosition ? 1f : 0f);
+				}
+
+				foreach (Image area in backStandingIllustAreas)
+				{
+					if (area.sprite == null) area.color = new Color(1f, 1f, 1f, 0f);
+					else area.color = new Color(1f, 1f, 1f, activePosition ? 0f : 1f);
+				}
+
+				activeCoroutine = null;
+				isRunning = false;
+				chapterManager.isStandingImageEnded = true;
+				chapterManager.PlayNext();
+			}
+		}
+
+		/// <summary>
+		/// 스탠딩 일러스트를 변경합니다.
+		/// </summary>
+		public void ChangeIllust(Dictionary<string, string> data)
+		{
+			isRunning = true;
+
+			List<Sprite> images = new List<Sprite>();
+
+			images.Add(data["CharacterSlot1"] == "0"
+				? null
+				: SourceFileManager.Instance.AvailableStandingIllusts[int.Parse(data["CharacterSlot1"]) - 1]);
+			images.Add(data["CharacterSlot2"] == "0"
+				? null
+				: SourceFileManager.Instance.AvailableStandingIllusts[int.Parse(data["CharacterSlot2"]) - 1]);
+			images.Add(data["CharacterSlot3"] == "0"
+				? null
+				: SourceFileManager.Instance.AvailableStandingIllusts[int.Parse(data["CharacterSlot3"]) - 1]);
+
+			activeCoroutine = StartCoroutine(ChangeIllustCoroutine(images.ToArray(),
+				(DefineImageTransitions)int.Parse(data["Transition"])));
+		}
+
+		private IEnumerator ChangeIllustCoroutine(Sprite[] image, DefineImageTransitions transitionType)
+		{
+			WaitForSeconds timeout = new WaitForSeconds(animationDelay);
+
+			Image[] currentAreas = activePosition ? frontStandingIllustAreas : backStandingIllustAreas;
+			Image[] nextAreas = activePosition ? backStandingIllustAreas : frontStandingIllustAreas;
+
+			for (int i = 0; i < nextAreas.Length; i++)
+			{
+				if (nextAreas[i].sprite == null) nextAreas[i].color = new Color(1f, 1f, 1f, 0f);
+				else nextAreas[i].color = new Color(1f, 1f, 1f, 0f);
+				nextAreas[i].sprite = image[i];
+			}
+
+			yield return null;
+
+			activePosition = !activePosition;
+
+			isRunning = true;
+
+			float currentTime = 0f;
+
+			switch (transitionType)
+			{
+				case DefineImageTransitions.None:
+					foreach (Image area in currentAreas)
+					{
+						if (area.sprite == null) area.color = new Color(1f, 1f, 1f, 0f);
+						else area.color = new Color(1f, 1f, 1f, 0f);
+					}
+
+					foreach (Image area in nextAreas)
+					{
+						if (area.sprite == null) area.color = new Color(1f, 1f, 1f, 0f);
+						else area.color = new Color(1f, 1f, 1f, 1f);
+					}
+
+					break;
+				case DefineImageTransitions.Dissolve:
+					while (currentTime < totalAnimationTime)
+					{
+						currentTime += animationDelay;
+						foreach (Image area in currentAreas)
+						{
+							if (area.sprite == null) area.color = new Color(1f, 1f, 1f, 0f);
+							else area.color = new Color(1f, 1f, 1f, 1f - (currentTime / totalAnimationTime));
+						}
+
+						foreach (Image area in nextAreas)
+						{
+							if (area.sprite == null) area.color = new Color(1f, 1f, 1f, 0f);
+							else area.color = new Color(1f, 1f, 1f, currentTime / totalAnimationTime);
+						}
+
+						yield return timeout;
+					}
+
+					break;
+				case DefineImageTransitions.Fade:
+					while (currentTime < totalAnimationTime)
+					{
+						currentTime += animationDelay;
+						foreach (Image area in currentAreas)
+						{
+							if (area.sprite == null) area.color = new Color(1f, 1f, 1f, 0f);
+							else area.color = new Color(1f, 1f, 1f, 1f - (currentTime / totalAnimationTime));
+						}
+
+						yield return timeout;
+					}
+
+					currentTime = 0f;
+
+					while (currentTime < totalAnimationTime)
+					{
+						currentTime += animationDelay;
+						foreach (Image area in nextAreas)
+						{
+							if (area.sprite == null) area.color = new Color(1f, 1f, 1f, 0f);
+							else area.color = new Color(1f, 1f, 1f, currentTime / totalAnimationTime);
+						}
+
+						yield return timeout;
+					}
+
+					break;
+			}
+
+			yield return new WaitForSeconds(0.25f);
+
+			activeCoroutine = null;
+			isRunning = false;
+			chapterManager.isStandingImageEnded = true;
+			chapterManager.PlayNext();
+		}
 	}
 }

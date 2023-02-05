@@ -4,6 +4,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+using NaughtyAttributes;
+
+using YouthSpice.PreloadScene.Files;
+using YouthSpice.StoryScene.Chapter;
+
 namespace YouthSpice.StoryScene.UI
 {
 	/// <summary>
@@ -12,12 +17,130 @@ namespace YouthSpice.StoryScene.UI
 	public class FrontTop : MonoBehaviour
 	{
 		[SerializeField]
-		private Image dayImageArea;
+		private Image[] dayImageAreas;
 
+		[Header("Status")]
+		// false -> Back(0) / true -> Front(1)
+		[SerializeField, ReadOnly]
+		private bool activePosition = false;
+
+		[SerializeField, ReadOnly]
+		private bool isRunning = false;
+
+		[Header("Time")]
+		[SerializeField, Tooltip("Dissolve 기준으로, Fade의 경우 지정된 시간의 2배를 사용합니다.")]
+		private float totalAnimationTime = 1f;
+
+		[SerializeField, Tooltip("값이 높을수록 느려집니다.")]
+		private float animationDelay = 0.01f;
+
+		private Coroutine activeCoroutine = null;
+
+		[Header("Buttons")]
 		[SerializeField]
 		private Button skipButton;
 
 		[SerializeField]
 		private Button backButton;
+
+		private ChapterManager chapterManager;
+
+		private void Start()
+		{
+			chapterManager = GetComponent<ChapterManager>();
+		}
+
+		public void OnKeyDown()
+		{
+			//
+		}
+
+		/// <summary>
+		/// 날짜 이미지를 변경합니다.
+		/// </summary>
+		public void ChangeImage(Dictionary<string, string> data)
+		{
+			isRunning = true;
+
+			Sprite image = data["Day"] == "0"
+				? null
+				: SourceFileManager.Instance.AvailableDayImages[int.Parse(data["Day"]) - 1];
+
+			activeCoroutine = StartCoroutine(ChangeImageCoroutine(image,
+				(DefineImageTransitions)int.Parse(data["Transition"])));
+		}
+
+		private IEnumerator ChangeImageCoroutine(Sprite image, DefineImageTransitions transitionType)
+		{
+			WaitForSeconds timeout = new WaitForSeconds(animationDelay);
+
+			Image currentArea = dayImageAreas[activePosition ? 1 : 0];
+			Image nextArea = dayImageAreas[activePosition ? 1 : 0];
+
+			nextArea.color = new Color(1f, 1f, 1f, 0f);
+			nextArea.sprite = image;
+
+			yield return null;
+
+			activePosition = !activePosition;
+
+			isRunning = true;
+
+			float currentTime = 0f;
+
+			switch (transitionType)
+			{
+				case DefineImageTransitions.None:
+					currentArea.color = new Color(1f, 1f, 1f, 0f);
+					if (nextArea.sprite == null) nextArea.color = new Color(1f, 1f, 1f, 0f);
+					else nextArea.color = new Color(1f, 1f, 1f, 1f);
+					break;
+				case DefineImageTransitions.Dissolve:
+					while (currentTime < totalAnimationTime)
+					{
+						currentTime += animationDelay;
+						if (currentArea.sprite == null) currentArea.color = new Color(1f, 1f, 1f, 0f);
+						else currentArea.color = new Color(1f, 1f, 1f, 1f - (currentTime / totalAnimationTime));
+						if (nextArea.sprite == null) nextArea.color = new Color(1f, 1f, 1f, 0f);
+						else nextArea.color = new Color(1f, 1f, 1f, currentTime / totalAnimationTime);
+						yield return timeout;
+					}
+
+					yield return new WaitForSeconds(totalAnimationTime / 2f);
+
+					break;
+				case DefineImageTransitions.Fade:
+					while (currentTime < totalAnimationTime)
+					{
+						currentTime += animationDelay;
+						if (currentArea.sprite == null) currentArea.color = new Color(1f, 1f, 1f, 0f);
+						else currentArea.color = new Color(1f, 1f, 1f, 1f - (currentTime / totalAnimationTime));
+						yield return timeout;
+					}
+
+					yield return new WaitForSeconds(totalAnimationTime / 2f);
+
+					currentTime = 0f;
+
+					while (currentTime < totalAnimationTime)
+					{
+						currentTime += animationDelay;
+						if (nextArea.sprite == null) nextArea.color = new Color(1f, 1f, 1f, 0f);
+						else nextArea.color = new Color(1f, 1f, 1f, currentTime / totalAnimationTime);
+						yield return timeout;
+					}
+
+					yield return new WaitForSeconds(totalAnimationTime / 2f);
+
+					break;
+			}
+
+			yield return new WaitForSeconds(0.25f);
+
+			activeCoroutine = null;
+			isRunning = false;
+			chapterManager.isDayImageEnded = true;
+			chapterManager.PlayNext();
+		}
 	}
 }

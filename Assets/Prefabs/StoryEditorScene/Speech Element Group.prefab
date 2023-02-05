@@ -363,6 +363,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 371d98446662b7d4dbfcfe61648510a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isSubElement: 0
+  type: 0
   characterNameDropdown: {fileID: 1928213609205854699}
   characterScriptInputField: {fileID: 1928213608979028797}
 --- !u!1 &1928213608737459771
@@ -862,7 +864,7 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 0
+  m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
@@ -1018,7 +1020,7 @@ MonoBehaviour:
   m_InputType: 0
   m_AsteriskChar: 42
   m_KeyboardType: 0
-  m_LineType: 0
+  m_LineType: 2
   m_HideMobileInput: 0
   m_HideSoftKeyboard: 0
   m_CharacterValidation: 0
