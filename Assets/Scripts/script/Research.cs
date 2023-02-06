@@ -30,14 +30,15 @@ namespace YouthSpice
 		[Header("미니게임 성공 확률 (%) , 실패 확률 입니다")]
 		[SerializeField] private int minigamePercentage; //미니게임성공 확률
 		[Header("탐색 시간")]
-		
 		[SerializeField] private float cooldownDuration; //탐색 시간 
 		
 		//미니게임
 		[Header("미니게임")]
 		[SerializeField] private GameObject minigamePanel;
-		[SerializeField] private int minigameCount;
-		[SerializeField] private Text minigameCountText;
+		[SerializeField] private float minigameCount = 50f;
+		[SerializeField] private Slider clickSlider;
+		[SerializeField] private Text sucessText;
+		[SerializeField] private int sliderForce;
 		//시스템 제어
 		[SerializeField] private bool isControl = true; //미니게임 할떄 다른 기능 사용 못하게 하는 전제 제어 불값
 		[SerializeField] private bool isMiniGameControl = false;
@@ -124,25 +125,35 @@ namespace YouthSpice
 				startTimerTime = true;
 			}
 		}
-
+		/// <summary>
+		/// 미니게임 판을 true로 바꾸는 함수 
+		/// </summary>
 		private void MiniGamePanel()
 		{
 			Debug.Log("미니게임창 켜짐");
 			isMiniGameControl = true;
 			minigamePanel.SetActive(true);
 		}
-
+		/// <summary>
+		/// 미니게임 함수
+		/// </summary>
 		private void MiniGame()
 		{
 			if (minigameCount > 100)
 			{
-				startTimerTime = true;
-				minigameCountText.text = "성공";
-				Invoke("MiniGamePanelFalse" , 5f);
+				sucessText.text = "성공";
+				minigameCount = 100;
+				Invoke("MiniGamePanelFalse" , 3f);
 			}
-			else
+			else if(0 < minigameCount && minigameCount < 100)
 			{
-				minigameCountText.text = "클릭한횟수" + minigameCount;
+				minigameCount -= Time.deltaTime * sliderForce;
+				clickSlider.value = minigameCount / 100;
+			}
+			else if(minigameCount < 0)
+			{
+				sucessText.text = "실패";
+				Invoke("MiniGamePanelFalse" , 3f);
 			}
 
 			if (Input.anyKeyDown)
@@ -155,7 +166,8 @@ namespace YouthSpice
 		{
 			isControl = true;
 			isMiniGameControl = false;
-			minigameCount = 0;
+			minigameCount = 50;
+			sucessText.text = "";
 			minigamePanel.SetActive(false);
 			Debug.Log("미니게임창 꺼짐");
 		}
