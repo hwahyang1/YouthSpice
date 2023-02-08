@@ -69,7 +69,8 @@ namespace YouthSpice.PreloadScene.Alert
 			AlertType alertType,
 			string title,
 			string description,
-			Dictionary<string, System.Action> buttons
+			Dictionary<string, System.Action> buttons,
+			bool useCloseButton = false
 		)
 		{
 			if ((int)alertType != buttons.Count)
@@ -82,7 +83,7 @@ namespace YouthSpice.PreloadScene.Alert
 			GameObject parent = Instantiate(prefab, parentCanvas);
 			parent.SetActive(true);
 			AlertBox alertBox = parent.transform.GetChild(1).GetComponent<AlertBox>();
-			alertBox.Init(alertType, title, description, buttons, ChildDestroy);
+			alertBox.Init(alertType, title, description, buttons, useCloseButton, ChildDestroy);
 			alertBox.Show();
 			currentAlert.Push(alertBox);
 		}

@@ -27,14 +27,14 @@ namespace YouthSpice.PreloadScene.Alert
 		[SerializeField]
 		private Transform buttonsParent;
 
+		[SerializeField]
+		private Button closeButton;
+
 		[Header("Info")]
 		[SerializeField, ReadOnly]
 		private AlertType alertType;
 
-		public AlertType AlertType
-		{
-			get { return alertType; }
-		}
+		public AlertType AlertType => alertType;
 
 		private Action[] callback;
 		private Action onDestroy;
@@ -55,6 +55,7 @@ namespace YouthSpice.PreloadScene.Alert
 			string title,
 			string description,
 			Dictionary<string, Action> buttons,
+			bool useCloseButton,
 			Action onDestroy
 		)
 		{
@@ -62,6 +63,7 @@ namespace YouthSpice.PreloadScene.Alert
 			titleText.text = title;
 			descriptionText.text = description;
 			callback = new Action[(int)alertType];
+			closeButton.gameObject.SetActive(useCloseButton);
 			this.onDestroy = onDestroy;
 
 			int i = 0;
@@ -93,6 +95,11 @@ namespace YouthSpice.PreloadScene.Alert
 			}
 
 			callback[index]?.Invoke();
+			onDestroy();
+		}
+
+		public void OnCloseButtonClicked()
+		{
 			onDestroy();
 		}
 	}

@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Action = System.Action;
 
 using UnityEngine;
 using UnityEngine.UI;
 
 using NaughtyAttributes;
-
+using UnityEngine.EventSystems;
+using YouthSpice.PreloadScene.Alert;
 using YouthSpice.PreloadScene.Files;
 using YouthSpice.StoryScene.Chapter;
 
@@ -40,19 +42,44 @@ namespace YouthSpice.StoryScene.UI
 		[SerializeField]
 		private Button skipButton;
 
-		[SerializeField]
-		private Button backButton;
-
 		private ChapterManager chapterManager;
 
 		private void Start()
 		{
 			chapterManager = GetComponent<ChapterManager>();
+			
+			EventTrigger eventTrigger = skipButton.GetComponent<EventTrigger>();
+
+			EventTrigger.Entry entry_PointerEnter = new EventTrigger.Entry();
+			entry_PointerEnter.eventID = EventTriggerType.PointerEnter;
+			entry_PointerEnter.callback.AddListener((data) => { OnSkipButtonMouseEnterCallback((PointerEventData)data); });
+			eventTrigger.triggers.Add(entry_PointerEnter);
+
+			EventTrigger.Entry entry_PointerExit = new EventTrigger.Entry();
+			entry_PointerExit.eventID = EventTriggerType.PointerExit;
+			entry_PointerExit.callback.AddListener((data) => { OnSkipButtonMouseExitCallback((PointerEventData)data); });
+			eventTrigger.triggers.Add(entry_PointerExit);
 		}
 
 		public void OnKeyDown()
 		{
 			//
+		}
+		
+		private void OnSkipButtonMouseEnterCallback(PointerEventData data)
+		{
+			chapterManager.isMouseOverButton = true;
+		}
+
+		private void OnSkipButtonMouseExitCallback(PointerEventData data)
+		{
+			chapterManager.isMouseOverButton = false;
+		}
+
+		public void OnSkipButtonClicked()
+		{
+			AlertManager.Instance.Show(AlertType.Double, "알림", "현재 구간을 스킵하시겠습니까?",
+				new Dictionary<string, Action>() { { "예", chapterManager.SkipCurrent }, { "아니요", null } });
 		}
 
 		/// <summary>

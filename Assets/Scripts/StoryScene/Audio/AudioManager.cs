@@ -64,7 +64,7 @@ namespace YouthSpice.StoryScene.Audio
 		/// <summary>
 		/// 배경음을 재생합니다.
 		/// </summary>
-		public void PlayBackgroundAudio(Dictionary<string, string> data)
+		public void PlayBackgroundAudio(Dictionary<string, string> data, bool forceDisableTransition = false)
 		{
 			isRunning = true;
 
@@ -73,11 +73,13 @@ namespace YouthSpice.StoryScene.Audio
 				: SourceFileManager.Instance.AvailableAudios[int.Parse(data["Background"]) - 1];
 
 			activeCoroutine =
-				StartCoroutine(PlayBackgroundAudioCoroutine(clip, (DefineAudioTransitions)int.Parse(data["Transition"])));
+				StartCoroutine(PlayBackgroundAudioCoroutine(clip, forceDisableTransition, (DefineAudioTransitions)int.Parse(data["Transition"])));
 		}
 
-		private IEnumerator PlayBackgroundAudioCoroutine(AudioClip clip, DefineAudioTransitions transitionType)
+		private IEnumerator PlayBackgroundAudioCoroutine(AudioClip clip, bool forceDisableTransition, DefineAudioTransitions transitionType)
 		{
+			if (forceDisableTransition) transitionType = DefineAudioTransitions.None;
+			
 			WaitForSeconds timeout = new WaitForSeconds(animationDelay);
 
 			AudioSource currentSource = backgroundAudios[activePosition ? 1 : 0];

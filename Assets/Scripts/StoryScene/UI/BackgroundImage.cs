@@ -75,7 +75,7 @@ namespace YouthSpice.StoryScene.UI
 		/// <summary>
 		/// 스탠딩 일러스트를 변경합니다.
 		/// </summary>
-		public void ChangeImage(Dictionary<string, string> data, Action callback = null)
+		public void ChangeImage(Dictionary<string, string> data, bool forceDisableTransition = false, Action callback = null)
 		{
 			isRunning = true;
 
@@ -86,11 +86,13 @@ namespace YouthSpice.StoryScene.UI
 				: SourceFileManager.Instance.AvailableBackgroundImages[int.Parse(data["Background"]) - 1];
 
 			activeCoroutine =
-				StartCoroutine(ChangeImageCoroutine(image, (DefineImageTransitions)int.Parse(data["Transition"])));
+				StartCoroutine(ChangeImageCoroutine(image, forceDisableTransition, (DefineImageTransitions)int.Parse(data["Transition"])));
 		}
 
-		private IEnumerator ChangeImageCoroutine(Sprite image, DefineImageTransitions transitionType)
+		private IEnumerator ChangeImageCoroutine(Sprite image, bool forceDisableTransition, DefineImageTransitions transitionType)
 		{
+			if (forceDisableTransition) transitionType = DefineImageTransitions.None;
+			
 			WaitForSeconds timeout = new WaitForSeconds(animationDelay);
 
 			Image currentArea = backgroundImageAreas[activePosition ? 1 : 0];

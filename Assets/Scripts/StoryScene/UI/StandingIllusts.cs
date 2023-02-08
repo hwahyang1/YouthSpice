@@ -74,7 +74,7 @@ namespace YouthSpice.StoryScene.UI
 		/// <summary>
 		/// 스탠딩 일러스트를 변경합니다.
 		/// </summary>
-		public void ChangeIllust(Dictionary<string, string> data)
+		public void ChangeIllust(Dictionary<string, string> data, bool forceDisableTransition = false)
 		{
 			isRunning = true;
 
@@ -90,12 +90,14 @@ namespace YouthSpice.StoryScene.UI
 				? null
 				: SourceFileManager.Instance.AvailableStandingIllusts[int.Parse(data["CharacterSlot3"]) - 1]);
 
-			activeCoroutine = StartCoroutine(ChangeIllustCoroutine(images.ToArray(),
+			activeCoroutine = StartCoroutine(ChangeIllustCoroutine(images.ToArray(), forceDisableTransition,
 				(DefineImageTransitions)int.Parse(data["Transition"])));
 		}
 
-		private IEnumerator ChangeIllustCoroutine(Sprite[] image, DefineImageTransitions transitionType)
+		private IEnumerator ChangeIllustCoroutine(Sprite[] image, bool forceDisableTransition, DefineImageTransitions transitionType)
 		{
+			if (forceDisableTransition) transitionType = DefineImageTransitions.None;
+			
 			WaitForSeconds timeout = new WaitForSeconds(animationDelay);
 
 			Image[] currentAreas = activePosition ? frontStandingIllustAreas : backStandingIllustAreas;

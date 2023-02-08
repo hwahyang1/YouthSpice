@@ -1,6 +1,6 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Action = System.Action;
 
 #if UNITY_EDITOR
@@ -52,6 +52,9 @@ namespace YouthSpice.StoryScene.Chapter
 		[ReadOnly]
 		public bool isSelectionEnded = true;
 
+		[ReadOnly]
+		public bool isMouseOverButton = false;
+
 		private AudioManager audioManager;
 		private BackgroundImage backgroundImage;
 		private StandingIllusts standingIllusts;
@@ -100,16 +103,139 @@ namespace YouthSpice.StoryScene.Chapter
 
 		private void Update()
 		{
+			if (AlertManager.Instance.IsRunning) return;
+
 			if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return) ||
-			    Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetMouseButtonDown(0))
+			    Input.GetKeyDown(KeyCode.KeypadEnter))
 			{
-				PlayNext();
-				audioManager.OnKeyDown();
-				backgroundImage.OnKeyDown();
-				standingIllusts.OnKeyDown();
-				frontTop.OnKeyDown();
-				speechArea.OnKeyDown();
-				selectionArea.OnKeyDown();
+				ExecuteAllOnKeyDown();
+			}
+
+			if (!isMouseOverButton && Input.GetMouseButtonDown(0))
+			{
+				if (!isSelectionEnded)
+				{
+					if (!selectionArea.Ready)
+					{
+						ExecuteAllOnKeyDown();
+					}
+				}
+				else
+				{
+					ExecuteAllOnKeyDown();
+				}
+			}
+		}
+
+		private void ExecuteAllOnKeyDown()
+		{
+			PlayNext();
+			audioManager.OnKeyDown();
+			backgroundImage.OnKeyDown();
+			standingIllusts.OnKeyDown();
+			frontTop.OnKeyDown();
+			speechArea.OnKeyDown();
+			selectionArea.OnKeyDown();
+		}
+
+		public void SkipCurrent()
+		{
+			// 분기점 안에서는 처리 안함
+			if (!isSelectionEnded) return;
+			
+			// 남은 구간만 List로 가져오기
+			List<ChapterElement> list = new List<ChapterElement>(currentChapter.Elements.Skip(currentChapterIndex).Take(currentChapter.Elements.Length - currentChapterIndex));
+			int index = list.FindIndex(target => target.Type == ChapterElementType.Selection || target.Type == ChapterElementType.GetPlayerName);
+			print(index);
+
+			ChapterElement currentElement;
+			
+			// 앞에 분기점 없음
+			if (index == -1)
+			{
+				print("asdf");
+				for (; currentChapterIndex < currentChapter.Elements.Length; currentChapterIndex++)
+				{
+					currentElement = currentChapter.Elements[currentChapterIndex];
+
+					switch (currentElement.Type)
+					{
+						case ChapterElementType.Speech:
+							break;
+						case ChapterElementType.DayImage:
+							frontTop.ChangeImage(currentElement.Data);
+							break;
+						case ChapterElementType.BackgroundImage:
+							backgroundImage.ChangeImage(currentElement.Data, true, () => { speechArea.SetActive(true); });
+							break;
+						case ChapterElementType.BackgroundMusic:
+							audioManager.PlayBackgroundAudio(currentElement.Data, true);
+							break;
+						case ChapterElementType.EffectSound:
+							break;
+						case ChapterElementType.StandingImage:
+							standingIllusts.ChangeIllust(currentElement.Data, true);
+							break;
+						case ChapterElementType.Friendship:
+							// TODO
+							break;
+						case ChapterElementType.GetPlayerName:
+							// 앞에서 걸러짐
+							break;
+						case ChapterElementType.Selection:
+							// 얘로 올 일이 없음
+							break;
+						case ChapterElementType.SelectionName:
+							// ChapterElementType.Selection에서 처리됨
+							break;
+					}
+				}
+				Exit();
+			}
+			// 앞에 분기점 있으면 -> 직전 항목으로 이동시킴
+			else
+			{
+				for (; currentChapterIndex < index; currentChapterIndex++)
+				{
+					print(currentChapterIndex);
+					
+					currentElement = currentChapter.Elements[currentChapterIndex];
+
+					switch (currentElement.Type)
+					{
+						case ChapterElementType.Speech:
+							break;
+						case ChapterElementType.DayImage:
+							frontTop.ChangeImage(currentElement.Data);
+							break;
+						case ChapterElementType.BackgroundImage:
+							backgroundImage.ChangeImage(currentElement.Data, true, () => { speechArea.SetActive(true); });
+							break;
+						case ChapterElementType.BackgroundMusic:
+							audioManager.PlayBackgroundAudio(currentElement.Data, true);
+							break;
+						case ChapterElementType.EffectSound:
+							break;
+						case ChapterElementType.StandingImage:
+							standingIllusts.ChangeIllust(currentElement.Data, true);
+							break;
+						case ChapterElementType.Friendship:
+							// TODO
+							break;
+						case ChapterElementType.GetPlayerName:
+							// 앞에서 걸러짐
+							break;
+						case ChapterElementType.Selection:
+							// 얘로 올 일이 없음
+							break;
+						case ChapterElementType.SelectionName:
+							// ChapterElementType.Selection에서 처리됨
+							break;
+					}
+				}
+
+				currentChapterIndex--;
+				ExecuteAllOnKeyDown();
 			}
 		}
 
@@ -158,7 +284,7 @@ namespace YouthSpice.StoryScene.Chapter
 						isBackgroundImageEnded = false;
 						speechArea.SetBlank();
 						speechArea.SetActive(false);
-						backgroundImage.ChangeImage(currentElement.Data, () => { speechArea.SetActive(true); });
+						backgroundImage.ChangeImage(currentElement.Data, false, () => { speechArea.SetActive(true); });
 						break;
 					case ChapterElementType.BackgroundMusic:
 						isBackgroundMusicEnded = false;

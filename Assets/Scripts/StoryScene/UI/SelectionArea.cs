@@ -27,6 +27,8 @@ namespace YouthSpice.StoryScene.UI
 		[SerializeField, ReadOnly]
 		private bool ready = false;
 
+		public bool Ready => ready;
+
 		private int currentElementIndex = 0;
 		private List<ChapterElement> currentElements;
 		private List<ChapterElement> currentSelections;
@@ -158,7 +160,7 @@ namespace YouthSpice.StoryScene.UI
 						chapterManager.isBackgroundImageEnded = false;
 						speechArea.SetBlank();
 						speechArea.SetActive(false);
-						backgroundImage.ChangeImage(currentElement.Data, () => { speechArea.SetActive(true); });
+						backgroundImage.ChangeImage(currentElement.Data, false, () => { speechArea.SetActive(true); });
 						break;
 					case ChapterElementType.BackgroundMusic:
 						chapterManager.isBackgroundMusicEnded = false;
