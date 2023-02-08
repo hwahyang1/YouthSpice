@@ -1,0 +1,163 @@
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using Action = System.Action;
+
+using UnityEngine;
+
+using Newtonsoft.Json;
+using SimpleFileBrowser;
+
+using YouthSpice.PreloadScene.Alert;
+using YouthSpice.StoryEditorScene.UI;
+
+namespace YouthSpice.StoryEditorScene.Files
+{
+	/// <summary>
+	/// 챕터 프로젝트 파일의 IO를 관리합니다.
+	/// </summary>
+	public class ChapterFileManager : MonoBehaviour
+	{
+		private ChapterManager chapterManager;
+		private UIManager uiManager;
+
+		private string pastFilePath = "";
+		public string PastFilePath => pastFilePath;
+		private string pastFileName = "";
+		public string PastFileName => pastFileName;
+		public bool IsNewFile => pastFilePath == "" && pastFileName == "";
+		
+		private void Start()
+		{
+			chapterManager = GetComponent<ChapterManager>();
+			uiManager = GetComponent<UIManager>();
+		}
+
+		public void ShowFirstScreen() => AlertManager.Instance.Show(AlertType.Double, "알림",
+			"기존 파일을 불러올까요, 새로운 파일을 생성할까요?",
+			new Dictionary<string, Action>() { { "새로 만들기", CreateNewFile }, { "불러오기", LoadExistFile } });
+
+		public void CreateNewFileAlert() => AlertManager.Instance.Show(AlertType.Double, "경고",
+			"이 작업은 모든 진행상황을 초기화 합니다.\n계속할까요?", new Dictionary<string, Action>()
+			{
+				{ "계속", CreateNewFile },
+				{ "취소", null }
+			});
+
+		private void CreateNewFile() => chapterManager.NewData();
+
+		/// <summary>
+		/// 파일을 저장합니다.
+		/// </summary>
+		public void SaveFile()
+		{
+			if (IsNewFile)
+			{
+				StartCoroutine(nameof(SaveNewFileCoroutine));
+			}
+			else
+			{
+				AlertManager.Instance.Show(AlertType.Double, "알림",
+					$"기존 파일이 존재합니다: {pastFilePath}/{pastFileName}\n기존 파일에 덮어씌울까요?",
+					new Dictionary<string, Action>()
+					{
+						{ "아니요\n(다른 파일에 저장)", () => { StartCoroutine(nameof(SaveNewFileCoroutine)); } },
+						{ "예\n(기존 파일 덮어쓰기)", () => { StartCoroutine(nameof(OverwriteFileCoroutine)); } }
+					});
+			}
+		}
+
+		public IEnumerator OverwriteFileCoroutine(Action callback = null)
+		{
+			yield return null;
+
+			string path = pastFilePath + pastFileName;
+			AlertManager.Instance.Show(AlertType.None, "알림", $"파일을 저장하는 중 입니다...: {path}",
+				new Dictionary<string, Action>() { });
+
+			yield return null;
+
+			File.WriteAllText(path, JsonConvert.SerializeObject(chapterManager.GetData()));
+
+			AlertManager.Instance.Pop();
+
+			yield return null;
+
+			if (callback == null) AlertManager.Instance.Show(AlertType.Single, "알림", $"파일을 성공적으로 저장했습니다.: {path}", new Dictionary<string, Action>() { { "확인", null } });
+			else callback.Invoke();
+		}
+
+		public IEnumerator SaveNewFileCoroutine(Action callback = null)
+		{
+			FileBrowser.SetFilters(true, new FileBrowser.Filter("Chapter File", ".cpt"));
+			FileBrowser.SetDefaultFilter(".cpt");
+			FileBrowser.SetExcludedExtensions(".lnk", ".tmp", ".zip", ".rar", ".exe");
+
+			uiManager.SetCustomCoverActive(true);
+			yield return FileBrowser.WaitForSaveDialog(FileBrowser.PickMode.Files, false, @"C:\", "Chapter.cpt",
+				"Select Chapter File...", "Save");
+			uiManager.SetCustomCoverActive(false);
+
+			if (FileBrowser.Success)
+			{
+				AlertManager.Instance.Show(AlertType.None, "알림", $"파일을 저장하는 중 입니다...: {FileBrowser.Result[0]}",
+					new Dictionary<string, Action>() { });
+
+				yield return null;
+
+				File.WriteAllText(FileBrowser.Result[0], JsonConvert.SerializeObject(chapterManager.GetData()));
+
+				pastFilePath = Path.GetDirectoryName(FileBrowser.Result[0]);
+				pastFileName = Path.GetFileName(FileBrowser.Result[0]);
+
+				AlertManager.Instance.Pop();
+
+				yield return null;
+
+				if (callback == null) AlertManager.Instance.Show(AlertType.Single, "알림", $"파일을 성공적으로 저장했습니다.: {FileBrowser.Result[0]}", new Dictionary<string, Action>() { { "확인", null } });
+				else callback.Invoke();
+			}
+		}
+
+		public void LoadExistFileAlert() => AlertManager.Instance.Show(AlertType.Double, "경고",
+			"이 작업은 모든 진행상황을 초기화 합니다.\n계속할까요?", new Dictionary<string, Action>()
+			{
+				{ "계속", LoadExistFile },
+				{ "취소", null }
+			});
+
+		private void LoadExistFile() => StartCoroutine(nameof(LoadExistFileCoroutine));
+
+		private IEnumerator LoadExistFileCoroutine()
+		{
+			FileBrowser.SetFilters(true, new FileBrowser.Filter("Chapter File", ".cpt"));
+			FileBrowser.SetDefaultFilter(".cpt");
+			FileBrowser.SetExcludedExtensions(".lnk", ".tmp", ".zip", ".rar", ".exe");
+
+			while (true)
+			{
+				uiManager.SetCustomCoverActive(true);
+				yield return FileBrowser.WaitForLoadDialog(FileBrowser.PickMode.Files, false, @"C:\", null,
+					"Select Chapter File...", "Load");
+
+				if (FileBrowser.Success)
+				{
+					uiManager.SetCustomCoverActive(false);
+					AlertManager.Instance.Show(AlertType.None, "알림", $"파일을 불러오는 중 입니다...: {FileBrowser.Result[0]}",
+						new Dictionary<string, Action>() { });
+
+					yield return new WaitForSeconds(0.1f);
+
+					DefineChapter data = JsonConvert.DeserializeObject<DefineChapter>(File.ReadAllText(FileBrowser.Result[0]));
+					chapterManager.LoadData(data);
+
+					pastFilePath = Path.GetDirectoryName(FileBrowser.Result[0]);
+					pastFileName = Path.GetFileName(FileBrowser.Result[0]);
+
+					AlertManager.Instance.Pop();
+					break;
+				}
+			}
+		}
+	}
+}
