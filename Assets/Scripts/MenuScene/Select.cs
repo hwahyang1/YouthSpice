@@ -3,11 +3,13 @@ using System.Collections.Generic;
 
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
-using UnityEngine.IO;
 using UnityEngine.Windows;
 
-public class Select : MonoBehaviour
+using YouthSpice.PreloadScene.Scene;
+
+namespace YouthSpice.MenuScene
+{
+	public class Select : MonoBehaviour
 	{
 		[SerializeField] private GameObject nameEnterPanel;//플레이어 닉네임 입력 ui 판
 		[SerializeField] private Text newPlayerName;//새로 입력된 플레이어의 닉네임
@@ -59,7 +61,7 @@ public class Select : MonoBehaviour
 				DataManager.Instance.SaveData(); // 저장
 			}
 			//게임 씬으로 진입
-			SceneManager.LoadScene("Game");
+			SceneChange.Instance.ChangeScene("GameScene");
 		}
 		/// <summary>
 		/// 전에 플레이하던 정보가있을때 삭제하고 게임 다시 시작하는 함수 
@@ -90,3 +92,4 @@ public class Select : MonoBehaviour
 			restartPanel.SetActive(false);
 		}
 	}
+}

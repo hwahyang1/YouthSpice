@@ -1,13 +1,10 @@
-/*using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;*/
+
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
-
-namespace YouthSpice
+namespace YouthSpice.GameScene
 {
 	/// <summary>
 	/// Description

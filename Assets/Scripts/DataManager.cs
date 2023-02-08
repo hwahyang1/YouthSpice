@@ -29,8 +29,9 @@ public class PlayerData
 		
 		public string path;//경로
 
-		private void Awake()
+		protected new void Awake()
 		{
+			base.Awake();
 			path = Application.persistentDataPath + "/save"; //경로저장
 		}
 		/// <summary>

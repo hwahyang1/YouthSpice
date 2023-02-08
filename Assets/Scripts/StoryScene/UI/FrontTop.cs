@@ -26,9 +26,6 @@ namespace YouthSpice.StoryScene.UI
 		[SerializeField, ReadOnly]
 		private bool activePosition = false;
 
-		[SerializeField, ReadOnly]
-		private bool isRunning = false;
-
 		[Header("Time")]
 		[SerializeField, Tooltip("Dissolve 기준으로, Fade의 경우 지정된 시간의 2배를 사용합니다.")]
 		private float totalAnimationTime = 1f;
@@ -87,8 +84,6 @@ namespace YouthSpice.StoryScene.UI
 		/// </summary>
 		public void ChangeImage(Dictionary<string, string> data)
 		{
-			isRunning = true;
-
 			Sprite image = data["Day"] == "0"
 				? null
 				: SourceFileManager.Instance.AvailableDayImages[int.Parse(data["Day"]) - 1];
@@ -110,9 +105,7 @@ namespace YouthSpice.StoryScene.UI
 			yield return null;
 
 			activePosition = !activePosition;
-
-			isRunning = true;
-
+			
 			float currentTime = 0f;
 
 			switch (transitionType)
@@ -165,7 +158,6 @@ namespace YouthSpice.StoryScene.UI
 			yield return new WaitForSeconds(0.25f);
 
 			activeCoroutine = null;
-			isRunning = false;
 			chapterManager.isDayImageEnded = true;
 			chapterManager.PlayNext();
 		}
