@@ -24,10 +24,7 @@ namespace YouthSpice.StoryScene.UI
 		// false -> Back(0) / true -> Front(1)
 		[SerializeField, ReadOnly]
 		private bool activePosition = false;
-
-		[SerializeField, ReadOnly]
-		private bool isRunning = false;
-
+		
 		[Header("Time")]
 		[SerializeField, Tooltip("이 값은 Dissolve 기준으로, Fade의 경우 지정된 시간의 2배를 사용합니다.")]
 		private float totalAnimationTime = 1.5f;
@@ -52,24 +49,7 @@ namespace YouthSpice.StoryScene.UI
 
 		public void OnKeyDown()
 		{
-			if (isRunning)
-			{
-				return;
-				
-				// 필요 시 윗줄 제거 할 것.
-				StopCoroutine(activeCoroutine);
-
-				activePosition = false;
-				backgroundImageAreas[0].color = new Color(1f, 1f, 1f, 1f);
-				backgroundImageAreas[1].color = new Color(1f, 1f, 1f, 0f);
-
-				callback?.Invoke();
-				callback = null;
-				activeCoroutine = null;
-				isRunning = false;
-				chapterManager.isBackgroundImageEnded = true;
-				chapterManager.PlayNext();
-			}
+			//
 		}
 
 		/// <summary>
@@ -77,8 +57,6 @@ namespace YouthSpice.StoryScene.UI
 		/// </summary>
 		public void ChangeImage(Dictionary<string, string> data, bool forceDisableTransition = false, Action callback = null)
 		{
-			isRunning = true;
-
 			this.callback = callback;
 
 			Sprite image = data["Background"] == "0"
@@ -104,8 +82,6 @@ namespace YouthSpice.StoryScene.UI
 			yield return null;
 
 			activePosition = !activePosition;
-
-			isRunning = true;
 
 			float currentTime = 0f;
 
@@ -180,7 +156,6 @@ namespace YouthSpice.StoryScene.UI
 			callback?.Invoke();
 			callback = null;
 			activeCoroutine = null;
-			isRunning = false;
 			chapterManager.isBackgroundImageEnded = true;
 			chapterManager.PlayNext();
 		}

@@ -24,9 +24,6 @@ namespace YouthSpice.StoryScene.Audio
 		[SerializeField, ReadOnly]
 		private bool activePosition = false;
 
-		[SerializeField, ReadOnly]
-		private bool isRunning = false;
-
 		[Header("Time")]
 		[SerializeField, Tooltip("이 값은 Dissolve 기준으로, Fade의 경우 지정된 시간의 2배를 사용합니다.")]
 		private float totalAnimationTime = 1.5f;
@@ -66,8 +63,6 @@ namespace YouthSpice.StoryScene.Audio
 		/// </summary>
 		public void PlayBackgroundAudio(Dictionary<string, string> data, bool forceDisableTransition = false)
 		{
-			isRunning = true;
-
 			AudioClip clip = data["Background"] == "0"
 				? null
 				: SourceFileManager.Instance.AvailableAudios[int.Parse(data["Background"]) - 1];
@@ -91,8 +86,6 @@ namespace YouthSpice.StoryScene.Audio
 			yield return null;
 
 			activePosition = !activePosition;
-
-			isRunning = true;
 
 			float currentTime = 0f;
 
@@ -154,7 +147,6 @@ namespace YouthSpice.StoryScene.Audio
 			yield return new WaitForSeconds(0.25f);
 
 			activeCoroutine = null;
-			isRunning = false;
 			chapterManager.isBackgroundMusicEnded = true;
 		}
 	}
