@@ -1,0 +1,19 @@
+﻿[StoryScene]
+
+- Chapter: 챕터 데이터 Class
+
+: Extern
+ - LoadParams: 로드할 챕터 정보 관리
+
+: Audio
+ - AudioManager: 오디오 재생 관리
+
+: Chapter
+ - ChapterManager: 챕터 진행 관리
+
+: UI
+ - SpeechArea: 대사 구역 관리
+ - FrontTop: 날짜 + 스킵 관리
+ - BackgroundImage: 배경 이미지 관리
+ - StandingIllusts: 스탠딩 일러스트 관리
+ - SelectionArea: 선택지 진행 관리
