@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - DontDestroyOnLoadRoot
+  - Ingredient
   layers:
   - Default
   - TransparentFX
