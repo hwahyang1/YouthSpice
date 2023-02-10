@@ -61,6 +61,7 @@ namespace YouthSpice.StoryScene.Chapter
 		private FrontTop frontTop;
 		private SpeechArea speechArea;
 		private SelectionArea selectionArea;
+		private GetNameArea getNameArea;
 
 		private int currentChapterIndex = -1;
 		private DefineChapter currentChapter;
@@ -73,6 +74,7 @@ namespace YouthSpice.StoryScene.Chapter
 			frontTop = GetComponent<FrontTop>();
 			speechArea = GetComponent<SpeechArea>();
 			selectionArea = GetComponent<SelectionArea>();
+			getNameArea = GetComponent<GetNameArea>();
 		}
 
 		private void Start()
@@ -140,20 +142,22 @@ namespace YouthSpice.StoryScene.Chapter
 
 		public void SkipCurrent()
 		{
-			// 분기점 안에서는 처리 안함
-			if (!isSelectionEnded) return;
+			// 분기점 안에서는 처리 넘김
+			if (!isSelectionEnded)
+			{
+				selectionArea.SkipCurrent();
+				return;
+			}
 			
 			// 남은 구간만 List로 가져오기
 			List<ChapterElement> list = new List<ChapterElement>(currentChapter.Elements.Skip(currentChapterIndex).Take(currentChapter.Elements.Length - currentChapterIndex));
 			int index = list.FindIndex(target => target.Type == ChapterElementType.Selection || target.Type == ChapterElementType.GetPlayerName);
-			print(index);
 
 			ChapterElement currentElement;
 			
-			// 앞에 분기점 없음
+			// 앞에 분기점 & 이름 획득 없음
 			if (index == -1)
 			{
-				print("asdf");
 				for (; currentChapterIndex < currentChapter.Elements.Length; currentChapterIndex++)
 				{
 					currentElement = currentChapter.Elements[currentChapterIndex];
@@ -197,8 +201,6 @@ namespace YouthSpice.StoryScene.Chapter
 			{
 				for (; currentChapterIndex < index; currentChapterIndex++)
 				{
-					print(currentChapterIndex);
-					
 					currentElement = currentChapter.Elements[currentChapterIndex];
 
 					switch (currentElement.Type)
@@ -305,9 +307,13 @@ namespace YouthSpice.StoryScene.Chapter
 						//isFriendshipEnded = false;
 						break;
 					case ChapterElementType.GetPlayerName:
-						// TODO
-						//loop = false;
-						//isGetPlayerNameEnded = false;
+						loop = false;
+						isGetPlayerNameEnded = false;
+						getNameArea.Show(() =>
+						{
+							isGetPlayerNameEnded = true;
+							PlayNext();
+						});
 						break;
 					case ChapterElementType.Selection:
 						loop = false;

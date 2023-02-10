@@ -87,7 +87,7 @@ namespace YouthSpice.StoryScene.UI
 					characterName = "???";
 					break;
 				case "2":
-					characterName = "(플레이어 이름)";
+					characterName = GameInfo.Instance.playerName;
 					break;
 				case "3":
 					characterName = "류한나";
@@ -98,10 +98,12 @@ namespace YouthSpice.StoryScene.UI
 				case "5":
 					characterName = "태은호";
 					break;
+				case "6":
+					characterName = "";
+					break;
 			}
 
-			//TODO
-			fullScript = data["Script"].Replace("{Player}", "(플레이어 이름)");
+			fullScript = data["Script"].Replace("{Player}", GameInfo.Instance.playerName);
 			
 			StartCoroutine(nameof(ShowSpeechCoroutine), characterName);
 		}
