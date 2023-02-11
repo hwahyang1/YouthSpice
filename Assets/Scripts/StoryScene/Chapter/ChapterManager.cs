@@ -62,6 +62,7 @@ namespace YouthSpice.StoryScene.Chapter
 		private SpeechArea speechArea;
 		private SelectionArea selectionArea;
 		private GetNameArea getNameArea;
+		private Friendship friendship;
 
 		private int currentChapterIndex = -1;
 		private DefineChapter currentChapter;
@@ -75,6 +76,7 @@ namespace YouthSpice.StoryScene.Chapter
 			speechArea = GetComponent<SpeechArea>();
 			selectionArea = GetComponent<SelectionArea>();
 			getNameArea = GetComponent<GetNameArea>();
+			friendship = GetComponent<Friendship>();
 		}
 
 		private void Start()
@@ -181,7 +183,7 @@ namespace YouthSpice.StoryScene.Chapter
 							standingIllusts.ChangeIllust(currentElement.Data, true);
 							break;
 						case ChapterElementType.Friendship:
-							// TODO
+							friendship.AdjustFromElement(currentElement.Data);
 							break;
 						case ChapterElementType.GetPlayerName:
 							// 앞에서 걸러짐
@@ -222,7 +224,7 @@ namespace YouthSpice.StoryScene.Chapter
 							standingIllusts.ChangeIllust(currentElement.Data, true);
 							break;
 						case ChapterElementType.Friendship:
-							// TODO
+							friendship.AdjustFromElement(currentElement.Data);
 							break;
 						case ChapterElementType.GetPlayerName:
 							// 앞에서 걸러짐
@@ -302,9 +304,13 @@ namespace YouthSpice.StoryScene.Chapter
 						standingIllusts.ChangeIllust(currentElement.Data);
 						break;
 					case ChapterElementType.Friendship:
-						// TODO
-						//loop = false;
-						//isFriendshipEnded = false;
+						loop = false;
+						isFriendshipEnded = false;
+						friendship.AdjustFromElement(currentElement.Data, () =>
+						{
+							isFriendshipEnded = true;
+							PlayNext();
+						});
 						break;
 					case ChapterElementType.GetPlayerName:
 						loop = false;
@@ -333,9 +339,14 @@ namespace YouthSpice.StoryScene.Chapter
 		public void Exit()
 		{
 			Destroy(LoadParams.Instance.gameObject);
+			
+			// GameInfo에 변경사항 반영
+			friendship.Apply();
+			
 			if (SceneManager.sceneCount != 1) SceneChange.Instance.Unload("StoryScene");
 			else
 			{
+				//TODO 다른 Scene으로 변경할 수 있게 Params 넘기는 것도?
 				#if UNITY_EDITOR
 				EditorApplication.ExecuteMenuItem("Edit/Play");
 				#else

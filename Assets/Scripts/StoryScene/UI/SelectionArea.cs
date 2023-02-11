@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,6 +39,7 @@ namespace YouthSpice.StoryScene.UI
 		private FrontTop frontTop;
 		private SpeechArea speechArea;
 		private GetNameArea getNameArea;
+		private Friendship friendship;
 
 		private ChapterManager chapterManager;
 
@@ -56,6 +56,7 @@ namespace YouthSpice.StoryScene.UI
 			frontTop = GetComponent<FrontTop>();
 			speechArea = GetComponent<SpeechArea>();
 			getNameArea = GetComponent<GetNameArea>();
+			friendship = GetComponent<Friendship>();
 			
 			chapterManager = GetComponent<ChapterManager>();
 		}
@@ -153,7 +154,7 @@ namespace YouthSpice.StoryScene.UI
 							standingIllusts.ChangeIllust(currentElement.Data, true);
 							break;
 						case ChapterElementType.Friendship:
-							// TODO
+							friendship.AdjustFromElement(currentElement.Data);
 							break;
 						case ChapterElementType.GetPlayerName:
 							// 앞에서 걸러짐
@@ -231,9 +232,13 @@ namespace YouthSpice.StoryScene.UI
 						standingIllusts.ChangeIllust(currentElement.Data);
 						break;
 					case ChapterElementType.Friendship:
-						// TODO
-						//loop = false;
-						//chapterManager.isFriendshipEnded = false;
+						loop = false;
+						chapterManager.isFriendshipEnded = false;
+						friendship.AdjustFromElement(currentElement.Data, () =>
+						{
+							chapterManager.isFriendshipEnded = true;
+							PlayNext();
+						});
 						break;
 					case ChapterElementType.GetPlayerName:
 						loop = false;

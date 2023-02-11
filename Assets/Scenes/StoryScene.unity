@@ -1718,6 +1718,7 @@ GameObject:
   - component: {fileID: 719192642}
   - component: {fileID: 719192641}
   - component: {fileID: 719192648}
+  - component: {fileID: 719192649}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -1900,6 +1901,19 @@ MonoBehaviour:
   parent: {fileID: 4194095660024639865}
   nameInput: {fileID: 1014222498}
   confirmButton: {fileID: 4194095660945243962}
+--- !u!114 &719192649
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 719192639}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7221b927fb947d949bada676b1ba0d61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  friendshipAdjustValue: 000000000000000000000000
 --- !u!1 &795721992
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,6 +10,7 @@
 
 : Chapter
  - ChapterManager: 챕터 진행 관리
+ - Friendship: 호감도 관리
 
 : UI
  - SpeechArea: 대사 구역 관리
