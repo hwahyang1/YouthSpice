@@ -62,10 +62,10 @@ namespace YouthSpice
 			switch (buttonNumber)
 			{
 				case 1:
-					foodText.text = "첫번때 버튼";
+					foodText.text = "오렌지";
 					break;
 				case 2:
-					foodText.text = "두번쨰 버튼";
+					foodText.text = "라임";
 					break;
 				case 3:
 					foodText.text = "세번째 버튼";
