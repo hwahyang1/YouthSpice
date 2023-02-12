@@ -72,7 +72,7 @@ namespace YouthSpice.PreloadScene.Alert
 			{
 				callback[i] = data.Value;
 				GameObject targetButton = targetButtonGroup.transform.GetChild(i).gameObject;
-				targetButton.transform.GetChild(0).GetComponent<Text>().text = data.Key;
+				targetButton.transform.GetChild(1).GetComponent<Text>().text = data.Key;
 				i++;
 			}
 

@@ -53,7 +53,7 @@ namespace YouthSpice.StoryEditorScene.Files
 		{
 			if (IsNewFile)
 			{
-				StartCoroutine(nameof(SaveNewFileCoroutine));
+				StartCoroutine(SaveNewFileCoroutine());
 			}
 			else
 			{
@@ -61,8 +61,8 @@ namespace YouthSpice.StoryEditorScene.Files
 					$"기존 파일이 존재합니다: {pastFilePath}/{pastFileName}\n기존 파일에 덮어씌울까요?",
 					new Dictionary<string, Action>()
 					{
-						{ "아니요\n(다른 파일에 저장)", () => { StartCoroutine(nameof(SaveNewFileCoroutine)); } },
-						{ "예\n(기존 파일 덮어쓰기)", () => { StartCoroutine(nameof(OverwriteFileCoroutine)); } }
+						{ "아니요\n(다른 파일에 저장)", () => { StartCoroutine(SaveNewFileCoroutine()); } },
+						{ "예\n(기존 파일 덮어쓰기)", () => { StartCoroutine(OverwriteFileCoroutine()); } }
 					});
 			}
 		}
