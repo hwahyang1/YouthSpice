@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Serializable = System.SerializableAttribute;
 
 namespace YouthSpice
 {
 	/// <summary>
 	/// 챕터 조건을 정의합니다.
 	/// </summary>
-	[System.Serializable]
+	[Serializable]
 	public enum ChapterCondition
 	{
 		None,
@@ -20,7 +21,7 @@ namespace YouthSpice
 	/// <summary>
 	/// 챕터 항목을 정의합니다.
 	/// </summary>
-	[System.Serializable]
+	[Serializable]
 	public enum ChapterElementType
 	{
 		Speech,
@@ -38,7 +39,7 @@ namespace YouthSpice
 	/// <summary>
 	/// 챕터 항목을 정의합니다.
 	/// </summary>
-	[System.Serializable]
+	[Serializable]
 	public class ChapterElement
 	{
 		public ChapterElementType Type;
@@ -54,7 +55,7 @@ namespace YouthSpice
 	/// <summary>
 	/// 챕터 프로젝트 파일의 정보를 담습니다.
 	/// </summary>
-	[System.Serializable]
+	[Serializable]
 	public class DefineChapter
 	{
 		public string ID;
