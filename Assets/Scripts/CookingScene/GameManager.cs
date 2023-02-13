@@ -5,6 +5,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using NaughtyAttributes;
+
+using YouthSpice.CookingScene.RecipeStage;
+using YouthSpice.CookingScene.ResultStage.UI;
 using YouthSpice.CookingScene.UI;
 using YouthSpice.CookingScene.WholeStage;
 using YouthSpice.CookingScene.WholeStage.UI;
@@ -24,9 +27,16 @@ namespace YouthSpice.CookingScene
 		[Header("Classes")]
 		[SerializeField]
 		private SelectionManager selectionManager;
-		
 		[SerializeField]
 		private ButtonManager buttonManager;
+		[SerializeField]
+		private RecipeManager recipeManager;
+		[SerializeField]
+		private GenerateFood generateFood;
+		[SerializeField]
+		private UIManager uiManager;
+		[SerializeField]
+		private UIAnimator uiAnimator;
 
 		private StageManager stageManager;
 
@@ -39,6 +49,12 @@ namespace YouthSpice.CookingScene
 
 		public void GoNext()
 		{
+			if (currentChapter == CookingFlow.Recipe && !recipeManager.IsEnded)
+			{
+				recipeManager.GoNext();
+				return;
+			}
+			
 			currentChapter = (CookingFlow)((int)currentChapter + 1);
 			
 			Set();
@@ -48,9 +64,18 @@ namespace YouthSpice.CookingScene
 		{
 			buttonManager.SetButtonActive(false);
 			buttonManager.SetButtonText((int)currentChapter);
-			
-			stageManager.GoNext();
-			selectionManager.GoNext();
+
+			if (currentChapter == CookingFlow.Result)
+			{
+				bool success = generateFood.TryGenerate();
+				uiManager.Set(success);
+				uiAnimator.Run();
+			}
+			else
+			{
+				stageManager.GoNext();
+				selectionManager.GoNext();
+			}
 		}
 	}
 }

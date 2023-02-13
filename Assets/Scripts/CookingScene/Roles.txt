@@ -20,6 +20,10 @@
   - ItemSelectManager: 항목 선택 및 표출 관리
 
 : ResultStage
+ : UI
+  - GenerateFood: 최종 이미지 생성
+  - UIManager: 전반적 UI 관리
+  - UIAnimator: 애니메이션 관리
 
 : WholeStage
  - SelectionManager: 선택된 항목 관리

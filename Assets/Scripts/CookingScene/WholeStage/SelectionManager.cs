@@ -100,7 +100,7 @@ namespace YouthSpice.CookingScene.WholeStage
 			items[elementIndex] = id;
 			
 			ShowSelection child = elementParent.GetChild(elementIndex).GetComponent<ShowSelection>();
-			child.Set(id, cancelClickedCallback, () => { RemoveItem(elementIndex); }, () => { SelectItem(elementIndex); });
+			child.Set(id, cancelClickedCallback, () => { RemoveItem(elementIndex); }, () => { SelectItem(elementIndex, id); });
 			
 			CanGoNext();
 		}
@@ -132,11 +132,27 @@ namespace YouthSpice.CookingScene.WholeStage
 			}
 		}
 
-		private void SelectItem(int index)
+		private void SelectItem(int index, int itemID)
 		{
 			if (gameManager.CurrentChapter != CookingFlow.Recipe) return;
 			
-			recipeManager.SelectItem(items[index]);
+			recipeManager.SelectItem(index, itemID);
+		}
+
+		public void EnableItem(int index)
+		{
+			if (gameManager.CurrentChapter != CookingFlow.Recipe) return;
+			
+			ShowSelection child = elementParent.GetChild(index).GetComponent<ShowSelection>();
+			child.SetSelectInteractable(true);
+		}
+
+		public void DisableItem(int index)
+		{
+			if (gameManager.CurrentChapter != CookingFlow.Recipe) return;
+			
+			ShowSelection child = elementParent.GetChild(index).GetComponent<ShowSelection>();
+			child.SetSelectInteractable(false);
 		}
 		
 		/* ====================================== Result Stage ====================================== */

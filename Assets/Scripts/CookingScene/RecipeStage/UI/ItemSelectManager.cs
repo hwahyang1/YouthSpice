@@ -24,7 +24,7 @@ namespace YouthSpice.CookingScene.RecipeStage.UI
 
 		public void ChangeDescription(string text)
 		{
-			description.text = text;
+			description.text = text.Replace(@"\n", "\n");
 		}
 
 		public void ChangeFoodImage(int itemID)
