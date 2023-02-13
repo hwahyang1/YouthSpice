@@ -17,6 +17,7 @@ namespace YouthSpice
 
 		public bool useTypingEffect;
 		public float typingSpeed;
+		public bool useResearchEffect;
 		public bool useFullscreen;
 
 		public DefineConfig()
@@ -26,6 +27,7 @@ namespace YouthSpice
 
 			useTypingEffect = true;
 			typingSpeed = 0.5f; // TODO: 값 수정 필요
+			useResearchEffect = true;
 			useFullscreen = true;
 		}
 
@@ -34,6 +36,7 @@ namespace YouthSpice
 			float effectVolume,
 			bool useTypingEffect,
 			float typingSpeed,
+			bool useResearchEffect,
 			bool useFullscreen
 		)
 		{
@@ -41,6 +44,7 @@ namespace YouthSpice
 			this.effectVolume = effectVolume;
 			this.useTypingEffect = useTypingEffect;
 			this.typingSpeed = typingSpeed;
+			this.useResearchEffect = useResearchEffect;
 			this.useFullscreen = useFullscreen;
 		}
 	}

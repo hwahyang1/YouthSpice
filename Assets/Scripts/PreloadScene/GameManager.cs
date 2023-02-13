@@ -32,7 +32,7 @@ namespace YouthSpice.PreloadScene
 		{
 			yield return new WaitForSeconds(1f);
 
-			sceneChange.ChangeScene("StoryEditorScene", false, true);
+			sceneChange.ChangeScene("SaveLoadSlotScene", false, true);
 		}
 	}
 }
