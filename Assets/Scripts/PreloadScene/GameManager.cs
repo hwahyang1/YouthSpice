@@ -5,6 +5,9 @@ using UnityEngine;
 
 using YouthSpice.PreloadScene.Scene;
 
+// TODO: 임시
+using YouthSpice.PreloadScene.Item;
+
 namespace YouthSpice.PreloadScene
 {
 	/// <summary>
@@ -31,6 +34,12 @@ namespace YouthSpice.PreloadScene
 		private IEnumerator DelayedStart()
 		{
 			yield return new WaitForSeconds(1f);
+
+			// TODO: 임시
+			for (int i = 0; i < ItemBuffer.Instance.items.Count; i++)
+			{
+				GameInfo.Instance.inventory.Add(i);
+			}
 
 			sceneChange.ChangeScene("CookingScene", false, true);
 		}

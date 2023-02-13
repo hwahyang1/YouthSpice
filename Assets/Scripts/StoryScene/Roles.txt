@@ -1,9 +1,11 @@
 ﻿[StoryScene]
 
+※ 파일명 뒤에 '_Tutorial'이 붙은 스크립트의 경우, 튜토리얼 Scene(StoryScene_Tutorial)에서 사용되는 스크립트 입니다.
+
 - Chapter: 챕터 데이터 Class
 
 : Extern
- - LoadParams: 로드할 챕터 정보 관리
+ - StorySceneLoadParams: 로드할 챕터 정보 관리
 
 : Audio
  - AudioManager: 오디오 재생 관리

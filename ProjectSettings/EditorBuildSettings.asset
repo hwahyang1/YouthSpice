@@ -21,6 +21,12 @@ EditorBuildSettings:
     path: Assets/Scenes/InGameMenuScene.unity
     guid: 01d8d3f645280384d8cedeaea28e61b4
   - enabled: 1
+    path: Assets/Scenes/CookingScene.unity
+    guid: f89e7eb98476f7a489c584dc52739218
+  - enabled: 1
+    path: Assets/Scenes/StoryScene_Tutorial.unity
+    guid: cd74298247fa64a44a93af931669861c
+  - enabled: 1
     path: Assets/Scenes/ConfigScene.unity
     guid: bae9a07bc8a23004086d518188a493d7
   - enabled: 1
