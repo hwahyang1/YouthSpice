@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
+using YouthSpice.PreloadScene.Item;
+
 namespace YouthSpice.ShopScene
 {
 	/// <summary>
@@ -29,9 +31,11 @@ namespace YouthSpice.ShopScene
 				{
 					slot.SetItem(ItemBuffer.items[i]);
 				}
-
+				else
+				{
+					slot.GetComponent<UnityEngine.UI.Button>().interactable = false;
+				}
 				buySlots.Add(slot);
-
 			}
 
 			sellSlots = new List<Slot>();
@@ -44,9 +48,18 @@ namespace YouthSpice.ShopScene
 				{
 					slot.SetItem(ItemBuffer.items[i]);
 				}
-
+				else
+				{
+					slot.GetComponent<UnityEngine.UI.Button>().interactable = false;
+				}
 				sellSlots.Add(slot);
 			}
+		}
+
+		public void OnClickSlot(Slot slot)
+		{
+			Debug.Log(slot.name);
+			//GameInfo.Instance.money -= 
 		}
 	}
 }

@@ -3,12 +3,12 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
-namespace YouthSpice.ShopScene
+namespace YouthSpice.PreloadScene.Item
 {
 	/// <summary>
 	/// Description
 	/// </summary>
-	public class ItemBuffer : MonoBehaviour
+	public class ItemBuffer : Singleton<ItemBuffer>
 	{
 		public List<ItemProperty> items;
 
