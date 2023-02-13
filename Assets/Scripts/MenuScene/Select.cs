@@ -91,5 +91,10 @@ namespace YouthSpice.MenuScene
 			nameEnterPanel.SetActive(false);
 			restartPanel.SetActive(false);
 		}
+
+		public void EnterShop()
+		{
+			SceneChange.Instance.ChangeScene("ShopScene");
+		}
 	}
 }
