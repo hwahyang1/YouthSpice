@@ -136,9 +136,9 @@ namespace YouthSpice.StoryEditorScene
 		{
 			GameInfo.Instance.playerName = "(플레이어 이름)";
 			
-			LoadParams.Instance.chapterCustomPath = chapterFileManager.PastFilePath;
-			LoadParams.Instance.resourceCustomPath = Application.dataPath + @"/.StoryEditor_Data";
-			LoadParams.Instance.chapterID = chapterID;
+			StorySceneLoadParams.Instance.chapterCustomPath = chapterFileManager.PastFilePath;
+			StorySceneLoadParams.Instance.resourceCustomPath = Application.dataPath + @"/.StoryEditor_Data";
+			StorySceneLoadParams.Instance.chapterID = chapterID;
 
 			await SourceFileManager.Instance.RefreshAll();
 

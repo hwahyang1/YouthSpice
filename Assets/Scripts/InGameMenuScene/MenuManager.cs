@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using YouthSpice.PreloadScene.Scene;
+using YouthSpice.SaveLoadSlotScene.Extern;
 
 namespace YouthSpice.InGameMenuScene
 {
@@ -14,12 +15,14 @@ namespace YouthSpice.InGameMenuScene
 	{
 		public void OnSaveButtonClicked()
 		{
-			// TODO
+			SaveLoadSlotLoadParams.Instance.mode = SaveLoadSlotMode.Save;
+			SceneChange.Instance.Add("SaveLoadSlotScene");
 		}
 		
 		public void OnLoadButtonClicked()
 		{
-			// TODO
+			SaveLoadSlotLoadParams.Instance.mode = SaveLoadSlotMode.Load;
+			SceneChange.Instance.Add("SaveLoadSlotScene");
 		}
 
 		public void OnConfigButtonClicked()

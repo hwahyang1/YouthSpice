@@ -81,8 +81,8 @@ namespace YouthSpice.StoryScene.Chapter
 
 		private void Start()
 		{
-			if (LoadParams.Instance.chapterID == null ||
-			    !SourceFileManager.Instance.AvailableChapters.ContainsKey(LoadParams.Instance.chapterID))
+			if (StorySceneLoadParams.Instance.chapterID == null ||
+			    !SourceFileManager.Instance.AvailableChapters.ContainsKey(StorySceneLoadParams.Instance.chapterID))
 			{
 				AlertManager.Instance.Show(AlertType.Single, "경고", "유효하지 않은 챕터 ID 입니다.",
 					new Dictionary<string, Action>()
@@ -94,7 +94,7 @@ namespace YouthSpice.StoryScene.Chapter
 			}
 			else
 			{
-				currentChapter = SourceFileManager.Instance.AvailableChapters[LoadParams.Instance.chapterID];
+				currentChapter = SourceFileManager.Instance.AvailableChapters[StorySceneLoadParams.Instance.chapterID];
 				StartCoroutine(nameof(LateStartCoroutine));
 			}
 		}
@@ -338,7 +338,7 @@ namespace YouthSpice.StoryScene.Chapter
 		/// </summary>
 		public void Exit()
 		{
-			Destroy(LoadParams.Instance.gameObject);
+			Destroy(StorySceneLoadParams.Instance.gameObject);
 			
 			// GameInfo에 변경사항 반영
 			friendship.Apply();
