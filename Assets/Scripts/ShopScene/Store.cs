@@ -2,7 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 using UnityEngine;
-
+using UnityEngine.Events;
+using UnityEngine.UI;
 using YouthSpice.PreloadScene.Item;
 
 namespace YouthSpice.ShopScene
@@ -12,12 +13,16 @@ namespace YouthSpice.ShopScene
 	/// </summary>
 	public class Store : MonoBehaviour
 	{
-		public ItemBuffer ItemBuffer;
 		[SerializeField] private Transform buySlotRoot;
 		private List<Slot> buySlots;
 		
 		[SerializeField] private Transform sellSlotRoot;
 		private List<Slot> sellSlots;
+
+		[SerializeField] private GameObject buyFoodInfo;
+		[SerializeField] private GameObject sellFoodInfo;
+
+		[SerializeField] private UnityEngine.UI.Button bnt;
 
 		private void Start()
 		{
@@ -27,9 +32,9 @@ namespace YouthSpice.ShopScene
 			{
 				var slot = buySlotRoot.GetChild(i).GetComponent<Slot>();
 
-				if (i < ItemBuffer.items.Count)
+				if (i < ItemBuffer.Instance.items.Count)
 				{
-					slot.SetItem(ItemBuffer.items[i]);
+					slot.SetItem(ItemBuffer.Instance.items[i]);
 				}
 				else
 				{
@@ -44,9 +49,9 @@ namespace YouthSpice.ShopScene
 			{
 				var slot = sellSlotRoot.GetChild(i).GetComponent<Slot>();
 
-				if (i < ItemBuffer.items.Count)
+				if (i < ItemBuffer.Instance.items.Count)
 				{
-					slot.SetItem(ItemBuffer.items[i]);
+					slot.SetItem(ItemBuffer.Instance.items[i]);
 				}
 				else
 				{
@@ -56,10 +61,42 @@ namespace YouthSpice.ShopScene
 			}
 		}
 
-		public void OnClickSlot(Slot slot)
+		public void BuyFoodInfo()
+		{ 
+			buyFoodInfo.SetActive(true);
+		}
+		public void BuyFoodInfoFalse()
 		{
-			Debug.Log(slot.name);
-			//GameInfo.Instance.money -= 
+			buyFoodInfo.SetActive(false);
+		}
+		public void SellFoodInfo()
+		{ 
+			sellFoodInfo.SetActive(true);
+		}
+		public void SellFoodInfoFalse()
+		{ 
+			sellFoodInfo.SetActive(true);
+		}
+		public void OnClickBuySlot(Slot slot)
+		{
+			BuyFoodInfo();
+
+			bnt.onClick = new Button.ButtonClickedEvent();
+			bnt.onClick.AddListener(() => { BuyItem(slot);});
+		}
+
+		public void BuyItem(Slot slot)
+		{
+			int index = ItemBuffer.Instance.GetIndex(slot.name);
+			GameInfo.Instance.money -= ItemBuffer.Instance.items[index].sellPrice;
+			BuyFoodInfoFalse();
+		}
+		
+		public void OnClickSellSlot(Slot slot)
+		{
+			int index = ItemBuffer.Instance.GetIndex(slot.name);
+			GameInfo.Instance.money += Mathf.RoundToInt(ItemBuffer.Instance.items[index].sellPrice * 0.5f);
+			BuyFoodInfoFalse();
 		}
 	}
 }

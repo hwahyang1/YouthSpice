@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,13 +11,14 @@ namespace YouthSpice.GameScene
 	/// </summary>
 	public class Research : MonoBehaviour
 	{
+		public GameObject backGround;
 		//ui
 		private int timer = 8; //왼쪽위 제한시간
 		[SerializeField] private GameObject needle;
 		[SerializeField] private Text timerText; //왼쪽위 타이머 텍스트
 		[SerializeField] private Text researchText;//탐색 상태 텍스트
-		[SerializeField] private Sprite[] researchImage;//탐색 상태 텍스트
-		[SerializeField] private Image researchImageRoot;//탐색 상태 텍스트
+		[SerializeField] private Sprite[] researchImage;//탐색 상태 이미지
+		[SerializeField] private Image researchImageRoot;//탐색 이미지 변화 위치 
 		//탐색 기능
 		private bool startTimerTime = false; //cooldown 지속 시간 (초)
 		private float cooldownTimer;   //cooldown 타이머
@@ -39,10 +40,8 @@ namespace YouthSpice.GameScene
 		[SerializeField] private Slider clickSlider;
 		[SerializeField] private Text sucessText;
 		[SerializeField] private int sliderForce;
-		
-		//배경
-		private RectTransform rectTransform;
-		[SerializeField] private GameObject background;
+
+		[SerializeField] private float growthSpeed;
 		//시스템 제어
 		[SerializeField] private bool isControl = true; //미니게임 할떄 다른 기능 사용 못하게 하는 전제 제어 불값
 		[SerializeField] private bool isMiniGameControl = false;
@@ -61,6 +60,8 @@ namespace YouthSpice.GameScene
 			{
 				MiniGame();
 			}
+
+			
 		}
 
 		private void Researchfunction()
@@ -70,6 +71,7 @@ namespace YouthSpice.GameScene
 				// spacebar가 눌렸고, cooldown이 아직 안되어있으면
 				if (Input.GetKeyDown(KeyCode.Space) && !onCooldown)
 				{
+					backGround.GetComponent<BackGround>().isGrow = true;
 					researchImageRoot.gameObject.SetActive(false);
 					researchText.text = "탐색중"; //탐색중 택스트
 					timer--;//남은 탐색횟수 감소;
@@ -101,15 +103,24 @@ namespace YouthSpice.GameScene
 			float successChance = UnityEngine.Random.Range(0f, 101f);
 			if (successChance <= successPercentage)
 			{
+				backGround.GetComponent<BackGround>().width = 0;
+				backGround.GetComponent<BackGround>().height = 0;
+				backGround.GetComponent<BackGround>().isGrow = false;
 				Success();
 			}
 			else if(successChance > successPercentage && successChance < 100f- minigamePercentage)
 			{
+				backGround.GetComponent<BackGround>().width = 0;
+				backGround.GetComponent<BackGround>().height = 0;
+				backGround.GetComponent<BackGround>().isGrow = false;
 				Fail();
 			}
 			else if ( successChance >= 100f - minigamePercentage)
 			{
 				//researchText.text = "미니게임!";
+				backGround.GetComponent<BackGround>().width = 0;
+				backGround.GetComponent<BackGround>().height = 0;
+				backGround.GetComponent<BackGround>().isGrow = false;
 				researchImageRoot.gameObject.SetActive(true);
 				researchImageRoot.sprite = researchImage[2];
 				isControl = false;
@@ -216,6 +227,8 @@ namespace YouthSpice.GameScene
 			minigameCount = 50;
 			sucessText.text = "";
 			minigamePanel.SetActive(false);
+			backGround.GetComponent<BackGround>().width = 0;
+			backGround.GetComponent<BackGround>().height = 0;
 			Debug.Log("미니게임창 꺼짐");
 		}
 	}

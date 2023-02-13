@@ -17,8 +17,7 @@ namespace YouthSpice.ShopScene
 
 		[SerializeField] private GameObject buyBtnColor;
 		[SerializeField] private GameObject sellBtnColor;
-		[SerializeField] private GameObject foodInfoPanel;
-		
+
 		[SerializeField] private Text foodText;
 		[SerializeField] private Text costText;
 		[SerializeField] private Text havingMoney;
@@ -50,11 +49,6 @@ namespace YouthSpice.ShopScene
 		public void SellSelect()
 		{
 			dealCondition = false;
-		}
-
-		public void FoodInfoFalse()
-		{
-			foodInfoPanel.SetActive(false);
 		}
 	}
 }
