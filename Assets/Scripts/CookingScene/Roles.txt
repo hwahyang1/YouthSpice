@@ -1,0 +1,18 @@
+﻿[CookingScene]
+
+- GameManager: 전반적 실행 관리
+
+: Extern
+ - CookingLoadParams: 실행값 관리
+
+: SelectionStage
+ : UI
+  - ElementsManager: 항목 표출 관리
+  - Element: 각 항목 정보
+
+: RecipeStage
+
+: WholeStage
+ - SelectionManager: 선택된 항목 관리
+ : UI
+  - ShowSelection: 선택된 항목 표출 관리
