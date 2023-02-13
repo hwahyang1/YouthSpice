@@ -12,7 +12,7 @@ namespace YouthSpice.GameScene
 	public class Research : MonoBehaviour
 	{
 		//ui
-		private float timer = 60; //왼쪽위 제한시간
+		private int timer = 8; //왼쪽위 제한시간
 		[SerializeField] private Text timerText; //왼쪽위 타이머 텍스트
 		[SerializeField] private Text researchText;//탐색 상태 텍스트
 		//탐색 기능
@@ -57,12 +57,13 @@ namespace YouthSpice.GameScene
 
 		private void Researchfunction()
 		{
-			if (timer > 0)
+			if (timer >= 0)
 			{
 				// spacebar가 눌렸고, cooldown이 아직 안되어있으면
 				if (Input.GetKeyDown(KeyCode.Space) && !onCooldown)
 				{
 					researchText.text = "탐색중"; //탐색중 택스트
+					timer--;//남은 탐색횟수 감소;
 					onCooldown = true; // cooldown 중
 					cooldownTimer = cooldownDuration; // cooldown 타이머 초기화
 				}
@@ -78,6 +79,10 @@ namespace YouthSpice.GameScene
 						onCooldown = false; // cooldown 완료
 					}
 				}
+			}
+			else
+			{
+				researchText.text = "탐색 종료"; //탐색중 택스트
 			}
 		}
 
@@ -112,16 +117,16 @@ namespace YouthSpice.GameScene
 
 		private void TimeLimit()
 		{
-			timerText.text = "시간" + timer;
-			if (startTimerTime)
+			if (timer >= 0)
 			{
-				timer -= Time.deltaTime;
+				timerText.text = "남은 탐색 횟수:" + timer;
 			}
-			if (Input.GetKeyDown(KeyCode.Space))
+			else
 			{
-				startTimerTime = true;
+				timerText.text = "";
 			}
 		}
+
 		/// <summary>
 		/// 미니게임 판을 true로 바꾸는 함수 
 		/// </summary>
