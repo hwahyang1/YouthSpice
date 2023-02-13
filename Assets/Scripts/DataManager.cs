@@ -29,10 +29,6 @@ public class PlayerData
 		
 		public string path;//경로
 
-		public int coin;
-
-		public int selectNumber;
-
 		protected new void Awake()
 		{
 			base.Awake();

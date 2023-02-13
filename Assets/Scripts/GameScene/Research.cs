@@ -13,8 +13,11 @@ namespace YouthSpice.GameScene
 	{
 		//ui
 		private int timer = 8; //왼쪽위 제한시간
+		[SerializeField] private GameObject needle;
 		[SerializeField] private Text timerText; //왼쪽위 타이머 텍스트
 		[SerializeField] private Text researchText;//탐색 상태 텍스트
+		[SerializeField] private Sprite[] researchImage;//탐색 상태 텍스트
+		[SerializeField] private Image researchImageRoot;//탐색 상태 텍스트
 		//탐색 기능
 		private bool startTimerTime = false; //cooldown 지속 시간 (초)
 		private float cooldownTimer;   //cooldown 타이머
@@ -36,9 +39,14 @@ namespace YouthSpice.GameScene
 		[SerializeField] private Slider clickSlider;
 		[SerializeField] private Text sucessText;
 		[SerializeField] private int sliderForce;
+		
+		//배경
+		private RectTransform rectTransform;
+		[SerializeField] private GameObject background;
 		//시스템 제어
 		[SerializeField] private bool isControl = true; //미니게임 할떄 다른 기능 사용 못하게 하는 전제 제어 불값
 		[SerializeField] private bool isMiniGameControl = false;
+		
 
 		private void Update()
 		{
@@ -62,6 +70,7 @@ namespace YouthSpice.GameScene
 				// spacebar가 눌렸고, cooldown이 아직 안되어있으면
 				if (Input.GetKeyDown(KeyCode.Space) && !onCooldown)
 				{
+					researchImageRoot.gameObject.SetActive(false);
 					researchText.text = "탐색중"; //탐색중 택스트
 					timer--;//남은 탐색횟수 감소;
 					onCooldown = true; // cooldown 중
@@ -82,7 +91,8 @@ namespace YouthSpice.GameScene
 			}
 			else
 			{
-				researchText.text = "탐색 종료"; //탐색중 택스트
+				//researchText.text = "탐색 종료"; //탐색중 택스트
+				researchImageRoot.sprite = researchImage[1];
 			}
 		}
 
@@ -99,7 +109,9 @@ namespace YouthSpice.GameScene
 			}
 			else if ( successChance >= 100f - minigamePercentage)
 			{
-				researchText.text = "미니게임!";
+				//researchText.text = "미니게임!";
+				researchImageRoot.gameObject.SetActive(true);
+				researchImageRoot.sprite = researchImage[2];
 				isControl = false;
 				Invoke("MiniGamePanel",3f);
 			}
@@ -111,7 +123,9 @@ namespace YouthSpice.GameScene
 		}
 		private void Fail()
 		{
-			researchText.text = "탐색 실패";
+			//researchText.text = "탐색 실패";
+			researchImageRoot.gameObject.SetActive(true);
+			researchImageRoot.sprite = researchImage[0];
 			Debug.Log("실패");
 		}
 
@@ -124,6 +138,37 @@ namespace YouthSpice.GameScene
 			else
 			{
 				timerText.text = "";
+			}
+
+			switch (timer)
+			{
+				case 8 :
+					needle.transform.eulerAngles = new Vector3(0, 0, 71f);
+					break;
+				case 7 :
+					needle.transform.eulerAngles = new Vector3(0, 0, 27f);
+					break;
+				case 6 :
+					needle.transform.eulerAngles = new Vector3(0, 0, -18f);
+					break;
+				case 5 :
+					needle.transform.eulerAngles = new Vector3(0, 0, -68f);
+					break; 
+				case 4 :
+					needle.transform.eulerAngles = new Vector3(0, 0, -103f);
+					break;
+				case 3 :
+					needle.transform.eulerAngles = new Vector3(0, 0, -150f);
+					break;
+				case 2 :
+					needle.transform.eulerAngles = new Vector3(0, 0, -195f);
+					break;
+				case 1 :
+					needle.transform.eulerAngles = new Vector3(0, 0, -245f);
+					break; 
+				case 0 :
+					needle.transform.eulerAngles = new Vector3(0, 0, 71f);
+					break;
 			}
 		}
 
