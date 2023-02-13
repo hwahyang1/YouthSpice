@@ -65,13 +65,13 @@ namespace YouthSpice.PreloadScene.Files
 
 		public async Task RefreshAll()
 		{
-			isCustomResourceFolder = LoadParams.Instance.resourceCustomPath != null;
-			isCustomChapterFolder = LoadParams.Instance.chapterCustomPath != null;
+			isCustomResourceFolder = StorySceneLoadParams.Instance.resourceCustomPath != null;
+			isCustomChapterFolder = StorySceneLoadParams.Instance.chapterCustomPath != null;
 
 			if (isCustomResourceFolder)
 			{
 				string[] rawAvailableAudios =
-					Directory.GetFiles($"{LoadParams.Instance.resourceCustomPath}/{sourceFolders[0]}");
+					Directory.GetFiles($"{StorySceneLoadParams.Instance.resourceCustomPath}/{sourceFolders[0]}");
 				rawAvailableAudios =
 					Array.FindAll(rawAvailableAudios, target => !target.EndsWith(".gitkeep")).ToArray();
 				foreach (string currentAudioPath in rawAvailableAudios)
@@ -101,7 +101,7 @@ namespace YouthSpice.PreloadScene.Files
 				}
 
 				string[] rawAvailableBackgroundImages =
-					Directory.GetFiles($"{LoadParams.Instance.resourceCustomPath}/{sourceFolders[1]}");
+					Directory.GetFiles($"{StorySceneLoadParams.Instance.resourceCustomPath}/{sourceFolders[1]}");
 				rawAvailableBackgroundImages = Array
 				                               .FindAll(rawAvailableBackgroundImages,
 					                               target => !target.EndsWith(".gitkeep")).ToArray();
@@ -137,7 +137,7 @@ namespace YouthSpice.PreloadScene.Files
 				}
 
 				string[] rawAvailableDayImages =
-					Directory.GetFiles($"{LoadParams.Instance.resourceCustomPath}/{sourceFolders[2]}");
+					Directory.GetFiles($"{StorySceneLoadParams.Instance.resourceCustomPath}/{sourceFolders[2]}");
 				rawAvailableDayImages = Array.FindAll(rawAvailableDayImages, target => !target.EndsWith(".gitkeep"))
 				                             .ToArray();
 				foreach (string currentDayImagePath in rawAvailableDayImages)
@@ -171,7 +171,7 @@ namespace YouthSpice.PreloadScene.Files
 				}
 
 				string[] rawAvailableStandingIllusts =
-					Directory.GetFiles($"{LoadParams.Instance.resourceCustomPath}/{sourceFolders[3]}");
+					Directory.GetFiles($"{StorySceneLoadParams.Instance.resourceCustomPath}/{sourceFolders[3]}");
 				rawAvailableStandingIllusts = Array
 				                              .FindAll(rawAvailableStandingIllusts,
 					                              target => !target.EndsWith(".gitkeep")).ToArray();
@@ -218,7 +218,7 @@ namespace YouthSpice.PreloadScene.Files
 			availableChapters = new Dictionary<string, DefineChapter>();
 			if (isCustomChapterFolder)
 			{
-				string[] rawChapters = Directory.GetFiles(LoadParams.Instance.chapterCustomPath);
+				string[] rawChapters = Directory.GetFiles(StorySceneLoadParams.Instance.chapterCustomPath);
 				rawChapters = Array
 				              .FindAll(rawChapters, target => (!target.EndsWith(".gitkeep") && target.EndsWith(".cpt")))
 				              .ToArray();

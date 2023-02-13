@@ -8,7 +8,7 @@ namespace YouthSpice.StoryScene.Extern
 	/// <summary>
 	/// 로드할 챕터 정보를 지정합니다.
 	/// </summary>
-	public class LoadParams : Singleton<LoadParams>
+	public class StorySceneLoadParams : Singleton<StorySceneLoadParams>
 	{
 		/// <summary>
 		/// 지정되지 않은 경우, 'Resources/Resources'에서 가져옵니다.
@@ -19,5 +19,10 @@ namespace YouthSpice.StoryScene.Extern
 		/// </summary>
 		public string chapterCustomPath = null;
 		public string chapterID;
+
+		public void Exit()
+		{
+			Destroy(gameObject);
+		}
 	}
 }

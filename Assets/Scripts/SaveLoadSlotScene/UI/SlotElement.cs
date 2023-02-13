@@ -1,13 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
-using Action = System.Action;
+using ActionInt = System.Action<int>;
 using DateTime = System.DateTime;
 using TimeZoneInfo = System.TimeZoneInfo;
 
 using UnityEngine;
 using UnityEngine.UI;
-
-using NaughtyAttributes;
 using UnityEngine.EventSystems;
 
 namespace YouthSpice.SaveLoadSlotScene.UI
@@ -17,11 +15,6 @@ namespace YouthSpice.SaveLoadSlotScene.UI
 	/// </summary>
 	public class SlotElement : MonoBehaviour
 	{
-		[Header("Sources")]
-		[Tooltip("기본 이미지, 선택 되었을 때의 이미지 순서로 지정합니다.")]
-		[SerializeField]
-		private Sprite[] slotBackgroundImages;
-		
 		[Header("GameObjects")]
 		[SerializeField]
 		private Image slotBackgroundImageArea;
@@ -38,6 +31,11 @@ namespace YouthSpice.SaveLoadSlotScene.UI
 		[SerializeField]
 		private Text slotDateTimeText;
 
+		[Header("Status")]
+		private int index;
+
+		private ActionInt callback = null;
+
 		/// <summary>
 		/// 항목을 초기화 합니다.
 		/// </summary>
@@ -46,47 +44,31 @@ namespace YouthSpice.SaveLoadSlotScene.UI
 		/// <param name="title">항목의 챕터 소제목을 지정합니다.</param>
 		/// <param name="dateTime">항목의 마지막 저장일을 지정합니다. UTC 기준으로 지정합니다.</param>
 		/// <param name="callback">항목이 선택되었을 때의 callback을 지정합니다.</param>
-		public void Init(int index, Sprite previewImage, string title, int dateTime, Action callback = null)
+		public void Init(int index, Sprite previewImage, string title, long dateTime, ActionInt callback = null)
 		{
-			EventTrigger eventTrigger = GetComponent<EventTrigger>();
-
-			EventTrigger.Entry entry_PointerEnter = new EventTrigger.Entry();
-			entry_PointerEnter.eventID = EventTriggerType.PointerEnter;
-			entry_PointerEnter.callback.AddListener((data) => { OnMouseEnterCallback((PointerEventData)data); });
-			eventTrigger.triggers.Add(entry_PointerEnter);
-
-			EventTrigger.Entry entry_PointerExit = new EventTrigger.Entry();
-			entry_PointerExit.eventID = EventTriggerType.PointerExit;
-			entry_PointerExit.callback.AddListener((data) => { OnMouseExitCallback((PointerEventData)data); });
-			eventTrigger.triggers.Add(entry_PointerExit);
-
-			EventTrigger.Entry entry_PointerClick = new EventTrigger.Entry();
-			entry_PointerClick.eventID = EventTriggerType.PointerClick;
-			entry_PointerClick.callback.AddListener((data) => { OnClicked((PointerEventData)data); });
-			eventTrigger.triggers.Add(entry_PointerClick);
+			this.index = index;
 			
-			int offset = TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow).Hours;
-			DateTime savedTime = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(dateTime).AddHours(offset);
-
-			slotIndexText.text = $"SLOT {index.ToString("00")}";
+			slotIndexText.text = $"SLOT {(index + 1).ToString("00")}";
 			slotPreviewImageArea.sprite = previewImage;
 			slotTitleText.text = title;
-			slotDateTimeText.text = savedTime.ToString("yyyy/MM/dd HH:mm:ss");
-		}
-
-		private void OnMouseEnterCallback(PointerEventData data)
-		{
 			
-		}
+			if (dateTime == 0)
+			{
+				slotDateTimeText.text = "----/--/-- --:--:--";
+			}
+			else
+			{
+				int offset = TimeZoneInfo.Local.GetUtcOffset(DateTime.UtcNow).Hours;
+				DateTime savedTime = new DateTime(1970, 1, 1, 0, 0, 0, 0).AddSeconds(dateTime).AddHours(offset);
+				slotDateTimeText.text = savedTime.ToString("yyyy/MM/dd HH:mm:ss");
+			}
 
-		private void OnMouseExitCallback(PointerEventData data)
-		{
-			
+			this.callback = callback;
 		}
-
-		private void OnClicked(PointerEventData data)
+		
+		public void OnClicked()
 		{
-			
+			callback?.Invoke(index);
 		}
 	}
 }
