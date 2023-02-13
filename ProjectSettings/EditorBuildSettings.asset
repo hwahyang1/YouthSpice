@@ -15,6 +15,9 @@ EditorBuildSettings:
     path: Assets/Scenes/GameScene.unity
     guid: 53561f93456f1ad48afb9089028b53be
   - enabled: 1
+    path: Assets/Scenes/SaveLoadSlotScene.unity
+    guid: 77f6779fec4e4d245b8be3987ef73525
+  - enabled: 1
     path: Assets/Scenes/InGameMenuScene.unity
     guid: 01d8d3f645280384d8cedeaea28e61b4
   - enabled: 1

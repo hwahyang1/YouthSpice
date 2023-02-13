@@ -96,5 +96,10 @@ namespace YouthSpice.MenuScene
 		{
 			SceneChange.Instance.ChangeScene("ShopScene");
 		}
+
+		public void EnterSetting()
+		{
+			SceneChange.Instance.Add("ConfigScene");
+		}
 	}
 }
