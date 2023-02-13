@@ -41,7 +41,7 @@ namespace YouthSpice.ShopScene
 				sellBtnColor.SetActive(true);
 			}
 
-			havingMoney.text = "" + DataManager.Instance.coin;
+			havingMoney.text = "" + GameInfo.Instance.money;
 		}
 		public void BuySelect()
 		{
