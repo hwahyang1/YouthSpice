@@ -1,6 +1,6 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 using UnityEngine;
 using UnityEngine.UI;
@@ -38,6 +38,8 @@ namespace YouthSpice.StoryScene.UI
 		private StandingIllusts standingIllusts;
 		private FrontTop frontTop;
 		private SpeechArea speechArea;
+		private GetNameArea getNameArea;
+		private Friendship friendship;
 
 		private ChapterManager chapterManager;
 
@@ -53,6 +55,8 @@ namespace YouthSpice.StoryScene.UI
 			standingIllusts = GetComponent<StandingIllusts>();
 			frontTop = GetComponent<FrontTop>();
 			speechArea = GetComponent<SpeechArea>();
+			getNameArea = GetComponent<GetNameArea>();
+			friendship = GetComponent<Friendship>();
 			
 			chapterManager = GetComponent<ChapterManager>();
 		}
@@ -116,6 +120,58 @@ namespace YouthSpice.StoryScene.UI
 			ShowSelection();
 		}
 
+		public void SkipCurrent()
+		{
+			// 남은 구간만 List로 가져오기
+			List<ChapterElement> list = new List<ChapterElement>(currentElements.Skip(currentElementIndex).Take(currentElements.Count - currentElementIndex));
+			int index = list.FindIndex(target => target.Type == ChapterElementType.Selection || target.Type == ChapterElementType.GetPlayerName);
+
+			ChapterElement currentElement;
+			
+			// 앞에 분기점 & 이름 획득 없음
+			if (index == -1)
+			{
+				for (; currentElementIndex < currentElements.Count; currentElementIndex++)
+				{
+					currentElement = currentElements[currentElementIndex];
+
+					switch (currentElement.Type)
+					{
+						case ChapterElementType.Speech:
+							break;
+						case ChapterElementType.DayImage:
+							frontTop.ChangeImage(currentElement.Data);
+							break;
+						case ChapterElementType.BackgroundImage:
+							backgroundImage.ChangeImage(currentElement.Data, true, () => { speechArea.SetActive(true); });
+							break;
+						case ChapterElementType.BackgroundMusic:
+							audioManager.PlayBackgroundAudio(currentElement.Data, true);
+							break;
+						case ChapterElementType.EffectSound:
+							break;
+						case ChapterElementType.StandingImage:
+							standingIllusts.ChangeIllust(currentElement.Data, true);
+							break;
+						case ChapterElementType.Friendship:
+							friendship.AdjustFromElement(currentElement.Data);
+							break;
+						case ChapterElementType.GetPlayerName:
+							// 앞에서 걸러짐
+							break;
+						case ChapterElementType.Selection:
+							// 얘로 올 일이 없음
+							break;
+						case ChapterElementType.SelectionName:
+							// ChapterElementType.Selection에서 처리됨
+							break;
+					}
+				}
+				chapterManager.isSelectionEnded = true;
+				chapterManager.PlayNext();
+			}
+		}
+
 		public void PlayNext()
 		{
 			if (!ready) return;
@@ -176,14 +232,22 @@ namespace YouthSpice.StoryScene.UI
 						standingIllusts.ChangeIllust(currentElement.Data);
 						break;
 					case ChapterElementType.Friendship:
-						// TODO
-						//loop = false;
-						//isFriendshipEnded = false;
+						loop = false;
+						chapterManager.isFriendshipEnded = false;
+						friendship.AdjustFromElement(currentElement.Data, () =>
+						{
+							chapterManager.isFriendshipEnded = true;
+							PlayNext();
+						});
 						break;
 					case ChapterElementType.GetPlayerName:
-						// TODO
-						//loop = false;
-						//isGetPlayerNameEnded = false;
+						loop = false;
+						chapterManager.isGetPlayerNameEnded = false;
+						getNameArea.Show(() =>
+						{
+							chapterManager.isGetPlayerNameEnded = true;
+							PlayNext();
+						});
 						break;
 					case ChapterElementType.Selection:
 						// 이럴 일 없음

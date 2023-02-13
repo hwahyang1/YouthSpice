@@ -10,6 +10,7 @@
 
 : Chapter
  - ChapterManager: 챕터 진행 관리
+ - Friendship: 호감도 관리
 
 : UI
  - SpeechArea: 대사 구역 관리
@@ -17,3 +18,4 @@
  - BackgroundImage: 배경 이미지 관리
  - StandingIllusts: 스탠딩 일러스트 관리
  - SelectionArea: 선택지 진행 관리
+ - GetNameArea: 이름 입력 UI 관리

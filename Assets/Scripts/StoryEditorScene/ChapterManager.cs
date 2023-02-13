@@ -134,6 +134,8 @@ namespace YouthSpice.StoryEditorScene
 		/// </remarks>
 		public async void StartChapterPreview()
 		{
+			GameInfo.Instance.playerName = "(플레이어 이름)";
+			
 			LoadParams.Instance.chapterCustomPath = chapterFileManager.PastFilePath;
 			LoadParams.Instance.resourceCustomPath = Application.dataPath + @"/.StoryEditor_Data";
 			LoadParams.Instance.chapterID = chapterID;

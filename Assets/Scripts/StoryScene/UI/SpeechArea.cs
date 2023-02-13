@@ -15,14 +15,25 @@ namespace YouthSpice.StoryScene.UI
 	/// </summary>
 	public class SpeechArea : MonoBehaviour
 	{
+		[Header("Sprites")]
+		[SerializeField]
+		private Sprite[] nameTagImages;
+
+		[SerializeField]
+		private Sprite[] scriptEndedImages;
+
+		[Header("GameObjects")]
 		[SerializeField]
 		private GameObject parent;
-		
+
 		[SerializeField]
-		private Text nameArea;
+		private Image nameArea;
 
 		[SerializeField]
 		private Text speechArea;
+
+		[SerializeField]
+		private Image scriptEndedArea;
 
 		[Header("Status")]
 		[SerializeField, ReadOnly]
@@ -40,14 +51,21 @@ namespace YouthSpice.StoryScene.UI
 
 		private ChapterManager chapterManager;
 
+		private Coroutine activeCoroutine = null;
+
 		private void Start()
 		{
 			chapterManager = GetComponent<ChapterManager>();
+			nameArea.sprite = null;
+			nameArea.color = new Color(1f, 1f, 1f, 0f);
 		}
 
 		public void SetBlank()
 		{
-			nameArea.text = "";
+			nameArea.sprite = null;
+			nameArea.color = new Color(1f, 1f, 1f, 0f);
+			scriptEndedArea.sprite = null;
+			scriptEndedArea.color = new Color(1f, 1f, 1f, 0f);
 			speechArea.text = "";
 		}
 
@@ -55,15 +73,20 @@ namespace YouthSpice.StoryScene.UI
 		{
 			parent.SetActive(active);
 		}
-		
+
 		public void OnKeyDown()
 		{
 			if (isRunning)
 			{
 				if (isPrinting)
 				{
-					StopCoroutine(nameof(ShowSpeechCoroutine));
+					if (activeCoroutine != null)
+					{
+						StopCoroutine(activeCoroutine);
+						activeCoroutine = null;
+					}
 					speechArea.text = fullScript;
+					scriptEndedArea.color = new Color(1f, 1f, 1f, 1f);
 					isPrinting = false;
 				}
 				else
@@ -77,8 +100,9 @@ namespace YouthSpice.StoryScene.UI
 
 		public void ShowSpeech(Dictionary<string, string> data)
 		{
-			string characterName = "";
-			switch (data["Character"])
+			Sprite characterName = nameTagImages[int.Parse(data["Character"])];
+			scriptEndedArea.sprite = scriptEndedImages[int.Parse(data["Character"])];
+			/*switch (data["Character"])
 			{
 				case "0":
 					characterName = "";
@@ -87,7 +111,7 @@ namespace YouthSpice.StoryScene.UI
 					characterName = "???";
 					break;
 				case "2":
-					characterName = "(플레이어 이름)";
+					characterName = GameInfo.Instance.playerName;
 					break;
 				case "3":
 					characterName = "류한나";
@@ -98,37 +122,51 @@ namespace YouthSpice.StoryScene.UI
 				case "5":
 					characterName = "태은호";
 					break;
-			}
+				case "6":
+					characterName = "";
+					break;
+			}*/
 
-			//TODO
-			fullScript = data["Script"].Replace("{Player}", "(플레이어 이름)");
-			
-			StartCoroutine(nameof(ShowSpeechCoroutine), characterName);
+			fullScript = data["Script"].Replace("{Player}", GameInfo.Instance.playerName);
+
+			activeCoroutine = StartCoroutine(ShowSpeechCoroutine(characterName));
 		}
 
-		private IEnumerator ShowSpeechCoroutine(string characterName)
+		private IEnumerator ShowSpeechCoroutine(Sprite characterName)
 		{
 			WaitForSeconds timeout = new WaitForSeconds(1f - speechSpeed);
-			
-			nameArea.text = characterName;
+
+			nameArea.sprite = characterName;
+			if (characterName != null)
+			{
+				nameArea.color = new Color(1f, 1f, 1f, 1f);
+			}
+			else
+			{
+				nameArea.color = new Color(1f, 1f, 1f, 0f);
+			}
 			speechArea.text = "";
+			scriptEndedArea.color = new Color(1f, 1f, 1f, 0f);
 			
 			yield return null;
-			
+
 			isRunning = true;
 			isPrinting = true;
 
-			for (int i = 0; i < fullScript.Length; i++)
+			foreach (char currentCharacter in fullScript)
 			{
-				if (fullScript[i] == ' ') // 공백은 한번에 한해 제함
+				if (currentCharacter == ' ') // 공백은 한번에 한해 제함
 				{
-					speechArea.text += fullScript[i];
+					speechArea.text += currentCharacter;
 					continue;
 				}
-				speechArea.text += fullScript[i];
-				
+
+				speechArea.text += currentCharacter;
+
 				yield return timeout;
 			}
+
+			scriptEndedArea.color = new Color(1f, 1f, 1f, 1f);
 
 			isPrinting = false;
 			isRunning = false;

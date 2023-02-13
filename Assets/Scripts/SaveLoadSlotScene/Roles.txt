@@ -1,0 +1,7 @@
+﻿[SaveLoadSlotScene]
+
+: Slots
+ - SlotsManager: 전체 항목 관리
+
+: UI
+ - SlotElement: 각 항목 UI 관리
