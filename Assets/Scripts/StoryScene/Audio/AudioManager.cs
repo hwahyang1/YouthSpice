@@ -5,6 +5,7 @@ using UnityEngine;
 
 using NaughtyAttributes;
 
+using YouthSpice.PreloadScene.Config;
 using YouthSpice.PreloadScene.Files;
 using YouthSpice.StoryScene.Chapter;
 
@@ -23,6 +24,11 @@ namespace YouthSpice.StoryScene.Audio
 		// false -> Back(0) / true -> Front(1)
 		[SerializeField, ReadOnly]
 		private bool activePosition = false;
+
+		[SerializeField, ReadOnly]
+		private float backgroundAudioMax;
+		[SerializeField, ReadOnly]
+		private float effectAudioMax;
 
 		[Header("Time")]
 		[SerializeField, Tooltip("이 값은 Dissolve 기준으로, Fade의 경우 지정된 시간의 2배를 사용합니다.")]
@@ -49,12 +55,20 @@ namespace YouthSpice.StoryScene.Audio
 			//
 		}
 
+		private void FixedUpdate()
+		{
+			DefineConfig config = ConfigManager.Instance.GetConfig();
+			backgroundAudioMax = config.backgroundVolume;
+			effectAudioMax = config.effectVolume;
+		}
+
 		/// <summary>
 		/// 효과음을 재생합니다.
 		/// </summary>
 		public void PlayEffectAudio(Dictionary<string, string> data)
 		{
-			effectAudio.PlayOneShot(SourceFileManager.Instance.AvailableAudios[int.Parse(data["Effect"]) - 1]);
+			effectAudio.volume = effectAudioMax;
+			effectAudio.PlayOneShot(SourceFileManager.Instance.AvailableAudios[int.Parse(data["Effect"]) - 1], effectAudioMax);
 			chapterManager.isEffectSoundEnded = true;
 		}
 
@@ -100,7 +114,7 @@ namespace YouthSpice.StoryScene.Audio
 
 					if (nextSource.clip != null)
 					{
-						nextSource.volume = 1f;
+						nextSource.volume = backgroundAudioMax;
 						nextSource.Play();
 					}
 					break;
@@ -109,8 +123,8 @@ namespace YouthSpice.StoryScene.Audio
 					while (currentTime < totalAnimationTime)
 					{
 						currentTime += animationDelay;
-						if (currentSource.clip != null) currentSource.volume = 1f - (currentTime / totalAnimationTime);
-						if (nextSource.clip != null) nextSource.volume = currentTime / totalAnimationTime;
+						if (currentSource.clip != null) currentSource.volume = backgroundAudioMax - (currentTime / totalAnimationTime);
+						if (nextSource.clip != null) nextSource.volume = currentTime / totalAnimationTime * backgroundAudioMax;
 						yield return timeout;
 					}
 					if (currentSource.clip != null) currentSource.Stop();
@@ -122,7 +136,7 @@ namespace YouthSpice.StoryScene.Audio
 					while (currentTime < totalAnimationTime)
 					{
 						currentTime += animationDelay;
-						if (currentSource.clip != null) currentSource.volume = 1f - (currentTime / totalAnimationTime);
+						if (currentSource.clip != null) currentSource.volume = backgroundAudioMax - (currentTime / totalAnimationTime);
 						yield return timeout;
 					}
 					if (currentSource.clip != null) currentSource.Stop();
@@ -135,7 +149,7 @@ namespace YouthSpice.StoryScene.Audio
 					while (currentTime < totalAnimationTime)
 					{
 						currentTime += animationDelay;
-						if (nextSource.clip != null) nextSource.volume = currentTime / totalAnimationTime;
+						if (nextSource.clip != null) nextSource.volume = currentTime / totalAnimationTime * backgroundAudioMax;
 						yield return timeout;
 					}
 					

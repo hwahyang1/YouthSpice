@@ -154,7 +154,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1028174575}
-  m_RootOrder: 2
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -230,11 +230,11 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1028174575}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -40, y: 0}
+  m_AnchoredPosition: {x: -50, y: 15}
   m_SizeDelta: {x: 100, y: 40}
   m_Pivot: {x: 1, y: 0}
 --- !u!114 &532023632
@@ -258,8 +258,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 35
+    m_Font: {fileID: 12800000, guid: 5e47cc14c3940264bb34bf0f40913e3d, type: 3}
+    m_FontSize: 30
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 0
@@ -311,8 +311,6 @@ MonoBehaviour:
   canvas: {fileID: 1028174571}
   loadingCover: {fileID: 4014596}
   loadingPercent: {fileID: 532023632}
-  cover: {fileID: 1397489122}
-  loadingText: {fileID: 1220062488}
   transitionTime: 1
 --- !u!4 &597414631
 Transform:
@@ -429,6 +427,50 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &931367766
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 931367768}
+  - component: {fileID: 931367767}
+  m_Layer: 0
+  m_Name: ConfigManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &931367767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 931367766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eedb82d659d44d1089c35714118a694c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &931367768
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 931367766}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1016125717
 GameObject:
   m_ObjectHideFlags: 0
@@ -565,8 +607,6 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1397489123}
-  - {fileID: 1220062489}
   - {fileID: 4014595}
   - {fileID: 532023631}
   m_Father: {fileID: 0}
@@ -625,86 +665,6 @@ MonoBehaviour:
   - {fileID: 615675116}
   - {fileID: 1028174571}
   sceneChange: {fileID: 597414630}
---- !u!1 &1220062488
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1220062489}
-  - component: {fileID: 1220062491}
-  - component: {fileID: 1220062490}
-  m_Layer: 5
-  m_Name: Loading
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1220062489
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1220062488}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1028174575}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 800, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1220062490
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1220062488}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0.9019608, g: 0.9019608, b: 0.92941177, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 50
-    m_FontStyle: 0
-    m_BestFit: 0
-    m_MinSize: 0
-    m_MaxSize: 226
-    m_Alignment: 4
-    m_AlignByGeometry: 0
-    m_RichText: 1
-    m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
-    m_LineSpacing: 1
-  m_Text: Loading... Please Wait
---- !u!222 &1220062491
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1220062488}
-  m_CullTransparentMesh: 1
 --- !u!1 &1224386287
 GameObject:
   m_ObjectHideFlags: 0
@@ -789,82 +749,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1397489122
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1397489123}
-  - component: {fileID: 1397489125}
-  - component: {fileID: 1397489124}
-  m_Layer: 5
-  m_Name: Cover
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1397489123
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1397489122}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1028174575}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1397489124
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1397489122}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.8}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &1397489125
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1397489122}
-  m_CullTransparentMesh: 1
 --- !u!1 &1637491765
 GameObject:
   m_ObjectHideFlags: 0
@@ -931,51 +815,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2011501296
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2011501298}
-  - component: {fileID: 2011501297}
-  m_Layer: 0
-  m_Name: ConfigManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &2011501297
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2011501296}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eedb82d659d44d1089c35714118a694c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &2011501298
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2011501296}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2069622233
 GameObject:
@@ -1101,7 +941,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4684533613937652255
 GameObject:
@@ -1171,381 +1011,445 @@ MonoBehaviour:
     rank: 0
     color: 5
     field: 0
+    set: 0
   - name: "\uB77C\uC784"
     sprite: {fileID: 21300000, guid: ade93161743c24647aba95875d7dfc8f, type: 3}
     sellPrice: 1000
     rank: 0
     color: 2
     field: 0
+    set: 0
   - name: "\uB808\uBAAC"
     sprite: {fileID: 21300000, guid: 2d3033e36586175479e8e1a1f8bf8d9a, type: 3}
     sellPrice: 1000
     rank: 0
     color: 3
     field: 0
+    set: 0
   - name: "\uD0A4\uC704"
     sprite: {fileID: 21300000, guid: 20a4d985ee120db4ca67f3d678979186, type: 3}
     sellPrice: 1000
     rank: 0
     color: 2
     field: 0
+    set: 0
   - name: "\uBC14\uB098\uB098"
     sprite: {fileID: 21300000, guid: e06417c3c898d4f48a93ea790ecc2904, type: 3}
     sellPrice: 1000
     rank: 0
     color: 1
     field: 0
+    set: 0
   - name: "\uC644\uB450\uCF69"
     sprite: {fileID: 21300000, guid: 69ee406bec7a9f94594645540499adf0, type: 3}
     sellPrice: 1000
     rank: 0
     color: 2
     field: 1
+    set: 1
   - name: "\uD30C"
     sprite: {fileID: 21300000, guid: 3a8093589ebfebe469f5c941f940ac61, type: 3}
     sellPrice: 1000
     rank: 0
     color: 2
     field: 1
+    set: 1
   - name: "\uC591\uD30C"
     sprite: {fileID: 21300000, guid: 4c4e28d49cf183346b82dffaac5a97e4, type: 3}
     sellPrice: 1000
     rank: 0
     color: 1
     field: 1
+    set: 1
   - name: "\uB9C8\uB298"
     sprite: {fileID: 21300000, guid: 81703dcde4d5ead4da4735f50983fbe9, type: 3}
     sellPrice: 1000
     rank: 0
     color: 3
     field: 1
+    set: 1
   - name: "\uACE0\uCD94"
     sprite: {fileID: 21300000, guid: 9ef68c455ed242246a775ef61bcfb1ec, type: 3}
     sellPrice: 1000
     rank: 0
     color: 0
     field: 1
+    set: 1
   - name: "\uBBF8\uC5ED"
     sprite: {fileID: 21300000, guid: eecd73521b1417b42a414e35d48e12e3, type: 3}
     sellPrice: 1000
     rank: 0
     color: 2
     field: 2
+    set: 1
   - name: "\uAC00\uC4F0\uC624\uBD80\uC2DC"
     sprite: {fileID: 21300000, guid: 6f2e804c088145049b66b8ebf3eb947d, type: 3}
     sellPrice: 1000
     rank: 0
     color: 7
     field: 2
+    set: 4
   - name: "\uAF2C\uB9C9"
     sprite: {fileID: 21300000, guid: 9d47aaba4d711994bab4d65890ff8ae4, type: 3}
     sellPrice: 1000
     rank: 0
     color: 5
     field: 2
+    set: 3
   - name: "\uD64D\uD569"
     sprite: {fileID: 21300000, guid: 1292ad2f042f83c45a7dfa26c1b59144, type: 3}
     sellPrice: 1000
     rank: 0
     color: 5
     field: 2
+    set: 3
   - name: "\uC0C8\uC6B0"
     sprite: {fileID: 21300000, guid: fa5e688f6fa3db64ca0f7f5d45196df9, type: 3}
     sellPrice: 1000
     rank: 0
     color: 0
     field: 2
+    set: 3
   - name: "\uB538\uAE30"
     sprite: {fileID: 21300000, guid: 436bc74dbc13b3046a967acd1778a0c2, type: 3}
     sellPrice: 2000
     rank: 1
     color: 0
     field: 0
+    set: 0
   - name: "\uC0AC\uACFC"
     sprite: {fileID: 21300000, guid: f32c26e2ae9469a43aa5b504880793ff, type: 3}
     sellPrice: 2000
     rank: 1
     color: 3
     field: 0
+    set: 0
   - name: "\uCF54\uCF54\uB11B"
     sprite: {fileID: 21300000, guid: 1a68909f90981c9488eeaa37505df2fb, type: 3}
     sellPrice: 2000
     rank: 1
     color: 1
     field: 0
+    set: 0
   - name: "\uB9DD\uACE0"
     sprite: {fileID: 21300000, guid: c6dfb305f13169e44be74a2ec5ecb0c9, type: 3}
     sellPrice: 2000
     rank: 1
     color: 3
     field: 0
+    set: 0
   - name: "\uCCB4\uB9AC"
     sprite: {fileID: 21300000, guid: f27c3dd84d9e8404282f2988664e27a7, type: 3}
     sellPrice: 2000
     rank: 1
     color: 0
     field: 0
+    set: 0
   - name: "\uBC30"
     sprite: {fileID: 21300000, guid: 2e7178ba183eda144be949a76b8a7b9d, type: 3}
     sellPrice: 2000
     rank: 1
     color: 1
     field: 0
+    set: 0
   - name: "\uC5F0\uC5B4"
     sprite: {fileID: 21300000, guid: 32c83c9c59079294a8803846dd182cf6, type: 3}
     sellPrice: 2000
     rank: 1
     color: 4
     field: 2
+    set: 3
   - name: "\uBB38\uC5B4"
     sprite: {fileID: 21300000, guid: 2882d0dada4cd444aada352d72532ee1, type: 3}
     sellPrice: 2000
     rank: 1
     color: 6
     field: 2
+    set: 3
   - name: "\uC624\uC9D5\uC5B4"
     sprite: {fileID: 21300000, guid: 2844c9a42d819864fb37b1482b86bc7f, type: 3}
     sellPrice: 2000
     rank: 1
     color: 6
     field: 2
+    set: 3
   - name: "\uAC00\uB9AC\uBE44"
     sprite: {fileID: 21300000, guid: 6de764a3d9995054bb081ba7147a44c0, type: 3}
     sellPrice: 2000
     rank: 1
     color: 1
     field: 2
+    set: 3
   - name: "\uC6B0\uB7ED"
     sprite: {fileID: 21300000, guid: e6cee9bf96dd8964da5043038be57a51, type: 3}
     sellPrice: 2000
     rank: 1
     color: 1
     field: 2
+    set: 3
   - name: "\uD574\uC0BC"
     sprite: {fileID: 21300000, guid: 58b9b9d8c4499ea4baf064a01428ac93, type: 3}
     sellPrice: 2000
     rank: 1
     color: 5
     field: 2
+    set: 3
   - name: "\uC2DC\uAE08\uCE58"
     sprite: {fileID: 21300000, guid: 18ca602fcf0b53d488c3bb181dfd6b0d, type: 3}
     sellPrice: 2000
     rank: 1
     color: 2
     field: 1
+    set: 1
   - name: "\uC560\uD638\uBC15"
     sprite: {fileID: 21300000, guid: d308dc71a40dc9f4294033d2adccad5e, type: 3}
     sellPrice: 2000
     rank: 1
     color: 2
     field: 1
+    set: 1
   - name: "\uAC00\uC9C0"
     sprite: {fileID: 21300000, guid: 7ed22bea4ca4a234d93c219e26dcf920, type: 3}
     sellPrice: 2000
     rank: 1
     color: 3
     field: 1
+    set: 1
   - name: "\uB2F9\uADFC"
     sprite: {fileID: 21300000, guid: f5d654d8f50f81946855b2ed834982e3, type: 3}
     sellPrice: 2000
     rank: 1
     color: 5
     field: 1
+    set: 1
   - name: "\uCF69\uB098\uBB3C"
     sprite: {fileID: 21300000, guid: 46d9f44321a489c4da6fd282f40d8b7d, type: 3}
     sellPrice: 2000
     rank: 1
     color: 1
     field: 1
+    set: 1
   - name: "\uBB34"
     sprite: {fileID: 21300000, guid: e0f4c99c399ac74468dd79629fef35a9, type: 3}
     sellPrice: 2000
     rank: 1
     color: 1
     field: 1
+    set: 1
   - name: "\uB3FC\uC9C0\uACE0\uAE30"
     sprite: {fileID: 21300000, guid: 1b7875b460bb2134cbf3ac3183d4e99d, type: 3}
     sellPrice: 3000
     rank: 2
     color: 4
     field: 0
+    set: 2
   - name: "\uB2ED\uACE0\uAE30"
     sprite: {fileID: 21300000, guid: eb7e510cac82bf24a8ed38cbdd4a27b2, type: 3}
     sellPrice: 3000
     rank: 2
     color: 4
     field: 0
+    set: 2
   - name: "\uC624\uB9AC\uACE0\uAE30"
     sprite: {fileID: 21300000, guid: 660169916798a864abe7a52b24ab977a, type: 3}
     sellPrice: 3000
     rank: 2
     color: 4
     field: 0
+    set: 2
   - name: "\uBA54\uB860"
     sprite: {fileID: 21300000, guid: 8f2a8748d2cba694d9a710888b68cdf6, type: 3}
     sellPrice: 3000
     rank: 2
     color: 2
     field: 0
+    set: 0
   - name: "\uBE0C\uB85C\uCF5C\uB9AC"
     sprite: {fileID: 21300000, guid: 4381a3701a0333d46a9153a9985c4f7c, type: 3}
     sellPrice: 3000
     rank: 2
     color: 2
     field: 1
+    set: 1
   - name: "\uD1A0\uB9C8\uD1A0"
     sprite: {fileID: 21300000, guid: 303487a9d56bff844b5f8a85c9a678ef, type: 3}
     sellPrice: 3000
     rank: 2
     color: 0
     field: 1
+    set: 1
   - name: "\uBBF8\uB098\uB9AC"
     sprite: {fileID: 21300000, guid: 58ccc40ae08a85745917f32162aea3e3, type: 3}
     sellPrice: 3000
     rank: 2
     color: 2
     field: 1
+    set: 1
   - name: "\uC591\uBC30\uCD94"
     sprite: {fileID: 21300000, guid: 877cf92d36740764d989f96e8cae5c00, type: 3}
     sellPrice: 3000
     rank: 2
     color: 2
     field: 1
+    set: 1
   - name: "\uCC38\uCE58 "
     sprite: {fileID: 21300000, guid: ac4a95fd808a78044a7504a9cc44efbc, type: 3}
     sellPrice: 3000
     rank: 2
     color: 4
     field: 2
+    set: 3
   - name: "\uAF43\uAC8C"
     sprite: {fileID: 21300000, guid: 1803a3a514dbd734e841503c4561099b, type: 3}
     sellPrice: 3000
     rank: 2
     color: 2
     field: 2
+    set: 3
   - name: "\uC804\uBCF5"
     sprite: {fileID: 21300000, guid: d33960baf9d912945b02009157cad0bc, type: 3}
     sellPrice: 3000
     rank: 2
     color: 2
     field: 2
+    set: 3
   - name: "\uBCF5\uC5B4"
     sprite: {fileID: 21300000, guid: 1df6ead74d3b439438c987aa63a40546, type: 3}
     sellPrice: 3000
     rank: 2
     color: 1
     field: 2
+    set: 3
   - name: "\uD584"
     sprite: {fileID: 21300000, guid: 686e6d39d17ede5449607b54f14b6def, type: 3}
     sellPrice: 3000
     rank: 2
     color: 4
     field: 3
+    set: 2
   - name: "\uBCA0\uC774\uCEE8"
     sprite: {fileID: 21300000, guid: 3948c7cd5ef92b040aff115e87341ee7, type: 3}
     sellPrice: 3000
     rank: 2
     color: 4
     field: 3
+    set: 2
   - name: "\uBC00\uAC00\uB8E8"
     sprite: {fileID: 21300000, guid: 194bfc8b71f88fd4ba73728b2aada10e, type: 3}
     sellPrice: 3000
     rank: 2
     color: 1
     field: 3
+    set: 4
   - name: "\uB5A1"
     sprite: {fileID: 21300000, guid: ae485307702707d4f95fc881d6e0950c, type: 3}
     sellPrice: 3000
     rank: 2
     color: 1
     field: 3
+    set: 5
   - name: "\uC778\uC0BC"
     sprite: {fileID: 21300000, guid: 7510a22413d76c146a76f0d4bdf01982, type: 3}
     sellPrice: 5000
     rank: 3
     color: 1
     field: 0
+    set: 1
   - name: "\uC18C\uACE0\uAE30"
     sprite: {fileID: 21300000, guid: 7c558e72a81ccd84e9bb78315b5e3e3a, type: 3}
     sellPrice: 5000
     rank: 3
     color: 4
     field: 0
+    set: 2
   - name: "\uD45C\uACE0\uBC84\uC12F"
     sprite: {fileID: 21300000, guid: ff1ad4171b1050c4288b8a7a35737910, type: 3}
     sellPrice: 5000
     rank: 3
     color: 7
     field: 1
+    set: 1
   - name: "\uD30C\uD504\uB9AC\uCE74"
     sprite: {fileID: 21300000, guid: e872acdda0e0ca6428e55272f17a3816, type: 3}
     sellPrice: 5000
     rank: 3
     color: 5
     field: 1
+    set: 1
   - name: "\uB78D\uC2A4\uD0C0"
     sprite: {fileID: 21300000, guid: 654a1b0953d520944ae6e0bd9c28631c, type: 3}
     sellPrice: 5000
     rank: 3
     color: 2
     field: 2
+    set: 3
   - name: "\uC0C1\uC5B4\uC9C0\uB290\uB7EC\uBBF8"
     sprite: {fileID: 21300000, guid: b641ba1911afe6644a6d1523fc1edccc, type: 3}
     sellPrice: 5000
     rank: 3
     color: 1
     field: 2
+    set: 3
   - name: "\uAD74\uC18C\uC2A4"
     sprite: {fileID: 21300000, guid: b228767f573d972498361605f62d3ebe, type: 3}
     sellPrice: 5000
     rank: 3
     color: 6
     field: 3
+    set: 4
   - name: "\uACE0\uCD94\uC7A5"
     sprite: {fileID: 21300000, guid: 9fea12be618d9534498d1a76b2c00c81, type: 3}
     sellPrice: 5000
     rank: 3
     color: 0
     field: 3
+    set: 4
   - name: "\uAC04\uC7A5"
     sprite: {fileID: 21300000, guid: 9fd6cbaa621572a438d0532ef2161814, type: 3}
     sellPrice: 5000
     rank: 3
     color: 6
     field: 3
+    set: 4
   - name: "\uCF00\uCC39"
     sprite: {fileID: 21300000, guid: 7dfaa1cda0a26744ea8cfcee232b6d76, type: 3}
     sellPrice: 5000
     rank: 3
     color: 0
     field: 3
+    set: 4
   - name: "\uB41C\uC7A5"
     sprite: {fileID: 21300000, guid: 1005c239a9cfd664eadc5863d221df79, type: 3}
     sellPrice: 5000
     rank: 3
     color: 7
     field: 3
+    set: 4
   - name: "\uBC14\uBCA0\uD050\uC18C\uC2A4"
     sprite: {fileID: 21300000, guid: 7a2e052e3a1ffe34c8968f6bdd29d39b, type: 3}
     sellPrice: 5000
     rank: 3
     color: 6
     field: 3
+    set: 4
   - name: "\uD718\uD551\uD06C\uB9BC"
     sprite: {fileID: 21300000, guid: 8dfae4cc4f56ad9459104934b1655f2e, type: 3}
     sellPrice: 5000
     rank: 3
     color: 1
     field: 3
+    set: 4
   - name: "\uC62C\uB9AC\uBE0C\uC624\uC77C"
     sprite: {fileID: 21300000, guid: 77608c0726b5e1a48a0e8d834279e463, type: 3}
     sellPrice: 5000
     rank: 3
     color: 3
     field: 3
+    set: 4
   - name: "\uC870\uCCAD"
     sprite: {fileID: 21300000, guid: f05ce8def0aec10429fc957ed74b1e7a, type: 3}
     sellPrice: 5000
     rank: 3
     color: 5
     field: 3
+    set: 4

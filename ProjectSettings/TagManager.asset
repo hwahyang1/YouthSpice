@@ -6,6 +6,7 @@ TagManager:
   tags:
   - DontDestroyOnLoadRoot
   - Ingredient
+  - ScreenshotExcept
   layers:
   - Default
   - TransparentFX

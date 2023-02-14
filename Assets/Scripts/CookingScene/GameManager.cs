@@ -1,23 +1,110 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
 using UnityEngine;
 
-namespace YouthSpice
+using NaughtyAttributes;
+
+using YouthSpice.CookingScene.RecipeStage;
+using YouthSpice.CookingScene.ResultStage.UI;
+using YouthSpice.CookingScene.UI;
+using YouthSpice.CookingScene.WholeStage;
+using YouthSpice.CookingScene.WholeStage.UI;
+
+namespace YouthSpice.CookingScene
 {
 	/// <summary>
-	/// Description
+	/// 게임의 전반적인 실행을 관리합니다.
 	/// </summary>
 	public class GameManager : MonoBehaviour
 	{
+		[Header("Status")]
+		[SerializeField, ReadOnly]
+		private CookingFlow currentChapter;
+		public CookingFlow CurrentChapter => currentChapter;
+		[SerializeField, ReadOnly]
+		private bool isFirstResult = true;
+
+		[ReadOnly]
+		public bool ended = false;
+
+		[Header("Classes")]
+		[SerializeField]
+		private SelectionManager selectionManager;
+		[SerializeField]
+		private ButtonManager buttonManager;
+		[SerializeField]
+		private RecipeManager recipeManager;
+		[SerializeField]
+		private GenerateFood generateFood;
+		[SerializeField]
+		private UIManager uiManager;
+		[SerializeField]
+		private UIAnimator uiAnimator;
+
+		private StageManager stageManager;
+
 		private void Start()
 		{
+			stageManager = GetComponent<StageManager>();
 			
+			Set();
 		}
 
 		private void Update()
 		{
+			if (ended)
+			{
+				if (Input.anyKeyDown) Exit();
+			}
+		}
+
+		public void GoNext()
+		{
+			if (currentChapter == CookingFlow.Recipe && !recipeManager.IsEnded)
+			{
+				recipeManager.GoNext();
+				return;
+			}
 			
+			currentChapter = (CookingFlow)((int)currentChapter + 1);
+			
+			Set();
+		}
+
+		private void Set()
+		{
+			buttonManager.SetButtonActive(false);
+			buttonManager.SetButtonText((int)currentChapter);
+
+			if (currentChapter == CookingFlow.Result)
+			{
+				if (isFirstResult)
+				{
+					uiAnimator.First(Set);
+					isFirstResult = false;
+				}
+				else
+				{
+					stageManager.GoNext();
+					
+					bool success = generateFood.TryGenerate();
+					uiManager.Set(success);
+					uiAnimator.Run();
+				}
+			}
+			else
+			{
+				stageManager.GoNext();
+				selectionManager.GoNext();
+			}
+		}
+
+		private void Exit()
+		{
+			//TODO
+			print("END");
 		}
 	}
 }

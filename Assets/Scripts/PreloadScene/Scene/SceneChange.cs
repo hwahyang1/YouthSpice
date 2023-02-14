@@ -23,13 +23,6 @@ namespace YouthSpice.PreloadScene.Scene
 		[SerializeField]
 		private Text loadingPercent;
 
-		[Header("Unused GameObject (Canvas)")]
-		[SerializeField]
-		private GameObject cover;
-
-		[SerializeField]
-		private GameObject loadingText;
-
 		[Header("Speed")]
 		[SerializeField]
 		private float transitionTime = 1f;
@@ -62,9 +55,6 @@ namespace YouthSpice.PreloadScene.Scene
 
 			if (fadeIn || fadeOut)
 			{
-				cover.SetActive(false);
-				loadingText.SetActive(false);
-
 				loadingCover.color = new Color(1f, 1f, 1f, 0f);
 				loadingCover.gameObject.SetActive(true);
 				canvas.SetActive(true);
@@ -120,8 +110,6 @@ namespace YouthSpice.PreloadScene.Scene
 
 			if (fadeIn || fadeOut)
 			{
-				cover.SetActive(true);
-				loadingText.SetActive(true);
 				loadingCover.gameObject.SetActive(false);
 				canvas.SetActive(false);
 			}
