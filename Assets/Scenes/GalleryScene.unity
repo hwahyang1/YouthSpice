@@ -3701,6 +3701,7 @@ GameObject:
   - component: {fileID: 424052851}
   - component: {fileID: 424052850}
   - component: {fileID: 424052849}
+  - component: {fileID: 424052853}
   m_Layer: 5
   m_Name: Main Canvas
   m_TagString: Untagged
@@ -3800,6 +3801,26 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!95 &424052853
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 424052848}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: ce7213d7f8d657e40b3f2adda27a74e8, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
 --- !u!1001 &446877460
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5784,6 +5805,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6ed6db2efe68f241af338c2f002d95c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 424052853}
 --- !u!114 &728279272
 MonoBehaviour:
   m_ObjectHideFlags: 0

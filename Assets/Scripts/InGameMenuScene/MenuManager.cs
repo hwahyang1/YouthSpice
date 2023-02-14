@@ -1,7 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 using UnityEngine;
+using UnityEngine.SceneManagement;
+
 using YouthSpice.CookingScene.Extern;
 using YouthSpice.PreloadScene.Scene;
 using YouthSpice.SaveLoadSlotScene.Extern;
@@ -14,6 +19,14 @@ namespace YouthSpice.InGameMenuScene
 	/// </summary>
 	public class MenuManager : MonoBehaviour
 	{
+		[SerializeField]
+		private Animator animator;
+
+		private void Start()
+		{
+			animator.SetTrigger("On");
+		}
+		
 		public void OnSaveButtonClicked()
 		{
 			SaveLoadSlotLoadParams.Instance.mode = SaveLoadSlotMode.Save;
@@ -37,6 +50,28 @@ namespace YouthSpice.InGameMenuScene
 			CookingLoadParams.Instance.Exit();
 			StorySceneLoadParams.Instance.Exit();
 			SceneChange.Instance.ChangeScene("MenuScene");
+		}
+
+		public void Exit()
+		{
+			animator.SetTrigger("Off");
+
+			StartCoroutine(DelayedExitCoroutine());
+		}
+
+		private IEnumerator DelayedExitCoroutine()
+		{
+			yield return new WaitForSeconds(1f);
+			
+			if (SceneManager.sceneCount != 1) SceneChange.Instance.Unload("InGameMenuScene");
+			else
+			{
+				#if UNITY_EDITOR
+				EditorApplication.ExecuteMenuItem("Edit/Play");
+				#else
+				Application.Quit();
+				#endif
+			}
 		}
 	}
 }

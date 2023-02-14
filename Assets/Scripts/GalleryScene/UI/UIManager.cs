@@ -16,9 +16,26 @@ namespace YouthSpice.GalleryScene.UI
 	/// </summary>
 	public class UIManager : MonoBehaviour
 	{
+		[SerializeField]
+		private Animator animator;
+
+		private void Start()
+		{
+			animator.SetTrigger("On");
+		}
+		
 		public void Exit()
 		{
-			if (SceneManager.sceneCount != 1) SceneChange.Instance.Unload("ConfigScene");
+			animator.SetTrigger("Off");
+
+			StartCoroutine(DelayedExitCoroutine());
+		}
+
+		private IEnumerator DelayedExitCoroutine()
+		{
+			yield return new WaitForSeconds(0.55f);
+			
+			if (SceneManager.sceneCount != 1) SceneChange.Instance.Unload("GalleryScene");
 			else
 			{
 				#if UNITY_EDITOR
