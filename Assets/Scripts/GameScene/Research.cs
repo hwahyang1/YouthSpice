@@ -1,10 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
+
 using UnityEngine;
 using UnityEngine.UI;
+
 using YouthSpice.PreloadScene.Item;
-using YouthSpice.ShopScene;
 
 namespace YouthSpice.GameScene
 {
@@ -50,11 +50,15 @@ namespace YouthSpice.GameScene
 		[SerializeField] private bool isMiniGameControl = false;
 		
 		//아이템 불러오는 리스트 
-		List<ItemProperty> items = ItemBuffer.Instance.items;
+		private List<ItemProperty> items;
 
 		[SerializeField] private GameObject getItemPanel;
 		[SerializeField] private Image getItemImage;
 
+		private void Awake()
+		{
+			items = ItemBuffer.Instance.items;
+		}
 
 		private void Update()
 		{
