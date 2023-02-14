@@ -1,8 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using YouthSpice.PreloadScene.Item;
+using YouthSpice.ShopScene;
 
 namespace YouthSpice.GameScene
 {
@@ -11,42 +13,48 @@ namespace YouthSpice.GameScene
 	/// </summary>
 	public class Research : MonoBehaviour
 	{
+		public GameObject backGround;
+
 		//ui
-		private int timer = 8; //왼쪽위 제한시간
+		public int timer = 8; //왼쪽위 제한시간
 		[SerializeField] private GameObject needle;
-		[SerializeField] private Text timerText; //왼쪽위 타이머 텍스트
-		[SerializeField] private Text researchText;//탐색 상태 텍스트
-		[SerializeField] private Sprite[] researchImage;//탐색 상태 텍스트
-		[SerializeField] private Image researchImageRoot;//탐색 상태 텍스트
+		[SerializeField] private Sprite[] researchImage; //탐색 상태 이미지
+
+		[SerializeField] private Image researchImageRoot; //탐색 이미지 변화 위치 
+
 		//탐색 기능
 		private bool startTimerTime = false; //cooldown 지속 시간 (초)
-		private float cooldownTimer;   //cooldown 타이머
-		private bool onCooldown = false;   //cooldown 중인지 여부
-		
+		private float cooldownTimer; //cooldown 타이머
+		private bool onCooldown = false; //cooldown 중인지 여부
+
 		//값 변경
-		[Header("성공 확률 (%) , 미니게임성공확률과 성공 확률의 사이가")]
-		[SerializeField] private int successPercentage; //성공 확률
-                                                  
-		[Header("미니게임 성공 확률 (%) , 실패 확률 입니다")]
-		[SerializeField] private int minigamePercentage; //미니게임성공 확률
-		[Header("탐색 시간")]
-		[SerializeField] private float cooldownDuration; //탐색 시간 
-		
+		[Header("성공 확률 (%) , 미니게임성공확률과 성공 확률의 사이가")] [SerializeField]
+		private int successPercentage; //성공 확률
+
+		[Header("미니게임 성공 확률 (%) , 실패 확률 입니다")] [SerializeField]
+		private int minigamePercentage; //미니게임성공 확률
+
+		[Header("탐색 시간")] [SerializeField] private float cooldownDuration; //탐색 시간 
+
 		//미니게임
-		[Header("미니게임")]
-		[SerializeField] private GameObject minigamePanel;
+		[Header("미니게임")] [SerializeField] private GameObject minigamePanel;
 		[SerializeField] private float minigameCount = 50f;
 		[SerializeField] private Slider clickSlider;
 		[SerializeField] private Text sucessText;
+		[SerializeField] private Image fallImage;
+
 		[SerializeField] private int sliderForce;
-		
-		//배경
-		private RectTransform rectTransform;
-		[SerializeField] private GameObject background;
+
 		//시스템 제어
 		[SerializeField] private bool isControl = true; //미니게임 할떄 다른 기능 사용 못하게 하는 전제 제어 불값
 		[SerializeField] private bool isMiniGameControl = false;
 		
+		//아이템 불러오는 리스트 
+		List<ItemProperty> items = ItemBuffer.Instance.items;
+
+		[SerializeField] private GameObject getItemPanel;
+		[SerializeField] private Image getItemImage;
+
 
 		private void Update()
 		{
@@ -61,6 +69,13 @@ namespace YouthSpice.GameScene
 			{
 				MiniGame();
 			}
+
+			if (timer == -1)
+			{
+				researchImageRoot.sprite = researchImage[1];
+				researchImageRoot.gameObject.SetActive(true);
+				backGround.GetComponent<BackGround>().isGrow = false;
+			}
 		}
 
 		private void Researchfunction()
@@ -70,9 +85,9 @@ namespace YouthSpice.GameScene
 				// spacebar가 눌렸고, cooldown이 아직 안되어있으면
 				if (Input.GetKeyDown(KeyCode.Space) && !onCooldown)
 				{
+					backGround.GetComponent<BackGround>().isGrow = true;
 					researchImageRoot.gameObject.SetActive(false);
-					researchText.text = "탐색중"; //탐색중 택스트
-					timer--;//남은 탐색횟수 감소;
+					timer--; //남은 탐색횟수 감소;
 					onCooldown = true; // cooldown 중
 					cooldownTimer = cooldownDuration; // cooldown 타이머 초기화
 				}
@@ -89,11 +104,6 @@ namespace YouthSpice.GameScene
 					}
 				}
 			}
-			else
-			{
-				//researchText.text = "탐색 종료"; //탐색중 택스트
-				researchImageRoot.sprite = researchImage[1];
-			}
 		}
 
 		private void Randomfunction()
@@ -101,29 +111,38 @@ namespace YouthSpice.GameScene
 			float successChance = UnityEngine.Random.Range(0f, 101f);
 			if (successChance <= successPercentage)
 			{
+				backGround.GetComponent<BackGround>().width = 0;
+				backGround.GetComponent<BackGround>().height = 0;
+				backGround.GetComponent<BackGround>().isGrow = false;
 				Success();
 			}
-			else if(successChance > successPercentage && successChance < 100f- minigamePercentage)
+			else if (successChance > successPercentage && successChance < 100f - minigamePercentage)
 			{
+				backGround.GetComponent<BackGround>().width = 0;
+				backGround.GetComponent<BackGround>().height = 0;
+				backGround.GetComponent<BackGround>().isGrow = false;
 				Fail();
 			}
-			else if ( successChance >= 100f - minigamePercentage)
+			else if (successChance >= 100f - minigamePercentage)
 			{
-				//researchText.text = "미니게임!";
+				backGround.GetComponent<BackGround>().width = 0;
+				backGround.GetComponent<BackGround>().height = 0;
+				backGround.GetComponent<BackGround>().isGrow = false;
 				researchImageRoot.gameObject.SetActive(true);
 				researchImageRoot.sprite = researchImage[2];
 				isControl = false;
-				Invoke("MiniGamePanel",3f);
+				Invoke("MiniGamePanel", 3f);
 			}
 		}
+
 		private void Success()
 		{
-			researchText.text = "탐색 성공";
+			OceanLowRandom();
 			Debug.Log("성공");
 		}
+
 		private void Fail()
 		{
-			//researchText.text = "탐색 실패";
 			researchImageRoot.gameObject.SetActive(true);
 			researchImageRoot.sprite = researchImage[0];
 			Debug.Log("실패");
@@ -131,42 +150,33 @@ namespace YouthSpice.GameScene
 
 		private void TimeLimit()
 		{
-			if (timer >= 0)
-			{
-				timerText.text = "남은 탐색 횟수:" + timer;
-			}
-			else
-			{
-				timerText.text = "";
-			}
-
 			switch (timer)
 			{
-				case 8 :
+				case 8:
 					needle.transform.eulerAngles = new Vector3(0, 0, 71f);
 					break;
-				case 7 :
+				case 7:
 					needle.transform.eulerAngles = new Vector3(0, 0, 27f);
 					break;
-				case 6 :
+				case 6:
 					needle.transform.eulerAngles = new Vector3(0, 0, -18f);
 					break;
-				case 5 :
+				case 5:
 					needle.transform.eulerAngles = new Vector3(0, 0, -68f);
-					break; 
-				case 4 :
+					break;
+				case 4:
 					needle.transform.eulerAngles = new Vector3(0, 0, -103f);
 					break;
-				case 3 :
+				case 3:
 					needle.transform.eulerAngles = new Vector3(0, 0, -150f);
 					break;
-				case 2 :
+				case 2:
 					needle.transform.eulerAngles = new Vector3(0, 0, -195f);
 					break;
-				case 1 :
+				case 1:
 					needle.transform.eulerAngles = new Vector3(0, 0, -245f);
-					break; 
-				case 0 :
+					break;
+				case 0:
 					needle.transform.eulerAngles = new Vector3(0, 0, 71f);
 					break;
 			}
@@ -181,6 +191,7 @@ namespace YouthSpice.GameScene
 			isMiniGameControl = true;
 			minigamePanel.SetActive(true);
 		}
+
 		/// <summary>
 		/// 미니게임 함수
 		/// </summary>
@@ -190,17 +201,18 @@ namespace YouthSpice.GameScene
 			{
 				sucessText.text = "성공";
 				minigameCount = 100;
-				Invoke("MiniGamePanelFalse" , 3f);
+				Invoke("MiniGamePanelFalse", 3f);
 			}
-			else if(0 < minigameCount && minigameCount < 100)
+			else if (0 < minigameCount && minigameCount < 100)
 			{
-				minigameCount -= Time.deltaTime * sliderForce;
+				minigameCount -= Time.deltaTime * sliderForce; //미니게임 바 내려가는 속도 
 				clickSlider.value = minigameCount / 100;
 			}
-			else if(minigameCount < 0)
+			else if (minigameCount < 0)
 			{
-				sucessText.text = "실패";
-				Invoke("MiniGamePanelFalse" , 3f);
+				//sucessText.text = "실패";
+				fallImage.gameObject.SetActive(true);
+				Invoke("MiniGamePanelFalse", 3f);
 			}
 
 			if (Input.anyKeyDown)
@@ -213,10 +225,80 @@ namespace YouthSpice.GameScene
 		{
 			isControl = true;
 			isMiniGameControl = false;
+			fallImage.gameObject.SetActive(false);
 			minigameCount = 50;
 			sucessText.text = "";
 			minigamePanel.SetActive(false);
+			backGround.GetComponent<BackGround>().width = 0;
+			backGround.GetComponent<BackGround>().height = 0;
 			Debug.Log("미니게임창 꺼짐");
+		}
+		private void OceanLowRandom()
+		{
+			getItemPanel.gameObject.SetActive(true);
+			//바다에서 나오는 저가 상품 
+			List<ItemProperty> oceanItems = items.FindAll(target => target.field == ItemField.Ocean && target.rank == ItemRank.Low);
+			//랜덤으로 식재료를 뽑음 
+			int randomInt = Random.Range(0, oceanItems.Count);
+			ItemProperty item = oceanItems[randomInt];
+			//인벤에 저장 
+			int index = ItemBuffer.Instance.GetIndex(item.name);
+			GameInfo.Instance.inventory.Add(index);
+
+			getItemImage.sprite = item.sprite;
+		}
+		private void OceanMediumLowRandom()
+		{
+			getItemPanel.gameObject.SetActive(true);
+			//바다에서 나오는 중저가 상품 
+			List<ItemProperty> oceanItems = items.FindAll(target => target.field == ItemField.Ocean && target.rank == ItemRank.MediumLow);
+			//랜덤으로 식재료를 뽑음 
+			int randomInt = Random.Range(0, oceanItems.Count);
+			ItemProperty item = oceanItems[randomInt];
+			//인벤에 저장 
+			int index = ItemBuffer.Instance.GetIndex(item.name);
+			GameInfo.Instance.inventory.Add(index);
+		}
+		private void OceanMediumHighRandom()
+		{
+			getItemPanel.gameObject.SetActive(true);
+			//바다에서 나오는 중고가 상품 
+			List<ItemProperty> oceanItems = items.FindAll(target => target.field == ItemField.Ocean && target.rank == ItemRank.MediumHigh);
+			//랜덤으로 식재료를 뽑음 
+			int randomInt = Random.Range(0, oceanItems.Count);
+			ItemProperty item = oceanItems[randomInt];
+			//인벤에 저장 
+			int index = ItemBuffer.Instance.GetIndex(item.name);
+			GameInfo.Instance.inventory.Add(index);
+		}
+		private void OceanHighRandom()
+		{
+			getItemPanel.gameObject.SetActive(true);
+			//바다에서 나오는 고가 상품 
+			List<ItemProperty> oceanItems = items.FindAll(target => target.field == ItemField.Ocean && target.rank == ItemRank.High);
+			//랜덤으로 식재료를 뽑음 
+			int randomInt = Random.Range(0, oceanItems.Count);
+			ItemProperty item = oceanItems[randomInt];
+			//인벤에 저장 
+			int index = ItemBuffer.Instance.GetIndex(item.name);
+			GameInfo.Instance.inventory.Add(index);
+		}
+
+		private void GroundRandom()
+		{
+
+			List<ItemProperty> groundItems = items.FindAll(target => target.field == ItemField.Ground);
+		}
+
+		private void MountainRandom()
+		{
+
+			List<ItemProperty> mountainItems = items.FindAll(target => target.field == ItemField.Mountain);
+		}
+
+		public void GetItemPanelFalse()
+		{
+			getItemPanel.gameObject.SetActive(false);
 		}
 	}
 }
