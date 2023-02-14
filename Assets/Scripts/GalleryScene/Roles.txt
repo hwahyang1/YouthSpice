@@ -1,0 +1,10 @@
+﻿[GalleryScene]
+
+: UI
+ - TabManager: 탭 이동 관리
+ - UIManager: UI 관리
+
+: ImageElements
+ - ImageElementsManager: 전체 이미지 항목 관리
+ - ImageElement: 각 이미지 항목 관리
+ - ImageFullScreen: 이미지 전체화면 관리

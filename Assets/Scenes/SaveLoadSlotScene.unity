@@ -727,7 +727,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1029913071}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ebf31b04cc233a845810d4f1c9325108, type: 3}
   m_Name: 
@@ -882,6 +882,7 @@ GameObject:
   - component: {fileID: 1084126880}
   - component: {fileID: 1084126879}
   - component: {fileID: 1084126881}
+  - component: {fileID: 1084126882}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -935,6 +936,22 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 49f8c275e22667547a3953445be53208, type: 3}
   - {fileID: 21300000, guid: ad3e131cc202c6f4ebd1fe7a714c3751, type: 3}
   titleTextImageArea: {fileID: 1554422393}
+--- !u!114 &1084126882
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1084126878}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66dd76724758a7543b5ed5fb35f6ee14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  changeValue: 50
+  target: {fileID: 1446937776}
+  upButton: {fileID: 1334773734}
+  downButton: {fileID: 1677543786}
 --- !u!1001 &1134295494
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1124,7 +1141,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1228083989}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ebf31b04cc233a845810d4f1c9325108, type: 3}
   m_Name: 
@@ -1503,7 +1520,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 512
   m_TargetDisplay: 0
 --- !u!224 &1483216233
 RectTransform:

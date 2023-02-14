@@ -33,6 +33,18 @@ namespace YouthSpice
 		Ocean,
 		ShopOnly
 	}
+
+	public enum ItemSet
+	{
+		과일모둠,
+		채소모둠,
+		고기모둠,
+		해산물모둠,
+		혼합된소스모둠,
+		떡,
+		기본약과,
+		없음
+	}
     
 	[System.Serializable]
 	public class ItemProperty
@@ -43,5 +55,6 @@ namespace YouthSpice
 		public ItemRank rank;
 		public ItemColor color;
 		public ItemField field;
+		public ItemSet set;
 	}
 }

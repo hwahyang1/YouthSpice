@@ -135,6 +135,7 @@ GameObject:
   - component: {fileID: 20626282}
   - component: {fileID: 20626281}
   - component: {fileID: 20626280}
+  - component: {fileID: 20626284}
   m_Layer: 5
   m_Name: Main Canvas
   m_TagString: Untagged
@@ -201,7 +202,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 8
+  m_SortingOrder: 512
   m_TargetDisplay: 0
 --- !u!224 &20626283
 RectTransform:
@@ -229,6 +230,26 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!95 &20626284
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 20626279}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: d29908824768a0548bd74e1b6ac4ccf7, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
 --- !u!1 &48406083 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 777746979394636186, guid: 71b51c78aa791114abbf1509e35eca5a, type: 3}

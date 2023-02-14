@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 905399546175479414}
+  - component: {fileID: 6167587338212541150}
   m_Layer: 5
   m_Name: Select None Element
   m_TagString: Untagged
@@ -38,6 +39,24 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 200, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &6167587338212541150
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 905399546175479417}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6a6e34eb49b24e04bb7869f6d4220966, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  majorIndex: 0
+  minorIndex: 0
+  itemNumber: 0
+  itemImage: {fileID: 905399547064058416}
+  itemName: {fileID: 905399547613357486}
+  selectButton: {fileID: 905399547064058414}
 --- !u!1 &905399547064058418
 GameObject:
   m_ObjectHideFlags: 0
@@ -158,7 +177,20 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 905399547064058416}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 6167587338212541150}
+        m_TargetAssemblyTypeName: YouthSpice.CookingScene.SelectionStage.UI.Element,
+          Assembly-CSharp
+        m_MethodName: OnClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &905399547613357488
 GameObject:
   m_ObjectHideFlags: 0
