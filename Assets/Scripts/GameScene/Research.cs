@@ -1,6 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
-
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,6 +14,7 @@ namespace YouthSpice.GameScene
 	public class Research : MonoBehaviour
 	{
 		public GameObject backGround;
+		public Map map;
 
 		//ui
 		public int timer = 8; //왼쪽위 제한시간
@@ -40,8 +41,6 @@ namespace YouthSpice.GameScene
 		[Header("미니게임")] [SerializeField] private GameObject minigamePanel;
 		[SerializeField] private float minigameCount = 50f;
 		[SerializeField] private Slider clickSlider;
-		[SerializeField] private Text sucessText;
-		[SerializeField] private Image fallImage;
 
 		[SerializeField] private int sliderForce;
 
@@ -55,7 +54,16 @@ namespace YouthSpice.GameScene
 		[SerializeField] private GameObject getItemPanel;
 		[SerializeField] private Image getItemImage;
 
-		private void Awake()
+		public bool isOcean;
+		public bool isGround;
+		public bool isMountain;
+
+		[SerializeField] private Sprite[] getResearchImage;
+
+		private bool canMinigameGetItem = true;
+		
+
+		private void Start()
 		{
 			items = ItemBuffer.Instance.items;
 		}
@@ -89,6 +97,8 @@ namespace YouthSpice.GameScene
 				// spacebar가 눌렸고, cooldown이 아직 안되어있으면
 				if (Input.GetKeyDown(KeyCode.Space) && !onCooldown)
 				{
+					map.GetComponent<Map>().mapSelectBtn.gameObject.SetActive(false);
+					getItemPanel.gameObject.SetActive(false);
 					backGround.GetComponent<BackGround>().isGrow = true;
 					researchImageRoot.gameObject.SetActive(false);
 					timer--; //남은 탐색횟수 감소;
@@ -115,20 +125,26 @@ namespace YouthSpice.GameScene
 			float successChance = UnityEngine.Random.Range(0f, 101f);
 			if (successChance <= successPercentage)
 			{
+				//성공
 				backGround.GetComponent<BackGround>().width = 0;
 				backGround.GetComponent<BackGround>().height = 0;
 				backGround.GetComponent<BackGround>().isGrow = false;
+				map.GetComponent<Map>().mapSelectBtn.gameObject.SetActive(true);
 				Success();
 			}
 			else if (successChance > successPercentage && successChance < 100f - minigamePercentage)
 			{
+				//실패
 				backGround.GetComponent<BackGround>().width = 0;
 				backGround.GetComponent<BackGround>().height = 0;
 				backGround.GetComponent<BackGround>().isGrow = false;
+				map.GetComponent<Map>().mapSelectBtn.gameObject.SetActive(true);
 				Fail();
 			}
 			else if (successChance >= 100f - minigamePercentage)
 			{
+				//미니게임
+				map.GetComponent<Map>().mapSelectBtn.gameObject.SetActive(false);
 				backGround.GetComponent<BackGround>().width = 0;
 				backGround.GetComponent<BackGround>().height = 0;
 				backGround.GetComponent<BackGround>().isGrow = false;
@@ -141,8 +157,41 @@ namespace YouthSpice.GameScene
 
 		private void Success()
 		{
-			OceanLowRandom();
-			Debug.Log("성공");
+			getItemPanel.gameObject.SetActive(true);
+			float rand = Random.value;
+			if (isOcean)
+			{
+				if (rand <= 0.6f)
+				{
+					OceanLowRandom();
+				}
+				else
+				{
+					OceanMediumLowRandom();
+				}
+			}
+			else if(isGround)
+			{
+				if (rand <= 0.6f)
+				{
+					GroundLowRandom();
+				}
+				else
+				{
+					GroundMediumLowRandom();
+				}
+			}
+			else if(isMountain)
+			{
+				if (rand <= 0.6f)
+				{
+					MountainLowRandom();
+				}
+				else
+				{
+					MountainMediumLowRandom();
+				}
+			}
 		}
 
 		private void Fail()
@@ -151,7 +200,6 @@ namespace YouthSpice.GameScene
 			researchImageRoot.sprite = researchImage[0];
 			Debug.Log("실패");
 		}
-
 		private void TimeLimit()
 		{
 			switch (timer)
@@ -195,6 +243,7 @@ namespace YouthSpice.GameScene
 			isMiniGameControl = true;
 			minigamePanel.SetActive(true);
 		}
+		
 
 		/// <summary>
 		/// 미니게임 함수
@@ -203,9 +252,48 @@ namespace YouthSpice.GameScene
 		{
 			if (minigameCount > 100)
 			{
-				sucessText.text = "성공";
+				getItemPanel.gameObject.SetActive(true);
+				float rand = Random.value;
 				minigameCount = 100;
-				Invoke("MiniGamePanelFalse", 3f);
+				if (canMinigameGetItem)
+				{
+					canMinigameGetItem = false;
+					if (isOcean)
+					{
+						if (rand <= 0.8)
+						{
+							OceanMediumHighRandom();
+						}
+						else
+						{
+							OceanHighRandom();
+						}
+					}
+					else if (isGround)
+					{
+						if (rand <= 0.8f)
+						{
+							GroundMediumHighRandom();
+						}
+						else
+						{
+							GroundHighRandom();
+						}
+					}
+					else if (isMountain)
+					{
+						if (rand <= 0.8f)
+						{
+							MountainMediumHighRandom();
+						}
+						else
+						{
+							MountainHighRandom();
+						}
+					}
+				}
+
+				MiniGamePanelFalse();
 			}
 			else if (0 < minigameCount && minigameCount < 100)
 			{
@@ -215,8 +303,9 @@ namespace YouthSpice.GameScene
 			else if (minigameCount < 0)
 			{
 				//sucessText.text = "실패";
-				fallImage.gameObject.SetActive(true);
-				Invoke("MiniGamePanelFalse", 3f);
+				researchImageRoot.sprite = researchImage[3];
+				MiniGamePanelFalse();
+				researchImageRoot.gameObject.SetActive(true);
 			}
 
 			if (Input.anyKeyDown)
@@ -227,11 +316,12 @@ namespace YouthSpice.GameScene
 
 		private void MiniGamePanelFalse()
 		{
+			map.GetComponent<Map>().mapSelectBtn.gameObject.SetActive(true);
+			researchImageRoot.gameObject.SetActive(false);
+			canMinigameGetItem = true;
 			isControl = true;
 			isMiniGameControl = false;
-			fallImage.gameObject.SetActive(false);
 			minigameCount = 50;
-			sucessText.text = "";
 			minigamePanel.SetActive(false);
 			backGround.GetComponent<BackGround>().width = 0;
 			backGround.GetComponent<BackGround>().height = 0;
@@ -239,21 +329,21 @@ namespace YouthSpice.GameScene
 		}
 		private void OceanLowRandom()
 		{
-			getItemPanel.gameObject.SetActive(true);
 			//바다에서 나오는 저가 상품 
 			List<ItemProperty> oceanItems = items.FindAll(target => target.field == ItemField.Ocean && target.rank == ItemRank.Low);
 			//랜덤으로 식재료를 뽑음 
+
 			int randomInt = Random.Range(0, oceanItems.Count);
 			ItemProperty item = oceanItems[randomInt];
+			print("인벤 저장");
 			//인벤에 저장 
 			int index = ItemBuffer.Instance.GetIndex(item.name);
 			GameInfo.Instance.inventory.Add(index);
-
-			getItemImage.sprite = item.sprite;
+			
+			getItemImage.sprite = getResearchImage[index];
 		}
 		private void OceanMediumLowRandom()
 		{
-			getItemPanel.gameObject.SetActive(true);
 			//바다에서 나오는 중저가 상품 
 			List<ItemProperty> oceanItems = items.FindAll(target => target.field == ItemField.Ocean && target.rank == ItemRank.MediumLow);
 			//랜덤으로 식재료를 뽑음 
@@ -262,10 +352,11 @@ namespace YouthSpice.GameScene
 			//인벤에 저장 
 			int index = ItemBuffer.Instance.GetIndex(item.name);
 			GameInfo.Instance.inventory.Add(index);
+			
+			getItemImage.sprite = getResearchImage[index];
 		}
 		private void OceanMediumHighRandom()
 		{
-			getItemPanel.gameObject.SetActive(true);
 			//바다에서 나오는 중고가 상품 
 			List<ItemProperty> oceanItems = items.FindAll(target => target.field == ItemField.Ocean && target.rank == ItemRank.MediumHigh);
 			//랜덤으로 식재료를 뽑음 
@@ -274,10 +365,11 @@ namespace YouthSpice.GameScene
 			//인벤에 저장 
 			int index = ItemBuffer.Instance.GetIndex(item.name);
 			GameInfo.Instance.inventory.Add(index);
+			
+			getItemImage.sprite = getResearchImage[index];
 		}
 		private void OceanHighRandom()
 		{
-			getItemPanel.gameObject.SetActive(true);
 			//바다에서 나오는 고가 상품 
 			List<ItemProperty> oceanItems = items.FindAll(target => target.field == ItemField.Ocean && target.rank == ItemRank.High);
 			//랜덤으로 식재료를 뽑음 
@@ -286,18 +378,114 @@ namespace YouthSpice.GameScene
 			//인벤에 저장 
 			int index = ItemBuffer.Instance.GetIndex(item.name);
 			GameInfo.Instance.inventory.Add(index);
+			
+			getItemImage.sprite = getResearchImage[index];
 		}
 
-		private void GroundRandom()
+		private void GroundLowRandom() 
 		{
-
-			List<ItemProperty> groundItems = items.FindAll(target => target.field == ItemField.Ground);
+			//밭/논에서 나오는 저가 상품 
+			List<ItemProperty> groundItems = items.FindAll(target => target.field == ItemField.Ground && target.rank == ItemRank.Low);
+			//랜덤으로 식재료를 뽑음 
+			int randomInt = Random.Range(0, groundItems.Count);
+			ItemProperty item = groundItems[randomInt];
+			//인벤에 저장 
+			int index = ItemBuffer.Instance.GetIndex(item.name);
+			GameInfo.Instance.inventory.Add(index);
+			
+			getItemImage.sprite = getResearchImage[index];
+		}
+		private void GroundMediumLowRandom()
+		{
+			//밭/논에서 나오는 중저가 상품 
+			List<ItemProperty> groundItems = items.FindAll(target => target.field == ItemField.Ground && target.rank == ItemRank.MediumLow);
+			//랜덤으로 식재료를 뽑음 
+			int randomInt = Random.Range(0, groundItems.Count);
+			ItemProperty item = groundItems[randomInt];
+			//인벤에 저장 
+			int index = ItemBuffer.Instance.GetIndex(item.name);
+			GameInfo.Instance.inventory.Add(index);
+			
+			getItemImage.sprite = getResearchImage[index];
+		}
+		private void GroundMediumHighRandom()
+		{
+			//밭/논에서 나오는 중고가 상품 
+			List<ItemProperty> groundItems = items.FindAll(target => target.field == ItemField.Ground && target.rank == ItemRank.MediumHigh);
+			//랜덤으로 식재료를 뽑음 
+			int randomInt = Random.Range(0, groundItems.Count);
+			ItemProperty item = groundItems[randomInt];
+			//인벤에 저장 
+			int index = ItemBuffer.Instance.GetIndex(item.name);
+			GameInfo.Instance.inventory.Add(index);
+			
+			getItemImage.sprite = getResearchImage[index];
+		}
+		private void GroundHighRandom()
+		{
+			//밭/논에서 나오는 중고가 상품 
+			List<ItemProperty> groundItems = items.FindAll(target => target.field == ItemField.Ground && target.rank == ItemRank.High);
+			//랜덤으로 식재료를 뽑음 
+			int randomInt = Random.Range(0, groundItems.Count);
+			ItemProperty item = groundItems[randomInt];
+			//인벤에 저장 
+			int index = ItemBuffer.Instance.GetIndex(item.name);
+			GameInfo.Instance.inventory.Add(index);
+			
+			getItemImage.sprite = getResearchImage[index];
 		}
 
-		private void MountainRandom()
+		private void MountainLowRandom()
 		{
-
-			List<ItemProperty> mountainItems = items.FindAll(target => target.field == ItemField.Mountain);
+			//산에서 나오는 저가 상품 
+			List<ItemProperty> mountainItems = items.FindAll(target => target.field == ItemField.Mountain && target.rank == ItemRank.Low);
+			//랜덤으로 식재료를 뽑음 
+			int randomInt = Random.Range(0, mountainItems.Count);
+			ItemProperty item = mountainItems[randomInt];
+			//인벤에 저장 
+			int index = ItemBuffer.Instance.GetIndex(item.name);
+			GameInfo.Instance.inventory.Add(index);
+			
+			getItemImage.sprite = getResearchImage[index];
+		}
+		private void MountainMediumLowRandom()
+		{
+			//산에서 나오는 중저가 상품 
+			List<ItemProperty> mountainItems = items.FindAll(target => target.field == ItemField.Mountain && target.rank == ItemRank.MediumLow);
+			//랜덤으로 식재료를 뽑음 
+			int randomInt = Random.Range(0, mountainItems.Count);
+			ItemProperty item = mountainItems[randomInt];
+			//인벤에 저장 
+			int index = ItemBuffer.Instance.GetIndex(item.name);
+			GameInfo.Instance.inventory.Add(index);
+			
+			getItemImage.sprite = getResearchImage[index];
+		}
+		private void MountainMediumHighRandom()
+		{
+			//산에서 나오는 중고가 상품 
+			List<ItemProperty> mountainItems = items.FindAll(target => target.field == ItemField.Mountain && target.rank == ItemRank.MediumHigh);
+			//랜덤으로 식재료를 뽑음 
+			int randomInt = Random.Range(0, mountainItems.Count);
+			ItemProperty item = mountainItems[randomInt];
+			//인벤에 저장 
+			int index = ItemBuffer.Instance.GetIndex(item.name);
+			GameInfo.Instance.inventory.Add(index);
+			
+			getItemImage.sprite = getResearchImage[index];
+		}
+		private void MountainHighRandom()
+		{
+			//산에서 나오는 고가 상품 
+			List<ItemProperty> mountainItems = items.FindAll(target => target.field == ItemField.Mountain && target.rank == ItemRank.High);
+			//랜덤으로 식재료를 뽑음 
+			int randomInt = Random.Range(0, mountainItems.Count);
+			ItemProperty item = mountainItems[randomInt];
+			//인벤에 저장 
+			int index = ItemBuffer.Instance.GetIndex(item.name);
+			GameInfo.Instance.inventory.Add(index);
+			
+			getItemImage.sprite = getResearchImage[index];
 		}
 
 		public void GetItemPanelFalse()
