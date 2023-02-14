@@ -16,8 +16,25 @@ namespace YouthSpice.ConfigScene.UI
 	/// </summary>
 	public class UIManager : MonoBehaviour
 	{
+		[SerializeField]
+		private Animator animator;
+
+		private void Start()
+		{
+			animator.SetTrigger("On");
+		}
+
 		public void Exit()
 		{
+			animator.SetTrigger("Off");
+
+			StartCoroutine(DelayedExitCoroutine());
+		}
+
+		private IEnumerator DelayedExitCoroutine()
+		{
+			yield return new WaitForSeconds(1.05f);
+			
 			if (SceneManager.sceneCount != 1) SceneChange.Instance.Unload("ConfigScene");
 			else
 			{

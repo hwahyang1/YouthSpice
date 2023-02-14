@@ -3411,6 +3411,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentChapter: 0
+  isFirstRecipe: 1
   isFirstResult: 1
   ended: 0
   selectionManager: {fileID: 547835507}

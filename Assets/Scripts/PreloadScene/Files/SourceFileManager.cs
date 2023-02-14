@@ -34,26 +34,26 @@ namespace YouthSpice.PreloadScene.Files
 
 		[Header("Files")]
 		[SerializeField, ReadOnly]
-		private List<AudioClip> availableAudios;
+		private List<AudioClip> availableAudios = new List<AudioClip>();
 
 		public List<AudioClip> AvailableAudios => availableAudios;
 
 		[SerializeField, ReadOnly]
-		private List<Sprite> availableBackgroundImages;
+		private List<Sprite> availableBackgroundImages = new List<Sprite>();
 
 		public List<Sprite> AvailableBackgroundImages => availableBackgroundImages;
 
 		[SerializeField, ReadOnly]
-		private List<Sprite> availableDayImages;
+		private List<Sprite> availableDayImages = new List<Sprite>();
 
 		public List<Sprite> AvailableDayImages => availableDayImages;
 
 		[SerializeField, ReadOnly]
-		private List<Sprite> availableStandingIllusts;
+		private List<Sprite> availableStandingIllusts = new List<Sprite>();
 
 		public List<Sprite> AvailableStandingIllusts => availableStandingIllusts;
 
-		private Dictionary<string, DefineChapter> availableChapters;
+		private Dictionary<string, DefineChapter> availableChapters = new Dictionary<string, DefineChapter>();
 		public Dictionary<string, DefineChapter> AvailableChapters => availableChapters;
 
 		protected override async void Awake()
@@ -65,6 +65,12 @@ namespace YouthSpice.PreloadScene.Files
 
 		public async Task RefreshAll()
 		{
+			availableAudios.Clear();
+			availableBackgroundImages.Clear();
+			availableDayImages.Clear();
+			availableStandingIllusts.Clear();
+			availableChapters.Clear();
+			
 			isCustomResourceFolder = StorySceneLoadParams.Instance.resourceCustomPath != null;
 			isCustomChapterFolder = StorySceneLoadParams.Instance.chapterCustomPath != null;
 

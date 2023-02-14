@@ -19,14 +19,31 @@ namespace YouthSpice.SaveLoadSlotScene.UI
 	public class UIManager : MonoBehaviour
 	{
 		[SerializeField]
+		private Animator animator;
+		
+		[SerializeField]
 		[Tooltip("SaveLoadSlotMode 기준으로 이미지를 지정합니다.")]
 		private Sprite[] titleTextImages;
 		
 		[SerializeField]
 		private Image titleTextImageArea;
-		
+
+		private void Start()
+		{
+			animator.SetTrigger("On");
+		}
+
 		public void Exit()
 		{
+			animator.SetTrigger("Off");
+
+			StartCoroutine(DelayedExitCoroutine());
+		}
+
+		private IEnumerator DelayedExitCoroutine()
+		{
+			yield return new WaitForSeconds(0.55f);
+			
 			SaveLoadSlotLoadParams.Instance.Exit();
 			if (SceneManager.sceneCount != 1) SceneChange.Instance.Unload("SaveLoadSlotScene");
 			else

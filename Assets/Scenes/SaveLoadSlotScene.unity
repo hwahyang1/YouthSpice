@@ -932,6 +932,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82634e2f1aa40fb4a9d6b5a33903f7fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 1483216234}
   titleTextImages:
   - {fileID: 21300000, guid: 49f8c275e22667547a3953445be53208, type: 3}
   - {fileID: 21300000, guid: ad3e131cc202c6f4ebd1fe7a714c3751, type: 3}
@@ -1454,9 +1455,10 @@ GameObject:
   - component: {fileID: 1483216232}
   - component: {fileID: 1483216231}
   - component: {fileID: 1483216230}
+  - component: {fileID: 1483216234}
   m_Layer: 5
   m_Name: Main Canvas
-  m_TagString: Untagged
+  m_TagString: ScreenshotExcept
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1547,6 +1549,26 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!95 &1483216234
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1483216229}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 0da9cb5f1a8c60041a22ed60c2dff41e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
 --- !u!1 &1554422391
 GameObject:
   m_ObjectHideFlags: 0

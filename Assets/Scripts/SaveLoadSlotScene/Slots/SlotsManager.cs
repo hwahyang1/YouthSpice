@@ -29,6 +29,11 @@ namespace YouthSpice.SaveLoadSlotScene.Slots
 		
 		private void Awake()
 		{
+			RebuildSlots();
+		}
+
+		private void RebuildSlots()
+		{
 			for (int i = 0; i < parent.childCount; i++)
 			{
 				Destroy(parent.GetChild(i).gameObject);
@@ -62,11 +67,16 @@ namespace YouthSpice.SaveLoadSlotScene.Slots
 			{
 				if (data == null)
 				{
-					//
+					SaveSlotManager.Instance.Save(index);
 					return;
 				}
 				
-				AlertManager.Instance.Show(AlertType.Double, "경고", "기존의 데이터를 덮어쓰시겠습니까?", new Dictionary<string, Action>(){{"저장하기", null}, {"취소", null}});
+				AlertManager.Instance.Show(AlertType.Double, "경고", "기존의 데이터를 덮어쓰시겠습니까?", new Dictionary<string, Action>(){{"저장하기",
+					()=>
+					{
+						SaveSlotManager.Instance.Save(index);
+						RebuildSlots();
+					}}, {"취소", null}});
 			}
 			else
 			{
@@ -76,7 +86,11 @@ namespace YouthSpice.SaveLoadSlotScene.Slots
 					return;
 				}
 				
-				AlertManager.Instance.Show(AlertType.Double, "경고", "정말로 불러오시겠습니까?\n저장되지 않은 데이터는 사라집니다.", new Dictionary<string, Action>(){{"불러오기", null}, {"취소", null}});
+				AlertManager.Instance.Show(AlertType.Double, "경고", "정말로 불러오시겠습니까?\n저장되지 않은 데이터는 사라집니다.", new Dictionary<string, Action>(){{"불러오기",
+					() =>
+					{
+						SaveSlotManager.Instance.Load(index);
+					}}, {"취소", null}});
 			}
 		}
 	}
