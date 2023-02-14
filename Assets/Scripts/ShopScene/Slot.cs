@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace YouthSpice.ShopScene
 {
@@ -13,8 +14,11 @@ namespace YouthSpice.ShopScene
 	{
 		public ItemProperty item;
 		public UnityEngine.UI.Image Image;
+		public UnityEngine.UI.Image foodInfoImage;
 
-		public void SetItem(ItemProperty item)
+		public Button button;
+
+		public void SetItem(ItemProperty item, Action<Slot> buttonCallback = null)
 		{
 			this.item = item;
 			if (item == null)
@@ -28,6 +32,11 @@ namespace YouthSpice.ShopScene
 				Image.enabled = true;
 				gameObject.name = item.name;
 				Image.sprite = item.sprite;
+			}
+			
+			if (buttonCallback != null)
+			{
+				button.onClick.AddListener(() => { buttonCallback(this);});
 			}
 		}
 	}
