@@ -81,5 +81,10 @@ namespace YouthSpice
 
 			friendship = data.Friendship;
 		}
+
+		public void Exit()
+		{
+			Destroy(gameObject);
+		}
 	}
 }

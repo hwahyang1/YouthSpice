@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 using NaughtyAttributes;
-
+using YouthSpice.PreloadScene.Config;
 using YouthSpice.StoryScene.Chapter;
 
 namespace YouthSpice.StoryScene.UI
@@ -44,10 +44,6 @@ namespace YouthSpice.StoryScene.UI
 
 		[SerializeField, ReadOnly]
 		private string fullScript = "";
-
-		[Header("Time")]
-		[SerializeField, Range(0.01f, 1f), Tooltip("값이 높을수록 빨라집니다.")]
-		private float speechSpeed = 0.95f;
 
 		private ChapterManager chapterManager;
 
@@ -134,7 +130,7 @@ namespace YouthSpice.StoryScene.UI
 
 		private IEnumerator ShowSpeechCoroutine(Sprite characterName)
 		{
-			WaitForSeconds timeout = new WaitForSeconds(1f - speechSpeed);
+			WaitForSeconds timeout = new WaitForSeconds(1f - ConfigManager.Instance.GetConfig().typingSpeed);
 
 			nameArea.sprite = characterName;
 			if (characterName != null)
@@ -153,18 +149,23 @@ namespace YouthSpice.StoryScene.UI
 			isRunning = true;
 			isPrinting = true;
 
-			foreach (char currentCharacter in fullScript)
+			if (ConfigManager.Instance.GetConfig().useTypingEffect)
 			{
-				if (currentCharacter == ' ') // 공백은 한번에 한해 제함
+				foreach (char currentCharacter in fullScript)
 				{
+					if (currentCharacter == ' ') // 공백은 한번에 한해 제함
+					{
+						speechArea.text += currentCharacter;
+						continue;
+					}
+
 					speechArea.text += currentCharacter;
-					continue;
+
+					yield return timeout;
 				}
-
-				speechArea.text += currentCharacter;
-
-				yield return timeout;
 			}
+
+			speechArea.text = fullScript;
 
 			scriptEndedArea.color = new Color(1f, 1f, 1f, 1f);
 

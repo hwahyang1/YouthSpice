@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 
 using UnityEngine;
-
+using YouthSpice.CookingScene.Extern;
 using YouthSpice.PreloadScene.Scene;
 using YouthSpice.SaveLoadSlotScene.Extern;
+using YouthSpice.StoryScene.Extern;
 
 namespace YouthSpice.InGameMenuScene
 {
@@ -32,7 +33,10 @@ namespace YouthSpice.InGameMenuScene
 
 		public void OnExitButtonClicked()
 		{
-			// TODO
+			GameInfo.Instance.Exit();
+			CookingLoadParams.Instance.Exit();
+			StorySceneLoadParams.Instance.Exit();
+			SceneChange.Instance.ChangeScene("MenuScene");
 		}
 	}
 }

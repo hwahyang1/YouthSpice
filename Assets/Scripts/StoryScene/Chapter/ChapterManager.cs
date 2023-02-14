@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Action = System.Action;
 
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -14,6 +11,7 @@ using NaughtyAttributes;
 using YouthSpice.PreloadScene.Scene;
 using YouthSpice.PreloadScene.Alert;
 using YouthSpice.PreloadScene.Files;
+using YouthSpice.PreloadScene.Game;
 using YouthSpice.StoryScene.Audio;
 using YouthSpice.StoryScene.Extern;
 using YouthSpice.StoryScene.UI;
@@ -338,7 +336,7 @@ namespace YouthSpice.StoryScene.Chapter
 		/// </summary>
 		public void Exit()
 		{
-			Destroy(StorySceneLoadParams.Instance.gameObject);
+			StorySceneLoadParams.Instance.Exit();
 			
 			// GameInfo에 변경사항 반영
 			friendship.Apply();
@@ -346,12 +344,8 @@ namespace YouthSpice.StoryScene.Chapter
 			if (SceneManager.sceneCount != 1) SceneChange.Instance.Unload("StoryScene");
 			else
 			{
-				//TODO 다른 Scene으로 변경할 수 있게 Params 넘기는 것도?
-				#if UNITY_EDITOR
-				EditorApplication.ExecuteMenuItem("Edit/Play");
-				#else
-				Application.Quit();
-				#endif
+				GameProgressManager.Instance.CountUp();
+				GameProgressManager.Instance.RunThisChapter();
 			}
 		}
 	}

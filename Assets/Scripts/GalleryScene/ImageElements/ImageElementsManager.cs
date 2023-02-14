@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 
 using UnityEngine;
+using YouthSpice.PreloadScene.Files;
+using YouthSpice.PreloadScene.Item;
 
 namespace YouthSpice.GalleryScene.ImageElements
 {
@@ -10,6 +12,89 @@ namespace YouthSpice.GalleryScene.ImageElements
 	/// </summary>
 	public class ImageElementsManager : MonoBehaviour
 	{
-		private List<Sprite> illustCGs;
+		[Header("Resources")]
+		[SerializeField]
+		private Sprite[] recipeFoodSprites;
+		
+		[Header("GameObjects")]
+		[SerializeField]
+		private Transform illustsParent;
+		[SerializeField]
+		private Transform recipeFoodsParent;
+		[SerializeField]
+		private Transform researchItemsParent;
+
+		private List<ImageElement> illustsChilds;
+		private List<ImageElement> recipeFoodsChilds;
+		private List<ImageElement> researchItemsChilds;
+
+		private ImageFullScreen imageFullScreen;
+		
+		private void Start()
+		{
+			imageFullScreen = GetComponent<ImageFullScreen>();
+			RefreshAllChildLists();
+			InitAllChildLists();
+		}
+
+		private void RefreshAllChildLists()
+		{
+			illustsChilds = new List<ImageElement>();
+			for (int i = 1; i < illustsParent.childCount; i++)
+			{
+				Transform parent = illustsParent.GetChild(i);
+				for (int j = 0; j < parent.childCount; j++)
+				{
+					ImageElement child = parent.GetChild(j).GetComponent<ImageElement>();
+					illustsChilds.Add(child);
+				}
+			}
+			
+			recipeFoodsChilds = new List<ImageElement>();
+			for (int i = 1; i < recipeFoodsParent.childCount; i++)
+			{
+				Transform parent = recipeFoodsParent.GetChild(i);
+				for (int j = 0; j < parent.childCount; j++)
+				{
+					ImageElement child = parent.GetChild(j).GetComponent<ImageElement>();
+					recipeFoodsChilds.Add(child);
+				}
+			}
+			
+			researchItemsChilds = new List<ImageElement>();
+			for (int i = 1; i < researchItemsParent.childCount; i++)
+			{
+				Transform parent = researchItemsParent.GetChild(i);
+				for (int j = 0; j < parent.childCount; j++)
+				{
+					ImageElement child = parent.GetChild(j).GetComponent<ImageElement>();
+					researchItemsChilds.Add(child);
+				}
+			}
+		}
+
+		private void InitAllChildLists()
+		{
+			DefineUnlockedCGs unlocked = UnlockedCGsManager.Instance.GetAllData();
+			
+			for (int i = 0; i < illustsChilds.Count; i++)
+			{
+				bool isUnlocked = unlocked.illusts.Exists(target => target == i);
+				illustsChilds[i].Init(null, isUnlocked, imageFullScreen.Show);
+			}
+			
+			for (int i = 0; i < recipeFoodsChilds.Count; i++)
+			{
+				bool isUnlocked = unlocked.recipeFoods.Exists(target => target == i);
+				recipeFoodsChilds[i].Init(recipeFoodSprites[i], isUnlocked, imageFullScreen.Show);
+			}
+			
+			List<ItemProperty> foods = ItemBuffer.Instance.items;
+			for (int i = 0; i < researchItemsChilds.Count; i++)
+			{
+				bool isUnlocked = unlocked.researchItems.Exists(target => target == ItemBuffer.Instance.GetIndex(foods[i].name));
+				researchItemsChilds[i].Init(foods[i].sprite, isUnlocked, imageFullScreen.Show);
+			}
+		}
 	}
 }
