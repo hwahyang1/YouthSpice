@@ -2838,6 +2838,7 @@ GameObject:
   m_Component:
   - component: {fileID: 924822696}
   - component: {fileID: 924822697}
+  - component: {fileID: 924822698}
   m_Layer: 0
   m_Name: Managers - Selection Stage
   m_TagString: Untagged
@@ -2877,6 +2878,22 @@ MonoBehaviour:
   elementPrefab: {fileID: 5326609933360347749, guid: cef0e4bbfe4636f4286ba9a06e53ad14, type: 3}
   rootParent: {fileID: 39248329}
   selectionManager: {fileID: 547835507}
+--- !u!114 &924822698
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 924822695}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66dd76724758a7543b5ed5fb35f6ee14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  changeValue: 50
+  target: {fileID: 39248329}
+  upButton: {fileID: 1255919549}
+  downButton: {fileID: 835161610}
 --- !u!1 &938491264
 GameObject:
   m_ObjectHideFlags: 0
