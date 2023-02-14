@@ -20,13 +20,9 @@ namespace YouthSpice
 		private float growthSpeed;
 		private void Update()
 		{
-			if (Input.GetKeyDown(KeyCode.Space))
-			{
-				isGrow = true;
-			}
 			if (isGrow)
 			{
-				width += Time.deltaTime * growthSpeed;
+				width += Time.deltaTime * growthSpeed * 2f;
 				height += Time.deltaTime * growthSpeed;
 			}
 			
