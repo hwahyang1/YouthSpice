@@ -147,9 +147,9 @@ namespace YouthSpice.CookingScene.ResultStage.UI
 					break;
 				case AvailableMenus.우럭매운탕:
 					images[0].sprite = mt_base;
-					if (data[0].name != "(선택 안 함)") images[1].sprite = mt_select1.Find(target => target.set == data[0].set).sprite;
-					if (data[1].name != "(선택 안 함)") images[2].sprite = mt_select2.Find(target => target.color == data[1].color).sprite;
-					if (data[2].name != "(선택 안 함)") images[3].sprite = mt_select3.Find(target => target.set == data[2].set).sprite;
+					if (data[2].name != "(선택 안 함)") images[2].sprite = mt_select3.Find(target => target.set == data[2].set).sprite;
+					if (data[3].name != "(선택 안 함)") images[1].sprite = mt_select2.Find(target => target.color == data[3].color).sprite;
+					if (data[5].name != "(선택 안 함)") images[3].sprite = mt_select1.Find(target => target.set == data[5].set).sprite;
 					break;
 			}
 

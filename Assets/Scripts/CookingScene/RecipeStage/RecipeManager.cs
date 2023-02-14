@@ -63,8 +63,6 @@ namespace YouthSpice.CookingScene.RecipeStage
 			tempItem = -2;
 			tempIndex = -2;
 			isEnded = false;
-			
-			Set();
 		}
 
 		public void SelectItem(int index, int itemID)
@@ -113,7 +111,7 @@ namespace YouthSpice.CookingScene.RecipeStage
 			Set();
 		}
 
-		private void Set()
+		public void Set()
 		{
 			if (currentIndex == currentTexts.Count - 1) buttonManager.SetButtonText(2);
 			buttonManager.SetButtonActive(false);

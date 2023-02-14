@@ -26,6 +26,8 @@ namespace YouthSpice.GalleryScene.ImageElements
 		[Header("GameObjects")]
 		[SerializeField]
 		private Image imageObject;
+		[SerializeField]
+		private Image backgroundObject;
 
 		private void Awake()
 		{
@@ -44,7 +46,9 @@ namespace YouthSpice.GalleryScene.ImageElements
 		{
 			imageObject.color = activeColor;
 			imageObject.sprite = sprite;
+			imageObject.preserveAspect = true;
 			imageObject.gameObject.SetActive(true);
+			backgroundObject.gameObject.SetActive(true);
 			isRunning = true;
 		}
 
@@ -53,6 +57,7 @@ namespace YouthSpice.GalleryScene.ImageElements
 			imageObject.color = inactiveColor;
 			imageObject.sprite = null;
 			imageObject.gameObject.SetActive(false);
+			backgroundObject.gameObject.SetActive(false);
 			isRunning = false;
 		}
 	}

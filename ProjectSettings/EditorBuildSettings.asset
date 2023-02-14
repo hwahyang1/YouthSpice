@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/PreloadScene.unity
     guid: f385df5cdb2130640858f591fec03dbe
   - enabled: 1
+    path: Assets/Scenes/BlankScene.unity
+    guid: 1a2c93600b95b7b4ba1b694effb568ba
+  - enabled: 1
     path: Assets/Scenes/ConfigScene.unity
     guid: bae9a07bc8a23004086d518188a493d7
   - enabled: 1
@@ -23,6 +26,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/InGameMenuScene.unity
     guid: 01d8d3f645280384d8cedeaea28e61b4
+  - enabled: 1
+    path: Assets/Scenes/MapScene.unity
+    guid: 3cec83f75a3e24744973ab749391255e
   - enabled: 1
     path: Assets/Scenes/MenuScene.unity
     guid: 92d76624360c5274b81c3d7cbd4e913b

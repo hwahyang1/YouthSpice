@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -6,11 +5,14 @@ using UnityEngine;
 
 using NaughtyAttributes;
 
+using YouthSpice.CookingScene.Extern;
 using YouthSpice.CookingScene.RecipeStage;
 using YouthSpice.CookingScene.ResultStage.UI;
 using YouthSpice.CookingScene.UI;
 using YouthSpice.CookingScene.WholeStage;
 using YouthSpice.CookingScene.WholeStage.UI;
+using YouthSpice.PreloadScene.Files;
+using YouthSpice.PreloadScene.Game;
 
 namespace YouthSpice.CookingScene
 {
@@ -23,6 +25,8 @@ namespace YouthSpice.CookingScene
 		[SerializeField, ReadOnly]
 		private CookingFlow currentChapter;
 		public CookingFlow CurrentChapter => currentChapter;
+		[SerializeField, ReadOnly]
+		private bool isFirstRecipe = true;
 		[SerializeField, ReadOnly]
 		private bool isFirstResult = true;
 
@@ -90,12 +94,22 @@ namespace YouthSpice.CookingScene
 					stageManager.GoNext();
 					
 					bool success = generateFood.TryGenerate();
+					
+					DefineUnlockedCGs unlockedCGs = UnlockedCGsManager.Instance.GetAllData();
+					unlockedCGs.recipeFoods.Add((int)CookingLoadParams.Instance.menu);
+					UnlockedCGsManager.Instance.Save(unlockedCGs);
+					
 					uiManager.Set(success);
 					uiAnimator.Run();
 				}
 			}
 			else
 			{
+				if (currentChapter == CookingFlow.Recipe && isFirstRecipe)
+				{
+					recipeManager.Set();
+					isFirstRecipe = false;
+				}
 				stageManager.GoNext();
 				selectionManager.GoNext();
 			}
@@ -103,8 +117,9 @@ namespace YouthSpice.CookingScene
 
 		private void Exit()
 		{
-			//TODO
-			print("END");
+			CookingLoadParams.Instance.Exit();
+			GameProgressManager.Instance.CountUp();
+			GameProgressManager.Instance.RunThisChapter();
 		}
 	}
 }
