@@ -91,12 +91,35 @@ namespace YouthSpice.CookingScene.ResultStage.UI
 
 			foreach (int itemID in userRecipe)
 			{
-				data.Add(ItemBuffer.Instance.items[itemID]);
+				// -2 == 그냥 빈 칸
+				if (itemID == -2)
+				{
+					data.Add(new ItemProperty());
+				}
+				// -1 == 등록 포기
+				else if (itemID == -1)
+				{
+					data.Add(new ItemProperty() { name = "(선택 안 함)", color = ItemColor.None, set = ItemSet.없음});
+				}
+				else
+				{
+					data.Add(ItemBuffer.Instance.items[itemID]);
+				}
 			}
+			
+			// 고추-고추장 복수정답 -> 고추 선택 시, 내부적으로 아이템 코드를 고추장으로 변환함.
+			int index = userRecipe.FindIndex(target => target == 9);
+			if (index != -1) userRecipe[index] = 56;
 
 			for (int i = 0; i < (menu == AvailableMenus.우럭매운탕 ? 4 : 3); i++)
 			{
 				Image child = Instantiate(imagePrefab, Vector3.zero, Quaternion.identity, parent).GetComponent<Image>();
+				child.sprite = null;
+				
+				RectTransform childRect = child.GetComponent<RectTransform>();
+				childRect.offsetMin = Vector2.zero;
+				childRect.offsetMax = Vector2.zero;
+				
 				images.Add(child);
 			}
 
@@ -104,20 +127,36 @@ namespace YouthSpice.CookingScene.ResultStage.UI
 			{
 				case AvailableMenus.떡볶이:
 					images[0].sprite = tbk_base;
-					images[1].sprite = tbk_select1.Find(target => target.set == data[0].set).sprite;
-					images[2].sprite = tbk_select2.Find(target => target.color == data[1].color).sprite;
+					if (data[0].name != "(선택 안 함)") images[1].sprite = tbk_select1.Find(target => target.set == data[0].set).sprite;
+					if (data[1].name != "(선택 안 함)") images[2].sprite = tbk_select2.Find(target => target.color == data[1].color).sprite;
 					break;
 				case AvailableMenus.약과:
 					images[0].sprite = yk_base;
-					images[1].sprite = yk_select1.Find(target => target.set == data[0].set).sprite;
-					images[2].sprite = yk_select2.Find(target => target.color == data[1].color).sprite;
+					if (data[0].name != "(선택 안 함)")
+					{
+						if (data[0].name == "밀가루")
+						{
+							images[1].sprite = yk_select1.Find(target => target.set == ItemSet.기본약과).sprite;
+						}
+						else
+						{
+							images[1].sprite = yk_select1.Find(target => target.set == data[0].set).sprite;
+						}
+					}
+					if (data[1].name != "(선택 안 함)") images[2].sprite = yk_select2.Find(target => target.color == data[1].color).sprite;
 					break;
 				case AvailableMenus.우럭매운탕:
 					images[0].sprite = mt_base;
-					images[1].sprite = mt_select1.Find(target => target.set == data[0].set).sprite;
-					images[2].sprite = mt_select2.Find(target => target.color == data[1].color).sprite;
-					images[3].sprite = mt_select3.Find(target => target.set == data[2].set).sprite;
+					if (data[0].name != "(선택 안 함)") images[1].sprite = mt_select1.Find(target => target.set == data[0].set).sprite;
+					if (data[1].name != "(선택 안 함)") images[2].sprite = mt_select2.Find(target => target.color == data[1].color).sprite;
+					if (data[2].name != "(선택 안 함)") images[3].sprite = mt_select3.Find(target => target.set == data[2].set).sprite;
 					break;
+			}
+
+			foreach (Image image in images)
+			{
+				if (image.sprite == null) image.gameObject.SetActive(false);
+				else image.color = new Color(1f, 1f, 1f, 1f);
 			}
 
 			List<int> originalRecipe = recipeStorage.GetRecipe(menu).stepCorrectItems;

@@ -18,9 +18,11 @@ namespace YouthSpice.CookingScene.RecipeStage
 	/// </summary>
 	public class RecipeManager : MonoBehaviour
 	{
-		public bool IsEnded => currentIndex == currentTexts.Count - 1;
-
 		[Header("Statuses")]
+		[SerializeField, ReadOnly]
+		private bool isEnded = false;
+		public bool IsEnded => isEnded;
+		
 		[SerializeField, ReadOnly]
 		private List<int> selectedItems;
 
@@ -38,16 +40,17 @@ namespace YouthSpice.CookingScene.RecipeStage
 		[Header("Classes")]
 		[SerializeField]
 		private RecipeStorage recipeStorage;
-
 		[SerializeField]
 		private SelectionManager selectionManager;
-
 		[SerializeField]
 		private ButtonManager buttonManager;
+		[SerializeField]
+		private GameManager gameManager;
 
 		private ItemSelectManager itemSelectManager;
 
 		private int tempIndex;
+		private int tempItem;
 
 		private void Start()
 		{
@@ -57,7 +60,10 @@ namespace YouthSpice.CookingScene.RecipeStage
 			currentItems = current.stepCorrectItems;
 			currentTexts = current.stepDescriptions;
 
+			tempItem = -2;
 			tempIndex = -2;
+			isEnded = false;
+			
 			Set();
 		}
 
@@ -67,13 +73,14 @@ namespace YouthSpice.CookingScene.RecipeStage
 
 			if (tempIndex != -2) selectionManager.EnableItem(tempIndex);
 			tempIndex = index;
+			tempItem = itemID;
 			selectionManager.DisableItem(tempIndex);
 
 			ItemProperty data;
 			// -1 == 선택 포기
 			if (itemID == -1)
 			{
-				data = new ItemProperty() { name = "(선택 안함)" };
+				data = new ItemProperty() { name = "(선택 안 함)" };
 			}
 			else
 			{
@@ -90,7 +97,17 @@ namespace YouthSpice.CookingScene.RecipeStage
 		public void GoNext()
 		{
 			currentIndex++;
+			
+			selectedItems.Add(tempItem);
 
+			if (currentIndex == currentTexts.Count)
+			{
+				isEnded = true;
+				gameManager.GoNext();
+				return;
+			}
+			
+			tempItem = -2;
 			tempIndex = -2;
 
 			Set();
@@ -106,7 +123,6 @@ namespace YouthSpice.CookingScene.RecipeStage
 			// -2 == 선택 없음
 			if (currentItems[currentIndex] == -2)
 			{
-				selectedItems.Add(-2);
 				buttonManager.SetButtonActive(true);
 			}
 		}

@@ -23,6 +23,11 @@ namespace YouthSpice.CookingScene
 		[SerializeField, ReadOnly]
 		private CookingFlow currentChapter;
 		public CookingFlow CurrentChapter => currentChapter;
+		[SerializeField, ReadOnly]
+		private bool isFirstResult = true;
+
+		[ReadOnly]
+		public bool ended = false;
 
 		[Header("Classes")]
 		[SerializeField]
@@ -47,6 +52,14 @@ namespace YouthSpice.CookingScene
 			Set();
 		}
 
+		private void Update()
+		{
+			if (ended)
+			{
+				if (Input.anyKeyDown) Exit();
+			}
+		}
+
 		public void GoNext()
 		{
 			if (currentChapter == CookingFlow.Recipe && !recipeManager.IsEnded)
@@ -67,15 +80,31 @@ namespace YouthSpice.CookingScene
 
 			if (currentChapter == CookingFlow.Result)
 			{
-				bool success = generateFood.TryGenerate();
-				uiManager.Set(success);
-				uiAnimator.Run();
+				if (isFirstResult)
+				{
+					uiAnimator.First(Set);
+					isFirstResult = false;
+				}
+				else
+				{
+					stageManager.GoNext();
+					
+					bool success = generateFood.TryGenerate();
+					uiManager.Set(success);
+					uiAnimator.Run();
+				}
 			}
 			else
 			{
 				stageManager.GoNext();
 				selectionManager.GoNext();
 			}
+		}
+
+		private void Exit()
+		{
+			//TODO
+			print("END");
 		}
 	}
 }
