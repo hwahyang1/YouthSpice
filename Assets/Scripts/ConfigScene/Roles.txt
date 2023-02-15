@@ -1,0 +1,12 @@
+﻿[ConfigScene]
+
+: UI
+ - TabManager: 탭 이동 관리
+ - UIManager: UI 관리
+
+: SettingElements
+ - Element: 전체 항목 부모 Class
+ - ScrollElement: 스크롤 항목 부모 Class
+ - SelectionElement: 선택형 항목 부모 Class
+ : SubElements
+  - (항목명): 각 항목 자식 Class

@@ -9,6 +9,42 @@ EditorBuildSettings:
     path: Assets/Scenes/PreloadScene.unity
     guid: f385df5cdb2130640858f591fec03dbe
   - enabled: 1
+    path: Assets/Scenes/BlankScene.unity
+    guid: 1a2c93600b95b7b4ba1b694effb568ba
+  - enabled: 1
+    path: Assets/Scenes/ConfigScene.unity
+    guid: bae9a07bc8a23004086d518188a493d7
+  - enabled: 1
+    path: Assets/Scenes/CookingScene.unity
+    guid: f89e7eb98476f7a489c584dc52739218
+  - enabled: 1
+    path: Assets/Scenes/GalleryScene.unity
+    guid: 30be6c7d89a56034f82f25f3c06befd8
+  - enabled: 1
+    path: Assets/Scenes/GameScene.unity
+    guid: 53561f93456f1ad48afb9089028b53be
+  - enabled: 1
+    path: Assets/Scenes/InGameMenuScene.unity
+    guid: 01d8d3f645280384d8cedeaea28e61b4
+  - enabled: 1
     path: Assets/Scenes/MenuScene.unity
     guid: 92d76624360c5274b81c3d7cbd4e913b
+  - enabled: 1
+    path: Assets/Scenes/OpeningScene.unity
+    guid: 73f4515353ee55f4790d3422da19b338
+  - enabled: 1
+    path: Assets/Scenes/SaveLoadSlotScene.unity
+    guid: 77f6779fec4e4d245b8be3987ef73525
+  - enabled: 1
+    path: Assets/Scenes/ShopScene.unity
+    guid: ba632e8313216934e80ac91a2def90fb
+  - enabled: 1
+    path: Assets/Scenes/StoryEditorScene.unity
+    guid: 3184dbaf9f8013143b4826d08a033509
+  - enabled: 1
+    path: Assets/Scenes/StoryScene.unity
+    guid: 3e7bc4cc9e604744bb52df3779a30264
+  - enabled: 1
+    path: Assets/Scenes/StoryScene_Tutorial.unity
+    guid: 06bb4dfa477815148bbd3c80f1f9acd3
   m_configObjects: {}

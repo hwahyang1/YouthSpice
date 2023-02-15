@@ -1,0 +1,32 @@
+﻿[CookingScene]
+
+- RecipeStorage: 레시피 정의
+- GameManager: 전반적 실행 관리
+
+: UI
+ - StageManager: 화면 전환 관리
+
+: Extern
+ - CookingLoadParams: 실행값 관리
+
+: SelectionStage
+ : UI
+  - ElementsManager: 항목 표출 관리
+  - Element: 각 항목 정보
+
+: RecipeStage
+ - RecipeManager: 조리 순서 관리
+ : UI
+  - ItemSelectManager: 항목 선택 및 표출 관리
+
+: ResultStage
+ : UI
+  - GenerateFood: 최종 이미지 생성
+  - UIManager: 전반적 UI 관리
+  - UIAnimator: 애니메이션 관리
+
+: WholeStage
+ - SelectionManager: 선택된 항목 관리
+ : UI
+  - ShowSelection: 선택된 항목 표출 관리
+  - NextButtonManager: 버튼 실행 관리
