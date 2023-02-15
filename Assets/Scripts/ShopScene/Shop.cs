@@ -44,15 +44,15 @@ namespace YouthSpice.ShopScene
 			{
 				if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.F1))
 				{
-					if (SceneManager.sceneCount == 3)
-					{
-						//SceneChange.Instance.Unload("InGameMenuScene");
-						GameObject.FindObjectOfType<MenuManager>().Exit();
-					}
-					else
-					{
-						SceneChange.Instance.Add("InGameMenuScene");
-					}
+					SceneChange.Instance.Add("InGameMenuScene");
+				}
+			}
+			if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.F1))
+			{
+				if (SceneManager.sceneCount == 2)
+				{
+					//SceneChange.Instance.Unload("InGameMenuScene");
+					GameObject.FindObjectOfType<MenuManager>()?.Exit();
 				}
 			}
 

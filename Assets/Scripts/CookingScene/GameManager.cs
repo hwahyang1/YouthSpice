@@ -59,6 +59,7 @@ namespace YouthSpice.CookingScene
 		private UIAnimator uiAnimator;
 
 		private StageManager stageManager;
+		private bool runed = false;
 
 		private void Start()
 		{
@@ -180,6 +181,8 @@ namespace YouthSpice.CookingScene
 
 		private void Exit()
 		{
+			if (runed) return;
+			runed = true;
 			CookingLoadParams.Instance.Exit();
 			GameProgressManager.Instance.CountUp();
 			GameProgressManager.Instance.RunThisChapter();

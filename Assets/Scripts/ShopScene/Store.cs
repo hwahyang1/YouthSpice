@@ -1,9 +1,10 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
 using UnityEngine;
 using UnityEngine.UI;
-
+using YouthSpice.PreloadScene.Alert;
 using YouthSpice.PreloadScene.Game;
 using YouthSpice.PreloadScene.Item;
 
@@ -51,11 +52,6 @@ namespace YouthSpice.ShopScene
 			}
 
 			RefreshSellSlots();
-		}
-
-		private void Update()
-		{
-			
 		}
 
 		public void RefreshSellSlots()
@@ -112,7 +108,11 @@ namespace YouthSpice.ShopScene
 		public void OnClickBuySlot(Slot slot)
 		{
 			int index = ItemBuffer.Instance.GetIndex(slot.name);
-			if (GameInfo.Instance.money < ItemBuffer.Instance.items[index].sellPrice) return;
+			if (GameInfo.Instance.money < ItemBuffer.Instance.items[index].sellPrice)
+			{
+				AlertManager.Instance.Show(AlertType.Single, "알림", $"돈이 부족합니다.\n선택한 아이템의 가격은 {ItemBuffer.Instance.items[index].sellPrice.ToString()}G 입니다.", new Dictionary<string, Action>(){{"확인", null}});
+				return;
+			}
 			
 			BuyFoodInfo();
 			buyBnt.onClick = new Button.ButtonClickedEvent();

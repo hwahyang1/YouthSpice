@@ -88,7 +88,7 @@ namespace YouthSpice.GameScene
 		private void Update()
 		{
 			// 다른 창 열렸을 때 입력되는 현상 방지
-			if (SceneManager.sceneCount == 1 && !isMiniGameControl && isControl && !onCooldown && timer != -1)
+			if (SceneManager.sceneCount < 3 && !isMiniGameControl && isControl && !onCooldown && timer != -1)
 			{
 				if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.F1))
 				{
