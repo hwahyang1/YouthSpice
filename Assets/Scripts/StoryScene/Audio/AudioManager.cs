@@ -60,6 +60,15 @@ namespace YouthSpice.StoryScene.Audio
 			DefineConfig config = ConfigManager.Instance.GetConfig();
 			backgroundAudioMax = config.backgroundVolume;
 			effectAudioMax = config.effectVolume;
+			
+			effectAudio.volume = effectAudioMax;
+			if (activeCoroutine == null)
+			{
+				foreach (AudioSource backgroundAudio in backgroundAudios)
+				{
+					backgroundAudio.volume = backgroundAudioMax;
+				}
+			}
 		}
 
 		/// <summary>

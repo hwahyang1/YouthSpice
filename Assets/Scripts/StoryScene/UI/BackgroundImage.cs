@@ -18,6 +18,9 @@ namespace YouthSpice.StoryScene.UI
 	public class BackgroundImage : MonoBehaviour
 	{
 		[SerializeField]
+		private Sprite blank;
+		
+		[SerializeField]
 		private Image[] backgroundImageAreas;
 
 		[Header("Status")]
@@ -59,12 +62,21 @@ namespace YouthSpice.StoryScene.UI
 		{
 			this.callback = callback;
 
-			Sprite image = data["Background"] == "0"
-				? null
-				: SourceFileManager.Instance.AvailableBackgroundImages[int.Parse(data["Background"]) - 1];
+			int imageIndex = int.Parse(data["Background"]);
+			Sprite image = imageIndex <= 0
+				? blank
+				: SourceFileManager.Instance.AvailableBackgroundImages[imageIndex - 1];
 
+			if (imageIndex - 1 >= SourceFileManager.Instance.AvailableBackgroundImages.Count - 4)
+			{
+				DefineUnlockedCGs unlockedCGs = UnlockedCGsManager.Instance.GetAllData();
+				unlockedCGs.illusts.Add(imageIndex - 1);
+				UnlockedCGsManager.Instance.Save(unlockedCGs);
+			}
+
+			DefineImageTransitions transition = (DefineImageTransitions)int.Parse(data["Transition"]);
 			activeCoroutine =
-				StartCoroutine(ChangeImageCoroutine(image, forceDisableTransition, (DefineImageTransitions)int.Parse(data["Transition"])));
+				StartCoroutine(ChangeImageCoroutine(image, forceDisableTransition, transition));
 		}
 
 		private IEnumerator ChangeImageCoroutine(Sprite image, bool forceDisableTransition, DefineImageTransitions transitionType)
@@ -79,7 +91,7 @@ namespace YouthSpice.StoryScene.UI
 			nextArea.color = new Color(1f, 1f, 1f, 0f);
 			nextArea.sprite = image;
 
-			yield return null;
+			//yield return null;
 
 			activePosition = !activePosition;
 

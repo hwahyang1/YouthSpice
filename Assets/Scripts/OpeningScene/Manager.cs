@@ -28,7 +28,7 @@ namespace YouthSpice.OpeningScene
 
 		private IEnumerator WaitCoroutine()
 		{
-			yield return new WaitForSeconds(9.75f);
+			yield return new WaitForSeconds(10.25f);
 			SceneChange.Instance.ChangeScene("MenuScene", false, false);
 		}
 	}

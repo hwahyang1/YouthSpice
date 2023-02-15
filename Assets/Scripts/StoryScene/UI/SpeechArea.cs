@@ -7,6 +7,7 @@ using UnityEngine.UI;
 using NaughtyAttributes;
 using YouthSpice.PreloadScene.Config;
 using YouthSpice.StoryScene.Chapter;
+using YouthSpice.StoryScene.Extern;
 
 namespace YouthSpice.StoryScene.UI
 {
@@ -97,9 +98,10 @@ namespace YouthSpice.StoryScene.UI
 		public void ShowSpeech(Dictionary<string, string> data)
 		{
 			SetActive(true);
-			
-			Sprite characterName = nameTagImages[int.Parse(data["Character"])];
-			scriptEndedArea.sprite = scriptEndedImages[int.Parse(data["Character"])];
+
+			int characterIndex = int.Parse(data["Character"]);
+			Sprite characterName = nameTagImages[characterIndex <= 0 ? 0 : characterIndex];
+			scriptEndedArea.sprite = scriptEndedImages[characterIndex <= 0 ? 0 : characterIndex];
 			/*switch (data["Character"])
 			{
 				case "0":
@@ -147,13 +149,20 @@ namespace YouthSpice.StoryScene.UI
 				nameArea.color = new Color(1f, 1f, 1f, 0f);
 			}
 
-			if (useSpecificColor)
+			if (StorySceneLoadParams.Instance.isTutorialScene)
 			{
-				speechArea.color = new Color(0.572549f, 0.5333334f, 0.372549f, 1f);
+				speechArea.color = new Color(1f, 1f, 1f, 1f);
 			}
 			else
 			{
-				speechArea.color = new Color(0f, 0f, 0f, 1f);
+				if (useSpecificColor)
+				{
+					speechArea.color = new Color(0.572549f, 0.5333334f, 0.372549f, 1f);
+				}
+				else
+				{
+					speechArea.color = new Color(0f, 0f, 0f, 1f);
+				}
 			}
 			speechArea.text = "";
 			scriptEndedArea.color = new Color(1f, 1f, 1f, 0f);

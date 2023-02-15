@@ -49,8 +49,7 @@ namespace YouthSpice.MenuScene.UI
 		{
 			AudioManager.Instance.PlayEffectAudio(effectSound);
 
-			//SceneChange.Instance.Add("ConfigScene");
-			SceneChange.Instance.ChangeScene("GameScene");
+			SceneChange.Instance.Add("ConfigScene");
 		}
 	}
 }

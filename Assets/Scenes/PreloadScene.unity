@@ -245,7 +245,7 @@ AudioSource:
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
-  Loop: 1
+  Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -972,7 +972,7 @@ AudioSource:
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -1101,22 +1101,26 @@ MonoBehaviour:
   minorChapter1StoryIds:
   - 1494503296
   - 386582784
-  - 
+  - 1245116288
   - 
   - 
   minorChapter2StoryIds:
   - 
-  - 
-  - 
+  - 693217152
+  - 134787072
   - 
   - 
   minorChapter3StoryIds:
   - 
-  - 
-  - 
+  - 108017024
+  - 639993024
   - 
   - 
   cookingGameCharacterIds: 0000000003000000040000000500000000000000
+  recipeTutorial: 1862973056
+  itemTutorial: 1738718848
+  shopTutorial: 923338048
+  researchTutorial: 689315520
 --- !u!1 &1637491765
 GameObject:
   m_ObjectHideFlags: 0

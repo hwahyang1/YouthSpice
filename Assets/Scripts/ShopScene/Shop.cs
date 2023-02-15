@@ -2,7 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using YouthSpice.CookingScene;
+using YouthSpice.InGameMenuScene;
+using YouthSpice.PreloadScene.Game;
+using YouthSpice.PreloadScene.Scene;
+using YouthSpice.StoryScene.Extern;
 
 namespace YouthSpice.ShopScene
 {
@@ -21,9 +27,36 @@ namespace YouthSpice.ShopScene
 		[SerializeField] private Text foodText;
 		[SerializeField] private Text costText;
 		[SerializeField] private Text havingMoney;
-		
+
+		private void Start()
+		{
+			if (GameInfo.Instance.viewedShop) return;
+			StorySceneLoadParams.Instance.isTutorialScene = true;
+			StorySceneLoadParams.Instance.chapterID = GameProgressManager.Instance.shopTutorial;
+			SceneChange.Instance.Add("StoryScene_Tutorial");
+			GameInfo.Instance.viewedShop = true;
+		}
+
 		private void Update()
 		{
+			// 다른 창 열렸을 때 입력되는 현상 방지
+			if (SceneManager.sceneCount == 1)
+			{
+				if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.F1))
+				{
+					if (SceneManager.sceneCount == 3)
+					{
+						//SceneChange.Instance.Unload("InGameMenuScene");
+						GameObject.FindObjectOfType<MenuManager>().Exit();
+					}
+					else
+					{
+						SceneChange.Instance.Add("InGameMenuScene");
+					}
+				}
+			}
+
+			// 이 아래는 상점
 			
 			buyPanel.SetActive(dealCondition);
 

@@ -1,0 +1,1 @@
+{"ID":"923338048","Name":"","ConditionType":[],"ConditionData":[],"Elements":[{"Type":0,"Data":{"Character":"6","Script":"탐색을 통해 획득했던 식재료를 구매, 판매할 수 있는 상점입니다 "}},{"Type":0,"Data":{"Character":"6","Script":"식재료 판매 가격은 구매 가격의 반값에 판매할 수 있습니다"}}]}

@@ -29,6 +29,15 @@ namespace YouthSpice.PreloadScene.Game
 		[SerializeField]
 		private List<int> cookingGameCharacterIds;
 
+		[SerializeField]
+		public string recipeTutorial;
+		[SerializeField]
+		public string itemTutorial;
+		[SerializeField]
+		public string shopTutorial;
+		[SerializeField]
+		public string researchTutorial;
+
 		private bool re = false;
 		
 		public void CountUp()
@@ -46,7 +55,6 @@ namespace YouthSpice.PreloadScene.Game
 			}
 			else
 			{
-				print("1");
 				GameInfo.Instance.minorChapter++;
 				
 				// 대챕터 끝난 경우 -> 돈/인벤 리셋하고 대챕터 넘김
@@ -119,7 +127,7 @@ namespace YouthSpice.PreloadScene.Game
 					break;
 				case 7: // 8~9 포함
 					GameInfo.Instance.slotName = "레시피북";
-					CookingLoadParams.Instance.menu = (AvailableMenus)majorChapter;
+					CookingLoadParams.Instance.menu = (AvailableMenus)majorChapter - 1;
 					CookingLoadParams.Instance.currentCharacter = cookingGameCharacterIds[majorChapter];
 					SceneChange.Instance.ChangeScene("CookingScene");
 					break;

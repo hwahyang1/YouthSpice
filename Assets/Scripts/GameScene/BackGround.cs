@@ -3,6 +3,8 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
+using YouthSpice.PreloadScene.Config;
+
 namespace YouthSpice.GameScene
 {
 	/// <summary>
@@ -20,7 +22,7 @@ namespace YouthSpice.GameScene
 		private float growthSpeed;
 		private void Update()
 		{
-			if (isGrow)
+			if (isGrow && ConfigManager.Instance.GetConfig().useResearchEffect)
 			{
 				width += Time.deltaTime * growthSpeed * 2f;
 				height += Time.deltaTime * growthSpeed;

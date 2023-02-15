@@ -1204,9 +1204,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: '
-
-'
+  m_Text: 
 --- !u!222 &427094029
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1941,6 +1939,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a634f0e5ce1e934dbd9ad1d72bd44f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  blank: {fileID: 21300000, guid: c2599f0a8f5d0f5439d7dcbdf11960d4, type: 3}
   dayImageAreas:
   - {fileID: 1765139739}
   - {fileID: 795721994}
@@ -1960,6 +1959,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6206a90839dfc40459598b7d16f97dd2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  blank: {fileID: 21300000, guid: c2599f0a8f5d0f5439d7dcbdf11960d4, type: 3}
   frontStandingIllustAreas:
   - {fileID: 407059744}
   - {fileID: 1905823768}
@@ -1984,6 +1984,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e98e01156036d14c917dfa2dad5acea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  blank: {fileID: 21300000, guid: c2599f0a8f5d0f5439d7dcbdf11960d4, type: 3}
   backgroundImageAreas:
   - {fileID: 1034770149}
   - {fileID: 1265187115}

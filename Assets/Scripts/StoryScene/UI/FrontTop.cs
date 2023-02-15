@@ -19,6 +19,9 @@ namespace YouthSpice.StoryScene.UI
 	public class FrontTop : MonoBehaviour
 	{
 		[SerializeField]
+		private Sprite blank;
+		
+		[SerializeField]
 		private Image[] dayImageAreas;
 
 		[Header("Status")]
@@ -84,12 +87,13 @@ namespace YouthSpice.StoryScene.UI
 		/// </summary>
 		public void ChangeImage(Dictionary<string, string> data)
 		{
-			Sprite image = data["Day"] == "0"
-				? null
-				: SourceFileManager.Instance.AvailableDayImages[int.Parse(data["Day"]) - 1];
+			int imageIndex = int.Parse(data["Day"]);
+			Sprite image = imageIndex <= 0
+				? blank
+				: SourceFileManager.Instance.AvailableDayImages[imageIndex - 1];
 
-			activeCoroutine = StartCoroutine(ChangeImageCoroutine(image,
-				(DefineImageTransitions)int.Parse(data["Transition"])));
+			DefineImageTransitions transition = (DefineImageTransitions)int.Parse(data["Transition"]);
+			activeCoroutine = StartCoroutine(ChangeImageCoroutine(image, transition));
 		}
 
 		private IEnumerator ChangeImageCoroutine(Sprite image, DefineImageTransitions transitionType)
@@ -102,7 +106,7 @@ namespace YouthSpice.StoryScene.UI
 			nextArea.color = new Color(1f, 1f, 1f, 0f);
 			nextArea.sprite = image;
 
-			yield return null;
+			//yield return null;
 
 			activePosition = !activePosition;
 			
@@ -112,16 +116,16 @@ namespace YouthSpice.StoryScene.UI
 			{
 				case DefineImageTransitions.None:
 					currentArea.color = new Color(1f, 1f, 1f, 0f);
-					if (nextArea.sprite == null) nextArea.color = new Color(1f, 1f, 1f, 0f);
+					if (nextArea.sprite == blank) nextArea.color = new Color(1f, 1f, 1f, 0f);
 					else nextArea.color = new Color(1f, 1f, 1f, 1f);
 					break;
 				case DefineImageTransitions.Dissolve:
 					while (currentTime < totalAnimationTime)
 					{
 						currentTime += animationDelay;
-						if (currentArea.sprite == null) currentArea.color = new Color(1f, 1f, 1f, 0f);
+						if (currentArea.sprite == blank) currentArea.color = new Color(1f, 1f, 1f, 0f);
 						else currentArea.color = new Color(1f, 1f, 1f, 1f - (currentTime / totalAnimationTime));
-						if (nextArea.sprite == null) nextArea.color = new Color(1f, 1f, 1f, 0f);
+						if (nextArea.sprite == blank) nextArea.color = new Color(1f, 1f, 1f, 0f);
 						else nextArea.color = new Color(1f, 1f, 1f, currentTime / totalAnimationTime);
 						yield return timeout;
 					}
@@ -133,7 +137,7 @@ namespace YouthSpice.StoryScene.UI
 					while (currentTime < totalAnimationTime)
 					{
 						currentTime += animationDelay;
-						if (currentArea.sprite == null) currentArea.color = new Color(1f, 1f, 1f, 0f);
+						if (currentArea.sprite == blank) currentArea.color = new Color(1f, 1f, 1f, 0f);
 						else currentArea.color = new Color(1f, 1f, 1f, 1f - (currentTime / totalAnimationTime));
 						yield return timeout;
 					}
@@ -145,7 +149,7 @@ namespace YouthSpice.StoryScene.UI
 					while (currentTime < totalAnimationTime)
 					{
 						currentTime += animationDelay;
-						if (nextArea.sprite == null) nextArea.color = new Color(1f, 1f, 1f, 0f);
+						if (nextArea.sprite == blank) nextArea.color = new Color(1f, 1f, 1f, 0f);
 						else nextArea.color = new Color(1f, 1f, 1f, currentTime / totalAnimationTime);
 						yield return timeout;
 					}

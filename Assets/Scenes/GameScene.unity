@@ -260,6 +260,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   backGround: {fileID: 181742172}
   map: {fileID: 1197151531}
+  researchClip: {fileID: 8300000, guid: 16eadf334d843eb4d8abd473aa96ab67, type: 3}
+  lowRankClip: {fileID: 8300000, guid: 583aa62796dba4b48b6d897992b4b8b1, type: 3}
+  midHighRankClip: {fileID: 8300000, guid: 357e3487c17ce5c49bad51fc39141aca, type: 3}
+  midHighRankBackgroundClip: {fileID: 8300000, guid: f2e59dd54645c804d8efeea22c339f93, type: 3}
   timer: 8
   needle: {fileID: 561892372}
   researchImage:
@@ -886,7 +890,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 289675560}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -1348,14 +1352,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0.5019608}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.6}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 0}
   m_Type: 1
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1582,6 +1586,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b274c22cec43f94e8b0260ddacae186, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  clickClip: {fileID: 8300000, guid: 6de68c1fbf3bee24482b521a730b1569, type: 3}
+  mapButtonClip: {fileID: 8300000, guid: c127574565334e14fad626a0c854b6a2, type: 3}
   research: {fileID: 148901371}
   mapCanvas: {fileID: 232472508}
   backgroundSprite:
@@ -1617,7 +1623,7 @@ GameObject:
   - component: {fileID: 1310455272}
   - component: {fileID: 1310455271}
   m_Layer: 5
-  m_Name: ' clock'
+  m_Name: clock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

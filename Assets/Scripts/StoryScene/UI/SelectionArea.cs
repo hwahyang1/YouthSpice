@@ -4,6 +4,7 @@ using System.Linq;
 
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 using Newtonsoft.Json;
 using NaughtyAttributes;
@@ -83,6 +84,8 @@ namespace YouthSpice.StoryScene.UI
 		public void OnButtonInteract(int order)
 		{
 			HideSelection();
+			
+			EventSystem.current?.SetSelectedGameObject(null);
 			
 			PreloadScene.Audio.AudioManager.Instance.PlayEffectAudio(selectClip);
 
