@@ -20,6 +20,9 @@ namespace YouthSpice.PreloadScene.Files
 	/// </summary>
 	public class SaveSlotManager : Singleton<SaveSlotManager>
 	{
+		[SerializeField]
+		private Sprite screenshot;
+		
 		private DefineGame[] slots = new DefineGame[7];
 		private string filePath;
 		private string fileScreenshotFolderPath;
@@ -48,8 +51,11 @@ namespace YouthSpice.PreloadScene.Files
 			return slots[index];
 		}
 
-		public async Task<Sprite> GetScreenShot(int slot)
+		public Sprite GetScreenShot(int slot)
 		{
+			if (GetData(slot) == null) return null;
+			return screenshot;
+			
 			string path = fileScreenshotFolderPath + @$"S{slot}.png";
 			
 			Sprite sprite = null;
@@ -60,7 +66,7 @@ namespace YouthSpice.PreloadScene.Files
 				{
 					webRequest.SendWebRequest();
 
-					while (!webRequest.isDone) await Task.Delay(5);
+					while (!webRequest.isDone) /*await*/ Task.Delay(5);
 
 					if (webRequest.result == UnityWebRequest.Result.ConnectionError)
 					{
@@ -87,7 +93,7 @@ namespace YouthSpice.PreloadScene.Files
 			GameInfo.Instance.dateTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
 			slots[slot] = GameInfo.Instance.ConvertToDefineGame();
 
-			StartCoroutine(TakeScreenShot(slot));
+			//StartCoroutine(TakeScreenShot(slot));
 			
 			SaveToFile();
 		}
@@ -122,7 +128,7 @@ namespace YouthSpice.PreloadScene.Files
 
 		private void LoadFromFile()
 		{
-			if (!Directory.Exists(filePath)) return;
+			if (!File.Exists(filePath)) return;
 			
 			FileStream stream = new FileStream(filePath, FileMode.Open, FileAccess.ReadWrite);
 			slots = formatter.Deserialize(stream) as DefineGame[];
@@ -132,7 +138,7 @@ namespace YouthSpice.PreloadScene.Files
 		public void Load(int slot)
 		{
 			GameInfo.Instance.ConvertFromDefineGame(slots[slot]);
-			SceneChange.Instance.ChangeScene("BlankScene", true, true, GameProgressManager.Instance.RunThisChapter);
+			GameProgressManager.Instance.RunThisChapter();
 		}
 	}
 }

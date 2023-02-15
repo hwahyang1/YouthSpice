@@ -3,10 +3,8 @@ using System.Collections.Generic;
 
 using UnityEngine;
 using UnityEngine.UI;
-using YouthSpice.GameScene;
-using YouthSpice.PreloadScene.Item;
 
-namespace YouthSpice
+namespace YouthSpice.GameScene
 {
 	/// <summary>
 	/// Description

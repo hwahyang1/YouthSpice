@@ -1,11 +1,10 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Security.Cryptography;
-using Unity.VisualScripting;
+
 using UnityEngine;
-using UnityEngine.Events;
 using UnityEngine.UI;
+
+using YouthSpice.PreloadScene.Game;
 using YouthSpice.PreloadScene.Item;
 
 namespace YouthSpice.ShopScene
@@ -112,14 +111,16 @@ namespace YouthSpice.ShopScene
 		// 구매 확인창 띄우는 부분
 		public void OnClickBuySlot(Slot slot)
 		{
+			int index = ItemBuffer.Instance.GetIndex(slot.name);
+			if (GameInfo.Instance.money < ItemBuffer.Instance.items[index].sellPrice) return;
+			
 			BuyFoodInfo();
 			buyBnt.onClick = new Button.ButtonClickedEvent();
 			buyBnt.onClick.AddListener(() => { BuyItem(slot);});
-			int index = ItemBuffer.Instance.GetIndex(slot.name);
 			ItemProperty item = ItemBuffer.Instance.items[index];
 			buyInfoImage.sprite = item.sprite;
 			buyInfoNameText.text = item.name;
-			buyInfoPriceText.text = "구매 가격:" + item.sellPrice;
+			buyInfoPriceText.text = item.sellPrice+"G";
 		}
 		// 구매 진행
 		public void BuyItem(Slot slot)
@@ -149,7 +150,7 @@ namespace YouthSpice.ShopScene
 			ItemProperty item = ItemBuffer.Instance.items[index];
 			sellInfoImage.sprite = item.sprite;
 			sellInfoNameText.text = item.name;
-			sellInfoPriceText.text = "판매 가격:" + Mathf.RoundToInt(item.sellPrice) * 0.5f;
+			sellInfoPriceText.text = Mathf.RoundToInt(item.sellPrice) * 0.5f+"G";
 		}
 		public void SellItem(Slot slot)
 		{
@@ -160,6 +161,12 @@ namespace YouthSpice.ShopScene
 			SellFoodInfoFalse();
 
 			RefreshSellSlots();
+		}
+
+		public void Exit()
+		{
+			GameProgressManager.Instance.CountUp();
+			GameProgressManager.Instance.RunThisChapter();
 		}
 	}
 }

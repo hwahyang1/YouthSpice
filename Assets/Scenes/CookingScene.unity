@@ -1512,6 +1512,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 00d1840e5890a4744a66120b8e108709, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  clip: {fileID: 8300000, guid: 2284dc03006558440adf96f56a20272a, type: 3}
   selectionCount: 5
   items: 
   elementPrefab: {fileID: 3303671705889262164, guid: 406d70fec00c18e4da00de4b87a84523, type: 3}
@@ -2891,7 +2892,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   changeValue: 50
-  target: {fileID: 39248329}
+  target:
+  - {fileID: 0}
   upButton: {fileID: 1255919549}
   downButton: {fileID: 835161610}
 --- !u!1 &938491264
@@ -3410,6 +3412,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2420b63a660629f4e96de6dda0ebbd5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  backgroundClip: {fileID: 8300000, guid: 533a96111bbf5234b85569d35cd01c0e, type: 3}
+  startClip: {fileID: 8300000, guid: 9f7e22543141e6e4fb6ad3866487a99c, type: 3}
+  nextClip: {fileID: 8300000, guid: 19731ad5bdea8ab4e8fcc5e29c5a45f6, type: 3}
   currentChapter: 0
   isFirstRecipe: 1
   isFirstResult: 1
@@ -3755,9 +3760,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 98085c0a93d38c147bd7e20b33e91f43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  takeImageClip: {fileID: 8300000, guid: 2bb36126dc9430749b5fcc3e03ccb80e, type: 3}
+  makingClip: {fileID: 8300000, guid: 13fe6a5864550b944a40f18a61c22682, type: 3}
+  foodClip: {fileID: 8300000, guid: 8c378d68f4deedb43bf835c4ae3470c8, type: 3}
   animationDelay: 0.01
   fadeTime: 1.2
-  fadeWaitTime: 0.5
+  fadeWaitTime: 6
   cameraEffectOutTime: 1.5
   blackCover: {fileID: 1596413986}
   whiteCover: {fileID: 133752530}

@@ -26,7 +26,7 @@ namespace YouthSpice
 			effectVolume = 0.5f;
 
 			useTypingEffect = true;
-			typingSpeed = 0.9f;
+			typingSpeed = 0.95f;
 			useResearchEffect = true;
 			useFullscreen = true;
 		}

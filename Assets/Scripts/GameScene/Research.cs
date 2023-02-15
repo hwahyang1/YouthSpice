@@ -1,9 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
+
 using UnityEngine;
 using UnityEngine.UI;
-
+using YouthSpice.PreloadScene.Files;
+using YouthSpice.PreloadScene.Game;
 using YouthSpice.PreloadScene.Item;
 
 namespace YouthSpice.GameScene
@@ -87,7 +88,15 @@ namespace YouthSpice.GameScene
 				researchImageRoot.sprite = researchImage[1];
 				researchImageRoot.gameObject.SetActive(true);
 				backGround.GetComponent<BackGround>().isGrow = false;
+				StartCoroutine(ExitCoroutine());
 			}
+		}
+
+		private IEnumerator ExitCoroutine()
+		{
+			yield return new WaitForSeconds(1.5f);
+			GameProgressManager.Instance.CountUp();
+			GameProgressManager.Instance.RunThisChapter();
 		}
 
 		private void Researchfunction()
@@ -122,7 +131,7 @@ namespace YouthSpice.GameScene
 
 		private void Randomfunction()
 		{
-			float successChance = UnityEngine.Random.Range(0f, 101f);
+			float successChance = Random.Range(0f, 101f);
 			if (successChance <= successPercentage)
 			{
 				//성공
@@ -310,7 +319,7 @@ namespace YouthSpice.GameScene
 
 			if (Input.anyKeyDown)
 			{
-				minigameCount++;
+				minigameCount += 3;
 			}
 		}
 
@@ -339,6 +348,13 @@ namespace YouthSpice.GameScene
 			//인벤에 저장 
 			int index = ItemBuffer.Instance.GetIndex(item.name);
 			GameInfo.Instance.inventory.Add(index);
+
+			if (!UnlockedCGsManager.Instance.GetAllData().researchItems.Exists(target => target == index))
+			{
+				DefineUnlockedCGs data = UnlockedCGsManager.Instance.GetAllData();
+				data.researchItems.Add(index);
+				UnlockedCGsManager.Instance.Save(data);
+			}
 			
 			getItemImage.sprite = getResearchImage[index];
 		}
@@ -352,6 +368,13 @@ namespace YouthSpice.GameScene
 			//인벤에 저장 
 			int index = ItemBuffer.Instance.GetIndex(item.name);
 			GameInfo.Instance.inventory.Add(index);
+
+			if (!UnlockedCGsManager.Instance.GetAllData().researchItems.Exists(target => target == index))
+			{
+				DefineUnlockedCGs data = UnlockedCGsManager.Instance.GetAllData();
+				data.researchItems.Add(index);
+				UnlockedCGsManager.Instance.Save(data);
+			}
 			
 			getItemImage.sprite = getResearchImage[index];
 		}
@@ -365,6 +388,13 @@ namespace YouthSpice.GameScene
 			//인벤에 저장 
 			int index = ItemBuffer.Instance.GetIndex(item.name);
 			GameInfo.Instance.inventory.Add(index);
+
+			if (!UnlockedCGsManager.Instance.GetAllData().researchItems.Exists(target => target == index))
+			{
+				DefineUnlockedCGs data = UnlockedCGsManager.Instance.GetAllData();
+				data.researchItems.Add(index);
+				UnlockedCGsManager.Instance.Save(data);
+			}
 			
 			getItemImage.sprite = getResearchImage[index];
 		}
@@ -378,6 +408,13 @@ namespace YouthSpice.GameScene
 			//인벤에 저장 
 			int index = ItemBuffer.Instance.GetIndex(item.name);
 			GameInfo.Instance.inventory.Add(index);
+
+			if (!UnlockedCGsManager.Instance.GetAllData().researchItems.Exists(target => target == index))
+			{
+				DefineUnlockedCGs data = UnlockedCGsManager.Instance.GetAllData();
+				data.researchItems.Add(index);
+				UnlockedCGsManager.Instance.Save(data);
+			}
 			
 			getItemImage.sprite = getResearchImage[index];
 		}
@@ -392,6 +429,13 @@ namespace YouthSpice.GameScene
 			//인벤에 저장 
 			int index = ItemBuffer.Instance.GetIndex(item.name);
 			GameInfo.Instance.inventory.Add(index);
+
+			if (!UnlockedCGsManager.Instance.GetAllData().researchItems.Exists(target => target == index))
+			{
+				DefineUnlockedCGs data = UnlockedCGsManager.Instance.GetAllData();
+				data.researchItems.Add(index);
+				UnlockedCGsManager.Instance.Save(data);
+			}
 			
 			getItemImage.sprite = getResearchImage[index];
 		}
@@ -405,6 +449,13 @@ namespace YouthSpice.GameScene
 			//인벤에 저장 
 			int index = ItemBuffer.Instance.GetIndex(item.name);
 			GameInfo.Instance.inventory.Add(index);
+
+			if (!UnlockedCGsManager.Instance.GetAllData().researchItems.Exists(target => target == index))
+			{
+				DefineUnlockedCGs data = UnlockedCGsManager.Instance.GetAllData();
+				data.researchItems.Add(index);
+				UnlockedCGsManager.Instance.Save(data);
+			}
 			
 			getItemImage.sprite = getResearchImage[index];
 		}
@@ -418,6 +469,13 @@ namespace YouthSpice.GameScene
 			//인벤에 저장 
 			int index = ItemBuffer.Instance.GetIndex(item.name);
 			GameInfo.Instance.inventory.Add(index);
+
+			if (!UnlockedCGsManager.Instance.GetAllData().researchItems.Exists(target => target == index))
+			{
+				DefineUnlockedCGs data = UnlockedCGsManager.Instance.GetAllData();
+				data.researchItems.Add(index);
+				UnlockedCGsManager.Instance.Save(data);
+			}
 			
 			getItemImage.sprite = getResearchImage[index];
 		}
@@ -431,6 +489,13 @@ namespace YouthSpice.GameScene
 			//인벤에 저장 
 			int index = ItemBuffer.Instance.GetIndex(item.name);
 			GameInfo.Instance.inventory.Add(index);
+
+			if (!UnlockedCGsManager.Instance.GetAllData().researchItems.Exists(target => target == index))
+			{
+				DefineUnlockedCGs data = UnlockedCGsManager.Instance.GetAllData();
+				data.researchItems.Add(index);
+				UnlockedCGsManager.Instance.Save(data);
+			}
 			
 			getItemImage.sprite = getResearchImage[index];
 		}
@@ -445,6 +510,13 @@ namespace YouthSpice.GameScene
 			//인벤에 저장 
 			int index = ItemBuffer.Instance.GetIndex(item.name);
 			GameInfo.Instance.inventory.Add(index);
+
+			if (!UnlockedCGsManager.Instance.GetAllData().researchItems.Exists(target => target == index))
+			{
+				DefineUnlockedCGs data = UnlockedCGsManager.Instance.GetAllData();
+				data.researchItems.Add(index);
+				UnlockedCGsManager.Instance.Save(data);
+			}
 			
 			getItemImage.sprite = getResearchImage[index];
 		}
@@ -458,6 +530,13 @@ namespace YouthSpice.GameScene
 			//인벤에 저장 
 			int index = ItemBuffer.Instance.GetIndex(item.name);
 			GameInfo.Instance.inventory.Add(index);
+
+			if (!UnlockedCGsManager.Instance.GetAllData().researchItems.Exists(target => target == index))
+			{
+				DefineUnlockedCGs data = UnlockedCGsManager.Instance.GetAllData();
+				data.researchItems.Add(index);
+				UnlockedCGsManager.Instance.Save(data);
+			}
 			
 			getItemImage.sprite = getResearchImage[index];
 		}
@@ -471,6 +550,13 @@ namespace YouthSpice.GameScene
 			//인벤에 저장 
 			int index = ItemBuffer.Instance.GetIndex(item.name);
 			GameInfo.Instance.inventory.Add(index);
+
+			if (!UnlockedCGsManager.Instance.GetAllData().researchItems.Exists(target => target == index))
+			{
+				DefineUnlockedCGs data = UnlockedCGsManager.Instance.GetAllData();
+				data.researchItems.Add(index);
+				UnlockedCGsManager.Instance.Save(data);
+			}
 			
 			getItemImage.sprite = getResearchImage[index];
 		}
@@ -484,6 +570,13 @@ namespace YouthSpice.GameScene
 			//인벤에 저장 
 			int index = ItemBuffer.Instance.GetIndex(item.name);
 			GameInfo.Instance.inventory.Add(index);
+
+			if (!UnlockedCGsManager.Instance.GetAllData().researchItems.Exists(target => target == index))
+			{
+				DefineUnlockedCGs data = UnlockedCGsManager.Instance.GetAllData();
+				data.researchItems.Add(index);
+				UnlockedCGsManager.Instance.Save(data);
+			}
 			
 			getItemImage.sprite = getResearchImage[index];
 		}

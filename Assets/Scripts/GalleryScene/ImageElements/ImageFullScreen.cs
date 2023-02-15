@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 using NaughtyAttributes;
+using YouthSpice.PreloadScene.Audio;
 
 namespace YouthSpice.GalleryScene.ImageElements
 {
@@ -22,6 +23,8 @@ namespace YouthSpice.GalleryScene.ImageElements
 		private Color activeColor = new Color(1f, 1f, 1f, 1f);
 		[SerializeField]
 		private Color inactiveColor = new Color(1f, 1f, 1f, 0f);
+		[SerializeField]
+		private AudioClip clickClip;
 		
 		[Header("GameObjects")]
 		[SerializeField]
@@ -44,6 +47,8 @@ namespace YouthSpice.GalleryScene.ImageElements
 
 		public void Show(Sprite sprite)
 		{
+			AudioManager.Instance.PlayEffectAudio(clickClip);
+			
 			imageObject.color = activeColor;
 			imageObject.sprite = sprite;
 			imageObject.preserveAspect = true;

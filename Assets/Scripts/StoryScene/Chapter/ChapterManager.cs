@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 using NaughtyAttributes;
-
+using YouthSpice.InGameMenuScene;
 using YouthSpice.PreloadScene.Scene;
 using YouthSpice.PreloadScene.Alert;
 using YouthSpice.PreloadScene.Files;
@@ -93,6 +93,7 @@ namespace YouthSpice.StoryScene.Chapter
 			else
 			{
 				currentChapter = SourceFileManager.Instance.AvailableChapters[StorySceneLoadParams.Instance.chapterID];
+				GameInfo.Instance.slotName = currentChapter.Name;
 				StartCoroutine(nameof(LateStartCoroutine));
 			}
 		}
@@ -113,11 +114,24 @@ namespace YouthSpice.StoryScene.Chapter
 				ExecuteAllOnKeyDown();
 			}
 
+			if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.F1))
+			{
+				if (SceneManager.sceneCount == 3)
+				{
+					//SceneChange.Instance.Unload("InGameMenuScene");
+					GameObject.FindObjectOfType<MenuManager>().Exit();
+				}
+				else
+				{
+					SceneChange.Instance.Add("InGameMenuScene");
+				}
+			}
+
 			if (!isMouseOverButton && Input.GetMouseButtonDown(0))
 			{
 				if (!isSelectionEnded)
 				{
-					if (!selectionArea.Ready)
+					if (selectionArea.Ready)
 					{
 						ExecuteAllOnKeyDown();
 					}
@@ -341,12 +355,9 @@ namespace YouthSpice.StoryScene.Chapter
 			// GameInfo에 변경사항 반영
 			friendship.Apply();
 			
+			GameProgressManager.Instance.CountUp();
+			GameProgressManager.Instance.RunThisChapter();
 			if (SceneManager.sceneCount != 1) SceneChange.Instance.Unload("StoryScene");
-			else
-			{
-				GameProgressManager.Instance.CountUp();
-				GameProgressManager.Instance.RunThisChapter();
-			}
 		}
 	}
 }

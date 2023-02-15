@@ -7,6 +7,7 @@ using UnityEngine;
 using NaughtyAttributes;
 
 using YouthSpice.PreloadScene.Alert;
+using YouthSpice.PreloadScene.Audio;
 using YouthSpice.PreloadScene.Files;
 using YouthSpice.SaveLoadSlotScene.Extern;
 using YouthSpice.SaveLoadSlotScene.UI;
@@ -18,6 +19,9 @@ namespace YouthSpice.SaveLoadSlotScene.Slots
 	/// </summary>
 	public class SlotsManager : MonoBehaviour
 	{
+		[SerializeField]
+		private AudioClip clickClip;
+		
 		[SerializeField]
 		private Transform parent;
 
@@ -54,13 +58,15 @@ namespace YouthSpice.SaveLoadSlotScene.Slots
 				}
 				else
 				{
-					child.Init(i, null, slot.SlotName, slot.DateTime, InteractionSlot);
+					child.Init(i, SaveSlotManager.Instance.GetScreenShot(i), slot.SlotName, slot.DateTime, InteractionSlot);
 				}
 			}
 		}
 
 		private void InteractionSlot(int index)
 		{
+			AudioManager.Instance.PlayEffectAudio(clickClip);
+			
 			DefineGame data = SaveSlotManager.Instance.GetData(index);
 			
 			if (mode == SaveLoadSlotMode.Save)
@@ -68,6 +74,7 @@ namespace YouthSpice.SaveLoadSlotScene.Slots
 				if (data == null)
 				{
 					SaveSlotManager.Instance.Save(index);
+					RebuildSlots();
 					return;
 				}
 				
@@ -89,6 +96,7 @@ namespace YouthSpice.SaveLoadSlotScene.Slots
 				AlertManager.Instance.Show(AlertType.Double, "경고", "정말로 불러오시겠습니까?\n저장되지 않은 데이터는 사라집니다.", new Dictionary<string, Action>(){{"불러오기",
 					() =>
 					{
+						AudioManager.Instance.StopBackgroundAudio();
 						SaveSlotManager.Instance.Load(index);
 					}}, {"취소", null}});
 			}

@@ -3299,6 +3299,7 @@ GameObject:
   - component: {fileID: 376507123}
   - component: {fileID: 376507122}
   - component: {fileID: 376507121}
+  - component: {fileID: 376507124}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -3372,6 +3373,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &376507124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 376507120}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebf31b04cc233a845810d4f1c9325108, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeOut: 0
 --- !u!1001 &383701918
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5754,7 +5768,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   changeValue: 50
-  target: {fileID: 170103566}
+  target:
+  - {fileID: 0}
   upButton: {fileID: 274437614}
   downButton: {fileID: 331536073}
 --- !u!114 &728279269
@@ -5772,6 +5787,7 @@ MonoBehaviour:
   isRunning: 0
   activeColor: {r: 1, g: 1, b: 1, a: 1}
   inactiveColor: {r: 1, g: 1, b: 1, a: 0}
+  clickClip: {fileID: 8300000, guid: 79bfa1634712c87409a46f78c0ab5add, type: 3}
   imageObject: {fileID: 1529051783}
   backgroundObject: {fileID: 1520702807}
 --- !u!114 &728279270
@@ -5806,6 +5822,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 424052853}
+  backClip: {fileID: 8300000, guid: f633f394ca071a54390427b00f947ddb, type: 3}
 --- !u!114 &728279272
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5818,6 +5835,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c68471ee82a5b4c4ab072c07716e7eb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tabClip: {fileID: 8300000, guid: 19731ad5bdea8ab4e8fcc5e29c5a45f6, type: 3}
   buttonImages:
   - {fileID: 21300000, guid: bb004749a7a4113409465aa5dd4c631e, type: 3}
   - {fileID: 21300000, guid: a213228d01f463b41b33892169496e2c, type: 3}
@@ -8723,6 +8741,7 @@ GameObject:
   - component: {fileID: 1212744466}
   - component: {fileID: 1212744465}
   - component: {fileID: 1212744464}
+  - component: {fileID: 1212744467}
   m_Layer: 0
   m_Name: EventSystem
   m_TagString: Untagged
@@ -8780,6 +8799,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1212744467
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1212744463}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebf31b04cc233a845810d4f1c9325108, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeOut: 0
 --- !u!1001 &1242741145
 PrefabInstance:
   m_ObjectHideFlags: 0

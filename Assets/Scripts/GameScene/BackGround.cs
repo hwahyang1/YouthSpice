@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
-namespace YouthSpice
+namespace YouthSpice.GameScene
 {
 	/// <summary>
 	/// Description

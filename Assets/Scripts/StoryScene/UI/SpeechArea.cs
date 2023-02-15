@@ -96,6 +96,8 @@ namespace YouthSpice.StoryScene.UI
 
 		public void ShowSpeech(Dictionary<string, string> data)
 		{
+			SetActive(true);
+			
 			Sprite characterName = nameTagImages[int.Parse(data["Character"])];
 			scriptEndedArea.sprite = scriptEndedImages[int.Parse(data["Character"])];
 			/*switch (data["Character"])
@@ -121,14 +123,17 @@ namespace YouthSpice.StoryScene.UI
 				case "6":
 					characterName = "";
 					break;
+				case "7":
+					characterName = "";
+					break;
 			}*/
 
 			fullScript = data["Script"].Replace("{Player}", GameInfo.Instance.playerName);
 
-			activeCoroutine = StartCoroutine(ShowSpeechCoroutine(characterName));
+			activeCoroutine = StartCoroutine(ShowSpeechCoroutine(characterName, data["Character"] == "7"));
 		}
 
-		private IEnumerator ShowSpeechCoroutine(Sprite characterName)
+		private IEnumerator ShowSpeechCoroutine(Sprite characterName, bool useSpecificColor = false)
 		{
 			WaitForSeconds timeout = new WaitForSeconds(1f - ConfigManager.Instance.GetConfig().typingSpeed);
 
@@ -140,6 +145,15 @@ namespace YouthSpice.StoryScene.UI
 			else
 			{
 				nameArea.color = new Color(1f, 1f, 1f, 0f);
+			}
+
+			if (useSpecificColor)
+			{
+				speechArea.color = new Color(0.572549f, 0.5333334f, 0.372549f, 1f);
+			}
+			else
+			{
+				speechArea.color = new Color(0f, 0f, 0f, 1f);
 			}
 			speechArea.text = "";
 			scriptEndedArea.color = new Color(1f, 1f, 1f, 0f);

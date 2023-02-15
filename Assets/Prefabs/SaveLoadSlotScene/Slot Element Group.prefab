@@ -744,6 +744,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7dcc9d71ce17f624f93a3dabf9065b68, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  clickClip: {fileID: 8300000, guid: 29897d19f8e566645a3a72d7089ce851, type: 3}
   slotBackgroundImageArea: {fileID: 3961552278502776339}
   slotIndexText: {fileID: 3961552278565079532}
   slotPreviewImageArea: {fileID: 3961552278922956426}
