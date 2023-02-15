@@ -6,7 +6,6 @@ using TimeZoneInfo = System.TimeZoneInfo;
 
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.EventSystems;
 
 namespace YouthSpice.SaveLoadSlotScene.UI
 {

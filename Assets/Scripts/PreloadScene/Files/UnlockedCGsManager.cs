@@ -12,6 +12,7 @@ namespace YouthSpice.PreloadScene.Files
 	/// </summary>
 	public class UnlockedCGsManager : Singleton<UnlockedCGsManager>
 	{
+		[SerializeField]
 		private DefineUnlockedCGs data;
 		private string filePath;
 		
@@ -47,7 +48,7 @@ namespace YouthSpice.PreloadScene.Files
 
 		private void LoadFromFile()
 		{
-			if (!Directory.Exists(filePath))
+			if (!File.Exists(filePath))
 			{
 				data = new DefineUnlockedCGs();
 				return;

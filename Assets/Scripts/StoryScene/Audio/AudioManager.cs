@@ -60,6 +60,15 @@ namespace YouthSpice.StoryScene.Audio
 			DefineConfig config = ConfigManager.Instance.GetConfig();
 			backgroundAudioMax = config.backgroundVolume;
 			effectAudioMax = config.effectVolume;
+			
+			effectAudio.volume = effectAudioMax;
+			if (activeCoroutine == null)
+			{
+				foreach (AudioSource backgroundAudio in backgroundAudios)
+				{
+					backgroundAudio.volume = backgroundAudioMax;
+				}
+			}
 		}
 
 		/// <summary>
@@ -80,9 +89,9 @@ namespace YouthSpice.StoryScene.Audio
 			AudioClip clip = data["Background"] == "0"
 				? null
 				: SourceFileManager.Instance.AvailableAudios[int.Parse(data["Background"]) - 1];
-
 			activeCoroutine =
-				StartCoroutine(PlayBackgroundAudioCoroutine(clip, forceDisableTransition, (DefineAudioTransitions)int.Parse(data["Transition"])));
+				StartCoroutine(PlayBackgroundAudioCoroutine(clip, forceDisableTransition,
+					(DefineAudioTransitions)int.Parse(data["Transition"])));
 		}
 
 		private IEnumerator PlayBackgroundAudioCoroutine(AudioClip clip, bool forceDisableTransition, DefineAudioTransitions transitionType)

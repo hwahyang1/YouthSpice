@@ -76,11 +76,16 @@ namespace YouthSpice.GalleryScene.ImageElements
 		private void InitAllChildLists()
 		{
 			DefineUnlockedCGs unlocked = UnlockedCGsManager.Instance.GetAllData();
-			
-			for (int i = 0; i < illustsChilds.Count; i++)
+
+			int imagesCount = SourceFileManager.Instance.AvailableBackgroundImages.Count;
+			int j = 0;
+			for (int i = imagesCount - 4; i < imagesCount; i++)
 			{
 				bool isUnlocked = unlocked.illusts.Exists(target => target == i);
-				illustsChilds[i].Init(null, isUnlocked, imageFullScreen.Show);
+				Sprite sprite =
+					SourceFileManager.Instance.AvailableBackgroundImages[i];
+				illustsChilds[j].Init(sprite, isUnlocked, imageFullScreen.Show);
+				j++;
 			}
 			
 			for (int i = 0; i < recipeFoodsChilds.Count; i++)

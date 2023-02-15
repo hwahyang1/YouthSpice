@@ -15,6 +15,9 @@ namespace YouthSpice.StoryScene.UI
 	public class GetNameArea : MonoBehaviour
 	{
 		[SerializeField]
+		private AudioClip selectClip;
+		
+		[SerializeField]
 		private Image background;
 
 		[SerializeField]
@@ -74,6 +77,8 @@ namespace YouthSpice.StoryScene.UI
 
 		public void OnConfirmButtonClicked()
 		{
+			PreloadScene.Audio.AudioManager.Instance.PlayEffectAudio(selectClip);
+			
 			string name = nameInput.text;
 			bool isValid = CheckValidate(name);
 			if (!isValid) return;

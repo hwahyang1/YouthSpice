@@ -7,7 +7,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 using NaughtyAttributes;
-
+using YouthSpice.InGameMenuScene;
 using YouthSpice.PreloadScene.Scene;
 using YouthSpice.PreloadScene.Alert;
 using YouthSpice.PreloadScene.Files;
@@ -52,6 +52,8 @@ namespace YouthSpice.StoryScene.Chapter
 
 		[ReadOnly]
 		public bool isMouseOverButton = false;
+		
+		private bool calledExit = false;
 
 		private AudioManager audioManager;
 		private BackgroundImage backgroundImage;
@@ -93,6 +95,7 @@ namespace YouthSpice.StoryScene.Chapter
 			else
 			{
 				currentChapter = SourceFileManager.Instance.AvailableChapters[StorySceneLoadParams.Instance.chapterID];
+				GameInfo.Instance.slotName = currentChapter.Name;
 				StartCoroutine(nameof(LateStartCoroutine));
 			}
 		}
@@ -106,25 +109,43 @@ namespace YouthSpice.StoryScene.Chapter
 		private void Update()
 		{
 			if (AlertManager.Instance.IsRunning) return;
-
-			if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return) ||
-			    Input.GetKeyDown(KeyCode.KeypadEnter))
+			
+			// 다른 창 열렸을 때 입력되는 현상 방지
+			if ((!StorySceneLoadParams.Instance.isTutorialScene && SceneManager.sceneCount <= 2) || (StorySceneLoadParams.Instance.isTutorialScene && SceneManager.sceneCount == 2))
 			{
-				ExecuteAllOnKeyDown();
-			}
-
-			if (!isMouseOverButton && Input.GetMouseButtonDown(0))
-			{
-				if (!isSelectionEnded)
+				if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return) ||
+				    Input.GetKeyDown(KeyCode.KeypadEnter))
 				{
-					if (!selectionArea.Ready)
+					ExecuteAllOnKeyDown();
+				}
+
+				if (!isMouseOverButton && Input.GetMouseButtonDown(0))
+				{
+					if (!isSelectionEnded)
+					{
+						if (selectionArea.Ready)
+						{
+							ExecuteAllOnKeyDown();
+						}
+					}
+					else
 					{
 						ExecuteAllOnKeyDown();
 					}
 				}
+			}
+
+			if (StorySceneLoadParams.Instance.isTutorialScene) return; //여기는 각각 Scene들이 처리 해 줄 거임
+			if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.F1))
+			{
+				if (SceneManager.sceneCount == 3)
+				{
+					//SceneChange.Instance.Unload("InGameMenuScene");
+					GameObject.FindObjectOfType<MenuManager>().Exit();
+				}
 				else
 				{
-					ExecuteAllOnKeyDown();
+					SceneChange.Instance.Add("InGameMenuScene");
 				}
 			}
 		}
@@ -132,12 +153,16 @@ namespace YouthSpice.StoryScene.Chapter
 		private void ExecuteAllOnKeyDown()
 		{
 			PlayNext();
-			audioManager.OnKeyDown();
-			backgroundImage.OnKeyDown();
-			standingIllusts.OnKeyDown();
-			frontTop.OnKeyDown();
 			speechArea.OnKeyDown();
-			selectionArea.OnKeyDown();
+
+			if (!StorySceneLoadParams.Instance.isTutorialScene)
+			{
+				audioManager.OnKeyDown();
+				backgroundImage.OnKeyDown();
+				standingIllusts.OnKeyDown();
+				frontTop.OnKeyDown();
+				selectionArea.OnKeyDown();
+			}
 		}
 
 		public void SkipCurrent()
@@ -262,7 +287,7 @@ namespace YouthSpice.StoryScene.Chapter
 
 				if (currentChapterIndex >= currentChapter.Elements.Length)
 				{
-					Exit();
+					if (!calledExit) Exit();
 					loop = false;
 					break;
 				}
@@ -336,16 +361,23 @@ namespace YouthSpice.StoryScene.Chapter
 		/// </summary>
 		public void Exit()
 		{
-			StorySceneLoadParams.Instance.Exit();
+			calledExit = true;
 			
-			// GameInfo에 변경사항 반영
-			friendship.Apply();
-			
-			if (SceneManager.sceneCount != 1) SceneChange.Instance.Unload("StoryScene");
+			if (StorySceneLoadParams.Instance.isTutorialScene)
+			{
+				StorySceneLoadParams.Instance.Exit();
+				SceneChange.Instance.Unload("StoryScene_Tutorial");
+			}
 			else
 			{
+				StorySceneLoadParams.Instance.Exit();
+			
+				// GameInfo에 변경사항 반영
+				friendship.Apply();
+				
 				GameProgressManager.Instance.CountUp();
 				GameProgressManager.Instance.RunThisChapter();
+				if (SceneManager.sceneCount != 1) SceneChange.Instance.Unload("StoryScene");
 			}
 		}
 	}

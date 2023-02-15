@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 using NaughtyAttributes;
 
+using YouthSpice.PreloadScene.Audio;
+
 namespace YouthSpice.ConfigScene.SettingElements
 {
 	/// <summary>
@@ -13,6 +15,9 @@ namespace YouthSpice.ConfigScene.SettingElements
 	/// </summary>
 	public abstract class SelectionElement : Elements
 	{
+		[SerializeField]
+		private AudioClip selectClip;
+		
 		[Header("Images")]
 		[Tooltip("선택되지 않은 경우, 선택된 경우 순으로 지정합니다.")]
 		[SerializeField]
@@ -57,6 +62,8 @@ namespace YouthSpice.ConfigScene.SettingElements
 
 		protected virtual void OnOnButtonClicked()
 		{
+			AudioManager.Instance.PlayEffectAudio(selectClip);
+			
 			currentSelection = true;
 			OnValueChanged();
 			UpdateUI();
@@ -64,6 +71,8 @@ namespace YouthSpice.ConfigScene.SettingElements
 
 		protected virtual void OnOffButtonClicked()
 		{
+			AudioManager.Instance.PlayEffectAudio(selectClip);
+			
 			currentSelection = false;
 			OnValueChanged();
 			UpdateUI();

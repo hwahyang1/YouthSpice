@@ -20,6 +20,8 @@ namespace YouthSpice.StoryScene.Extern
 		public string chapterCustomPath = null;
 		public string chapterID;
 
+		public bool isTutorialScene = false;
+
 		public void Exit()
 		{
 			Destroy(gameObject);

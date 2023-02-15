@@ -30,10 +30,23 @@ namespace YouthSpice.PreloadScene.Config
 			LoadConfig();
 			ApplyConfig();
 		}
+		
+		private float lastWidth;
+		private float lastHeight;
 
 		protected override void Update()
 		{
-			Screen.SetResolution(Screen.width, (Screen.width * 16) / 9, fullScreenMode);
+			if(lastWidth != Screen.width)
+			{
+				Screen.SetResolution(Screen.width, Mathf.RoundToInt(Screen.width * (9f / 16f)), fullScreenMode);
+			}
+			else if(lastHeight != Screen.height)
+			{
+				Screen.SetResolution(Mathf.RoundToInt(Screen.height * (16f / 9f)), Screen.height, fullScreenMode);
+			}
+
+			lastWidth = Screen.width;
+			lastHeight = Screen.height;
 		}
 
 		/// <summary>
