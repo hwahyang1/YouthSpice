@@ -8,6 +8,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 using YouthSpice.PreloadScene.Scene;
+using YouthSpice.PreloadScene.Audio;
 
 namespace YouthSpice.ConfigScene.UI
 {
@@ -19,6 +20,9 @@ namespace YouthSpice.ConfigScene.UI
 		[SerializeField]
 		private Animator animator;
 
+		[SerializeField]
+		private AudioClip backClip;
+
 		private void Start()
 		{
 			animator.SetTrigger("On");
@@ -27,13 +31,15 @@ namespace YouthSpice.ConfigScene.UI
 		public void Exit()
 		{
 			animator.SetTrigger("Off");
+			
+			AudioManager.Instance.PlayEffectAudio(backClip);
 
 			StartCoroutine(DelayedExitCoroutine());
 		}
 
 		private IEnumerator DelayedExitCoroutine()
 		{
-			yield return new WaitForSeconds(1.05f);
+			yield return new WaitForSeconds(1.15f);
 			
 			if (SceneManager.sceneCount != 1) SceneChange.Instance.Unload("ConfigScene");
 			else

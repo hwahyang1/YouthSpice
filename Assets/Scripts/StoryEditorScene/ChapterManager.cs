@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 using NaughtyAttributes;
-using YouthSpice.PreloadScene.Alert;
+
 using YouthSpice.PreloadScene.Files;
 using YouthSpice.PreloadScene.Scene;
 using YouthSpice.StoryEditorScene.Condition;
@@ -129,16 +129,21 @@ namespace YouthSpice.StoryEditorScene
 			return data;
 		}
 
+		public void OpenConfig()
+		{
+			SceneChange.Instance.Add("ConfigScene");
+		}
+
 		/// <remarks>
 		/// 실제 메소드 실행은 UIManager를 통해야 합니다.
 		/// </remarks>
 		public async void StartChapterPreview()
 		{
-			GameInfo.Instance.playerName = "(플레이어 이름)";
-			
 			StorySceneLoadParams.Instance.chapterCustomPath = chapterFileManager.PastFilePath;
 			StorySceneLoadParams.Instance.resourceCustomPath = Application.dataPath + @"/.StoryEditor_Data";
 			StorySceneLoadParams.Instance.chapterID = chapterID;
+			
+			GameInfo.Instance.playerName = "(플레이어 이름)";
 
 			await SourceFileManager.Instance.RefreshAll();
 

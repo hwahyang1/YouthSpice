@@ -49,7 +49,8 @@ namespace YouthSpice.InGameMenuScene
 			GameInfo.Instance.Exit();
 			CookingLoadParams.Instance.Exit();
 			StorySceneLoadParams.Instance.Exit();
-			SceneChange.Instance.ChangeScene("MenuScene");
+			Exit();
+			SceneChange.Instance.ChangeScene("MenuScene", true, true);
 		}
 
 		public void Exit()
@@ -61,7 +62,7 @@ namespace YouthSpice.InGameMenuScene
 
 		private IEnumerator DelayedExitCoroutine()
 		{
-			yield return new WaitForSeconds(1f);
+			yield return new WaitForSeconds(1.1f);
 			
 			if (SceneManager.sceneCount != 1) SceneChange.Instance.Unload("InGameMenuScene");
 			else

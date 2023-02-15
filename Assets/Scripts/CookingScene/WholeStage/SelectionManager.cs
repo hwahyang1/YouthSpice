@@ -6,6 +6,7 @@ using UnityEngine;
 
 using YouthSpice.CookingScene.RecipeStage;
 using YouthSpice.CookingScene.WholeStage.UI;
+using YouthSpice.PreloadScene.Audio;
 
 namespace YouthSpice.CookingScene.WholeStage
 {
@@ -14,6 +15,9 @@ namespace YouthSpice.CookingScene.WholeStage
 	/// </summary>
 	public class SelectionManager : MonoBehaviour
 	{
+		[SerializeField]
+		private AudioClip clip;
+		
 		[Header("Config")]
 		[SerializeField]
 		private int selectionCount = 5;
@@ -96,6 +100,8 @@ namespace YouthSpice.CookingScene.WholeStage
 		{
 			int elementIndex = GetEmptyElement();
 			if (elementIndex == -1) return;
+			
+			AudioManager.Instance.PlayEffectAudio(clip);
 
 			items[elementIndex] = id;
 			
@@ -113,6 +119,8 @@ namespace YouthSpice.CookingScene.WholeStage
 
 		private void RemoveItem(int index)
 		{
+			AudioManager.Instance.PlayEffectAudio(clip);
+			
 			items[index] = -2;
 			
 			ShowSelection child = elementParent.GetChild(index).GetComponent<ShowSelection>();
@@ -135,6 +143,8 @@ namespace YouthSpice.CookingScene.WholeStage
 		private void SelectItem(int index, int itemID)
 		{
 			if (gameManager.CurrentChapter != CookingFlow.Recipe) return;
+			
+			AudioManager.Instance.PlayEffectAudio(clip);
 			
 			recipeManager.SelectItem(index, itemID);
 		}

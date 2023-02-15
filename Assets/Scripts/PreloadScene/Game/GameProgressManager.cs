@@ -28,6 +28,17 @@ namespace YouthSpice.PreloadScene.Game
 		[Tooltip("MajorChapter 순서대로 지정합니다.")]
 		[SerializeField]
 		private List<int> cookingGameCharacterIds;
+
+		[SerializeField]
+		public string recipeTutorial;
+		[SerializeField]
+		public string itemTutorial;
+		[SerializeField]
+		public string shopTutorial;
+		[SerializeField]
+		public string researchTutorial;
+
+		private bool re = false;
 		
 		public void CountUp()
 		{
@@ -46,6 +57,11 @@ namespace YouthSpice.PreloadScene.Game
 			{
 				GameInfo.Instance.minorChapter++;
 				
+				if (GameInfo.Instance.majorChapter == 3 && GameInfo.Instance.minorChapter == 2)
+				{
+					GameInfo.Instance.minorChapter= 6;
+				}
+				
 				// 대챕터 끝난 경우 -> 돈/인벤 리셋하고 대챕터 넘김
 				if (GameInfo.Instance.minorChapter == 8)
 				{
@@ -57,40 +73,66 @@ namespace YouthSpice.PreloadScene.Game
 				}
 			}
 		}
+
+		private IEnumerator Toggle()
+		{
+			yield return new WaitForSeconds(1f);
+			re = true;
+			RunThisChapter();
+		}
 		
 		public void RunThisChapter()
 		{
 			int majorChapter = GameInfo.Instance.majorChapter;
 			int minorChapter = GameInfo.Instance.minorChapter;
 
+			if (!re && minorChapter == 0 && majorChapter != 0)
+			{
+				StartCoroutine(nameof(Toggle));
+				return;
+			}
+
+			re = false;
+
 			switch (minorChapter)
 			{
 				case 0:
-					SceneChange.Instance.Add("StoryScene");
+					SceneChange.Instance.ChangeScene("BlankScene", true, true, ()=>{
+						SceneChange.Instance.Add("StoryScene");
+					} );
 					StorySceneLoadParams.Instance.chapterID = minorChapter1StoryIds[majorChapter];
 					break;
 				case 1:
+					GameInfo.Instance.slotName = $"탐색 {GameInfo.Instance.majorChapter}-1";
 					SceneChange.Instance.ChangeScene("GameScene");
 					break;
 				case 2:
-					SceneChange.Instance.Add("StoryScene");
+					SceneChange.Instance.ChangeScene("BlankScene", true, true, ()=>{
+						SceneChange.Instance.Add("StoryScene");
+					} );
 					StorySceneLoadParams.Instance.chapterID = minorChapter2StoryIds[majorChapter];
 					break;
 				case 3:
+					GameInfo.Instance.slotName = $"탐색 {GameInfo.Instance.majorChapter}-2";
 					SceneChange.Instance.ChangeScene("GameScene");
 					break;
 				case 4:
-					SceneChange.Instance.Add("StoryScene");
+					SceneChange.Instance.ChangeScene("BlankScene", true, true, ()=>{
+						SceneChange.Instance.Add("StoryScene");
+					} );
 					StorySceneLoadParams.Instance.chapterID = minorChapter3StoryIds[majorChapter];
 					break;
 				case 5:
+					GameInfo.Instance.slotName = $"탐색 {GameInfo.Instance.majorChapter}-3";
 					SceneChange.Instance.ChangeScene("GameScene");
 					break;
 				case 6:
+					GameInfo.Instance.slotName = $"상점 {GameInfo.Instance.majorChapter}";
 					SceneChange.Instance.ChangeScene("ShopScene");
 					break;
 				case 7: // 8~9 포함
-					CookingLoadParams.Instance.menu = (AvailableMenus)majorChapter;
+					GameInfo.Instance.slotName = $"레시피북 {GameInfo.Instance.majorChapter}";
+					CookingLoadParams.Instance.menu = (AvailableMenus)majorChapter - 1;
 					CookingLoadParams.Instance.currentCharacter = cookingGameCharacterIds[majorChapter];
 					SceneChange.Instance.ChangeScene("CookingScene");
 					break;

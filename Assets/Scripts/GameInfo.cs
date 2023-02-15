@@ -25,12 +25,17 @@ namespace YouthSpice
 
 		public int[] Friendship;
 
+		public bool ViewedRecipe;
+		public bool ViewedItem;
+		public bool ViewedShop;
+		public bool ViewedResearch;
+
 		public DefineGame()
 		{
 			//
 		}
 
-		public DefineGame(string slotName, long dateTime, int majorChapter, int minorChapter, string playerName, int[] inventory, int money, int[] friendship)
+		public DefineGame(string slotName, long dateTime, int majorChapter, int minorChapter, string playerName, int[] inventory, int money, int[] friendship, bool viewedRecipe, bool viewedItem, bool viewedShop, bool viewedResearch)
 		{
 			SlotName = slotName;
 			DateTime = dateTime;
@@ -40,6 +45,10 @@ namespace YouthSpice
 			Inventory = inventory;
 			Money = money;
 			Friendship = friendship;
+			ViewedRecipe = viewedRecipe;
+			ViewedItem = viewedItem;
+			ViewedShop = viewedShop;
+			ViewedResearch = viewedResearch;
 		}
 	}
 
@@ -61,9 +70,14 @@ namespace YouthSpice
 
 		public int[] friendship = new int[3];
 
+		public bool viewedRecipe = false;
+		public bool viewedItem = false;
+		public bool viewedShop = false;
+		public bool viewedResearch = false;
+
 		public DefineGame ConvertToDefineGame()
 		{
-			return new DefineGame(slotName, dateTime, majorChapter, minorChapter, playerName, inventory.ToArray(), money, friendship);
+			return new DefineGame(slotName, dateTime, majorChapter, minorChapter, playerName, inventory.ToArray(), money, friendship, viewedRecipe, viewedItem, viewedShop, viewedResearch);
 		}
 
 		public void ConvertFromDefineGame(DefineGame data)
@@ -80,6 +94,11 @@ namespace YouthSpice
 			money = data.Money;
 
 			friendship = data.Friendship;
+
+			viewedRecipe = data.ViewedRecipe;
+			viewedItem = data.ViewedItem;
+			viewedShop = data.ViewedShop;
+			viewedResearch = data.ViewedResearch;
 		}
 
 		public void Exit()

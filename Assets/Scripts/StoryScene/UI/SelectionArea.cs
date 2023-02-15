@@ -4,6 +4,7 @@ using System.Linq;
 
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 using Newtonsoft.Json;
 using NaughtyAttributes;
@@ -18,6 +19,9 @@ namespace YouthSpice.StoryScene.UI
 	/// </summary>
 	public class SelectionArea : MonoBehaviour
 	{
+		[SerializeField]
+		private AudioClip selectClip;
+		
 		[SerializeField]
 		private GameObject selectionBackground;
 
@@ -63,7 +67,7 @@ namespace YouthSpice.StoryScene.UI
 
 		public void OnKeyDown()
 		{
-			//
+			PlayNext();
 		}
 
 		private void ShowSelection()
@@ -72,7 +76,7 @@ namespace YouthSpice.StoryScene.UI
 
 			for (int i = 0; i < currentSelections.Count; i++)
 			{
-				selectionButtons[i].transform.GetChild(0).GetComponent<Text>().text = currentSelections[i].Data["SelectionName"];
+				selectionButtons[i].transform.GetChild(1).GetComponent<Text>().text = currentSelections[i].Data["SelectionName"];
 				selectionButtons[i].gameObject.SetActive(true);
 			}
 		}
@@ -80,6 +84,10 @@ namespace YouthSpice.StoryScene.UI
 		public void OnButtonInteract(int order)
 		{
 			HideSelection();
+			
+			EventSystem.current?.SetSelectedGameObject(null);
+			
+			PreloadScene.Audio.AudioManager.Instance.PlayEffectAudio(selectClip);
 
 			currentElementIndex = currentElements.FindIndex(target =>
 				target.Type == ChapterElementType.SelectionName &&
@@ -188,7 +196,7 @@ namespace YouthSpice.StoryScene.UI
 			{
 				currentElementIndex++;
 
-				if (currentElements.Count == currentElementIndex)
+				if (currentElements.Count >= currentElementIndex)
 				{
 					// 분기점 종료
 					loop = false;

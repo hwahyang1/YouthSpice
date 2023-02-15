@@ -17,7 +17,7 @@ namespace YouthSpice
 		
 		[Header("GameObjects")]
 		[SerializeField]
-		private RectTransform target;
+		private RectTransform[] target;
 		[SerializeField]
 		private Button upButton;
 		[SerializeField]
@@ -31,16 +31,22 @@ namespace YouthSpice
 
 		private void OnUpButtonClicked()
 		{
-			Vector2 anchoredPosition = target.anchoredPosition;
-			anchoredPosition = new Vector2(anchoredPosition.x, anchoredPosition.y - changeValue);
-			target.anchoredPosition = anchoredPosition;
+			foreach (RectTransform current in target)
+			{
+				Vector2 anchoredPosition = current.anchoredPosition;
+				anchoredPosition = new Vector2(anchoredPosition.x, anchoredPosition.y - changeValue);
+				current.anchoredPosition = anchoredPosition;
+			}
 		}
 
 		private void OnDownButtonClicked()
 		{
-			Vector2 anchoredPosition = target.anchoredPosition;
-			anchoredPosition = new Vector2(anchoredPosition.x, anchoredPosition.y + changeValue);
-			target.anchoredPosition = anchoredPosition;
+			foreach (RectTransform current in target)
+			{
+				Vector2 anchoredPosition = current.anchoredPosition;
+				anchoredPosition = new Vector2(anchoredPosition.x, anchoredPosition.y + changeValue);
+				current.anchoredPosition = anchoredPosition;
+			}
 		}
 	}
 }

@@ -4,6 +4,7 @@ using Action = System.Action;
 
 using UnityEngine;
 using UnityEngine.UI;
+using YouthSpice.PreloadScene.Audio;
 
 namespace YouthSpice.CookingScene.ResultStage.UI
 {
@@ -12,13 +13,20 @@ namespace YouthSpice.CookingScene.ResultStage.UI
 	/// </summary>
 	public class UIAnimator : MonoBehaviour
 	{
+		[SerializeField]
+		private AudioClip takeImageClip;
+		[SerializeField]
+		private AudioClip makingClip;
+		[SerializeField]
+		private AudioClip foodClip;
+		
 		[Header("Configs")]
 		[SerializeField]
 		private float animationDelay = 0.01f;
 		[SerializeField]
 		private float fadeTime = 1.2f;
 		[SerializeField]
-		private float fadeWaitTime = 0.5f;
+		private float fadeWaitTime = 6f;
 		[SerializeField]
 		private float cameraEffectOutTime = 1.5f;
 
@@ -64,6 +72,7 @@ namespace YouthSpice.CookingScene.ResultStage.UI
 				yield return waitAnimationDelay;
 			}
 			
+			AudioManager.Instance.PlayEffectAudio(makingClip);
 			yield return new WaitForSeconds(fadeWaitTime);
 			
 			callback?.Invoke();
@@ -88,6 +97,8 @@ namespace YouthSpice.CookingScene.ResultStage.UI
 			blackCover.gameObject.SetActive(false);
 			
 			yield return new WaitForSeconds(1f);
+			AudioManager.Instance.PlayEffectAudio(takeImageClip);
+			yield return new WaitForSeconds(0.5f);
 			
 			currentTime = 0f;
 			
@@ -108,7 +119,11 @@ namespace YouthSpice.CookingScene.ResultStage.UI
 			
 			titleSpeechAnimator.SetTrigger("MenuTitle");
 			
-			yield return new WaitForSeconds(2.25f);
+			yield return new WaitForSeconds(0.5f);
+			
+			AudioManager.Instance.PlayEffectAudio(foodClip);
+			
+			yield return new WaitForSeconds(1.75f);
 			
 			titleSpeechAnimator.SetTrigger("SpeechText");
 			

@@ -17,6 +17,9 @@ namespace YouthSpice.StoryScene.UI
 	public class StandingIllusts : MonoBehaviour
 	{
 		[SerializeField]
+		private Sprite blank;
+		
+		[SerializeField]
 		private Image[] frontStandingIllustAreas;
 
 		[SerializeField]
@@ -50,7 +53,7 @@ namespace YouthSpice.StoryScene.UI
 		{
 			if (isRunning)
 			{
-				StopCoroutine(activeCoroutine);
+				if (activeCoroutine != null) StopCoroutine(activeCoroutine);
 
 				foreach (Image area in frontStandingIllustAreas)
 				{
@@ -80,18 +83,21 @@ namespace YouthSpice.StoryScene.UI
 
 			List<Sprite> images = new List<Sprite>();
 
-			images.Add(data["CharacterSlot1"] == "0"
-				? null
-				: SourceFileManager.Instance.AvailableStandingIllusts[int.Parse(data["CharacterSlot1"]) - 1]);
-			images.Add(data["CharacterSlot2"] == "0"
-				? null
-				: SourceFileManager.Instance.AvailableStandingIllusts[int.Parse(data["CharacterSlot2"]) - 1]);
-			images.Add(data["CharacterSlot3"] == "0"
-				? null
-				: SourceFileManager.Instance.AvailableStandingIllusts[int.Parse(data["CharacterSlot3"]) - 1]);
+			int imageIndex1 = int.Parse(data["CharacterSlot1"]);
+			int imageIndex2 = int.Parse(data["CharacterSlot2"]);
+			int imageIndex3 = int.Parse(data["CharacterSlot3"]);
+			images.Add(imageIndex1 <= 0
+				? blank
+				: SourceFileManager.Instance.AvailableStandingIllusts[imageIndex1 - 1]);
+			images.Add(imageIndex2 <= 0
+				? blank
+				: SourceFileManager.Instance.AvailableStandingIllusts[imageIndex2 - 1]);
+			images.Add(imageIndex3 <= 0
+				? blank
+				: SourceFileManager.Instance.AvailableStandingIllusts[imageIndex3 - 1]);
 
-			activeCoroutine = StartCoroutine(ChangeIllustCoroutine(images.ToArray(), forceDisableTransition,
-				(DefineImageTransitions)int.Parse(data["Transition"])));
+			DefineImageTransitions transition = (DefineImageTransitions)int.Parse(data["Transition"]);
+			activeCoroutine = StartCoroutine(ChangeIllustCoroutine(images.ToArray(), forceDisableTransition, transition));
 		}
 
 		private IEnumerator ChangeIllustCoroutine(Sprite[] image, bool forceDisableTransition, DefineImageTransitions transitionType)
@@ -105,12 +111,12 @@ namespace YouthSpice.StoryScene.UI
 
 			for (int i = 0; i < nextAreas.Length; i++)
 			{
-				if (nextAreas[i].sprite == null) nextAreas[i].color = new Color(1f, 1f, 1f, 0f);
+				if (nextAreas[i].sprite == blank) nextAreas[i].color = new Color(1f, 1f, 1f, 0f);
 				else nextAreas[i].color = new Color(1f, 1f, 1f, 0f);
 				nextAreas[i].sprite = image[i];
 			}
 
-			yield return null;
+			//yield return null;
 
 			activePosition = !activePosition;
 
@@ -123,13 +129,12 @@ namespace YouthSpice.StoryScene.UI
 				case DefineImageTransitions.None:
 					foreach (Image area in currentAreas)
 					{
-						if (area.sprite == null) area.color = new Color(1f, 1f, 1f, 0f);
-						else area.color = new Color(1f, 1f, 1f, 0f);
+						area.color = new Color(1f, 1f, 1f, 0f);
 					}
 
 					foreach (Image area in nextAreas)
 					{
-						if (area.sprite == null) area.color = new Color(1f, 1f, 1f, 0f);
+						if (area.sprite == blank) area.color = new Color(1f, 1f, 1f, 0f);
 						else area.color = new Color(1f, 1f, 1f, 1f);
 					}
 
@@ -140,13 +145,13 @@ namespace YouthSpice.StoryScene.UI
 						currentTime += animationDelay;
 						foreach (Image area in currentAreas)
 						{
-							if (area.sprite == null) area.color = new Color(1f, 1f, 1f, 0f);
+							if (area.sprite == blank) area.color = new Color(1f, 1f, 1f, 0f);
 							else area.color = new Color(1f, 1f, 1f, 1f - (currentTime / totalAnimationTime));
 						}
 
 						foreach (Image area in nextAreas)
 						{
-							if (area.sprite == null) area.color = new Color(1f, 1f, 1f, 0f);
+							if (area.sprite == blank) area.color = new Color(1f, 1f, 1f, 0f);
 							else area.color = new Color(1f, 1f, 1f, currentTime / totalAnimationTime);
 						}
 
@@ -160,7 +165,7 @@ namespace YouthSpice.StoryScene.UI
 						currentTime += animationDelay;
 						foreach (Image area in currentAreas)
 						{
-							if (area.sprite == null) area.color = new Color(1f, 1f, 1f, 0f);
+							if (area.sprite == blank) area.color = new Color(1f, 1f, 1f, 0f);
 							else area.color = new Color(1f, 1f, 1f, 1f - (currentTime / totalAnimationTime));
 						}
 
@@ -174,7 +179,7 @@ namespace YouthSpice.StoryScene.UI
 						currentTime += animationDelay;
 						foreach (Image area in nextAreas)
 						{
-							if (area.sprite == null) area.color = new Color(1f, 1f, 1f, 0f);
+							if (area.sprite == blank) area.color = new Color(1f, 1f, 1f, 0f);
 							else area.color = new Color(1f, 1f, 1f, currentTime / totalAnimationTime);
 						}
 

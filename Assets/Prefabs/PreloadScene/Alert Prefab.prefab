@@ -1547,6 +1547,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb96566b4c1e2ea4b96990d4952deff9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  clickClip: {fileID: 8300000, guid: 0438a9fbfaaff524f87ff3bc68f5d499, type: 3}
   screenCover: {fileID: 2761150087267110880}
   titleText: {fileID: 2761150088723305174}
   descriptionText: {fileID: 2761150087745275769}

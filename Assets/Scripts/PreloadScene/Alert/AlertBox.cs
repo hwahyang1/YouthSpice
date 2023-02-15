@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 using NaughtyAttributes;
+using YouthSpice.PreloadScene.Audio;
 
 namespace YouthSpice.PreloadScene.Alert
 {
@@ -14,6 +15,9 @@ namespace YouthSpice.PreloadScene.Alert
 	/// </summary>
 	public class AlertBox : MonoBehaviour
 	{
+		[SerializeField]
+		private AudioClip clickClip;
+		
 		[Header("GameObject")]
 		[SerializeField]
 		private GameObject screenCover;
@@ -87,6 +91,8 @@ namespace YouthSpice.PreloadScene.Alert
 
 		public void OnButtonClicked(int index)
 		{
+			AudioManager.Instance.PlayEffectAudio(clickClip);
+			
 			if (alertType == AlertType.None) return;
 			if ((int)alertType < index)
 			{

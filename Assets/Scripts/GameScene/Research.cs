@@ -1,10 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEngine;
-using UnityEngine.UI;
 
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using YouthSpice.InGameMenuScene;
+using YouthSpice.PreloadScene.Audio;
+using YouthSpice.PreloadScene.Files;
+using YouthSpice.PreloadScene.Game;
 using YouthSpice.PreloadScene.Item;
+using YouthSpice.PreloadScene.Scene;
 
 namespace YouthSpice.GameScene
 {
@@ -15,7 +20,17 @@ namespace YouthSpice.GameScene
 	{
 		public GameObject backGround;
 		public Map map;
-
+		
+		// audio
+		[SerializeField]
+		private AudioClip researchClip;
+		[SerializeField]
+		private AudioClip lowRankClip;
+		[SerializeField]
+		private AudioClip midHighRankClip;
+		[SerializeField]
+		private AudioClip midHighRankBackgroundClip;
+		
 		//ui
 		public int timer = 8; //왼쪽위 제한시간
 		[SerializeField] private GameObject needle;
@@ -26,6 +41,7 @@ namespace YouthSpice.GameScene
 		//탐색 기능
 		private bool startTimerTime = false; //cooldown 지속 시간 (초)
 		private float cooldownTimer; //cooldown 타이머
+		[SerializeField]
 		private bool onCooldown = false; //cooldown 중인지 여부
 
 		//값 변경
@@ -61,7 +77,8 @@ namespace YouthSpice.GameScene
 		[SerializeField] private Sprite[] getResearchImage;
 
 		private bool canMinigameGetItem = true;
-		
+
+		private bool runOnce = false;
 
 		private void Start()
 		{
@@ -70,6 +87,23 @@ namespace YouthSpice.GameScene
 
 		private void Update()
 		{
+			// 다른 창 열렸을 때 입력되는 현상 방지
+			if (SceneManager.sceneCount < 3 && !isMiniGameControl && isControl && !onCooldown && timer != -1)
+			{
+				if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.F1))
+				{
+					if (SceneManager.sceneCount == 3)
+					{
+						//SceneChange.Instance.Unload("InGameMenuScene");
+						GameObject.FindObjectOfType<MenuManager>().Exit();
+					}
+					else
+					{
+						SceneChange.Instance.Add("InGameMenuScene");
+					}
+				}
+			}
+			
 			if (isControl)
 			{
 				Researchfunction();
@@ -87,17 +121,34 @@ namespace YouthSpice.GameScene
 				researchImageRoot.sprite = researchImage[1];
 				researchImageRoot.gameObject.SetActive(true);
 				backGround.GetComponent<BackGround>().isGrow = false;
+				if (!runOnce)
+				{
+					StartCoroutine(ExitCoroutine());
+					runOnce = true;
+				}
 			}
+		}
+
+		private IEnumerator ExitCoroutine()
+		{
+			yield return new WaitForSeconds(1.5f);
+			GameProgressManager.Instance.CountUp();
+			GameProgressManager.Instance.RunThisChapter();
 		}
 
 		private void Researchfunction()
 		{
+			// 창 열려 있으면 무시
+			if (SceneManager.sceneCount != 1) return;
+			
 			if (timer >= 0)
 			{
 				// spacebar가 눌렸고, cooldown이 아직 안되어있으면
 				if (Input.GetKeyDown(KeyCode.Space) && !onCooldown)
 				{
-					map.GetComponent<Map>().mapSelectBtn.gameObject.SetActive(false);
+					AudioManager.Instance.PlayEffectAudio(researchClip);
+					
+					map.mapSelectBtn.gameObject.SetActive(false);
 					getItemPanel.gameObject.SetActive(false);
 					backGround.GetComponent<BackGround>().isGrow = true;
 					researchImageRoot.gameObject.SetActive(false);
@@ -122,14 +173,14 @@ namespace YouthSpice.GameScene
 
 		private void Randomfunction()
 		{
-			float successChance = UnityEngine.Random.Range(0f, 101f);
+			float successChance = Random.Range(0f, 101f);
 			if (successChance <= successPercentage)
 			{
 				//성공
 				backGround.GetComponent<BackGround>().width = 0;
 				backGround.GetComponent<BackGround>().height = 0;
 				backGround.GetComponent<BackGround>().isGrow = false;
-				map.GetComponent<Map>().mapSelectBtn.gameObject.SetActive(true);
+				map.mapSelectBtn.gameObject.SetActive(true);
 				Success();
 			}
 			else if (successChance > successPercentage && successChance < 100f - minigamePercentage)
@@ -138,13 +189,15 @@ namespace YouthSpice.GameScene
 				backGround.GetComponent<BackGround>().width = 0;
 				backGround.GetComponent<BackGround>().height = 0;
 				backGround.GetComponent<BackGround>().isGrow = false;
-				map.GetComponent<Map>().mapSelectBtn.gameObject.SetActive(true);
+				map.mapSelectBtn.gameObject.SetActive(true);
 				Fail();
 			}
 			else if (successChance >= 100f - minigamePercentage)
 			{
+				AudioManager.Instance.PlayEffectAudio(midHighRankClip);
+				
 				//미니게임
-				map.GetComponent<Map>().mapSelectBtn.gameObject.SetActive(false);
+				map.mapSelectBtn.gameObject.SetActive(false);
 				backGround.GetComponent<BackGround>().width = 0;
 				backGround.GetComponent<BackGround>().height = 0;
 				backGround.GetComponent<BackGround>().isGrow = false;
@@ -240,6 +293,9 @@ namespace YouthSpice.GameScene
 		private void MiniGamePanel()
 		{
 			Debug.Log("미니게임창 켜짐");
+		
+			AudioManager.Instance.PlayBackgroundAudio(midHighRankBackgroundClip);
+			
 			isMiniGameControl = true;
 			minigamePanel.SetActive(true);
 		}
@@ -250,6 +306,9 @@ namespace YouthSpice.GameScene
 		/// </summary>
 		private void MiniGame()
 		{
+			// 창 열려 있으면 무시
+			if (SceneManager.sceneCount != 1) return;
+			
 			if (minigameCount > 100)
 			{
 				getItemPanel.gameObject.SetActive(true);
@@ -310,13 +369,15 @@ namespace YouthSpice.GameScene
 
 			if (Input.anyKeyDown)
 			{
-				minigameCount++;
+				minigameCount += 3;
 			}
 		}
 
 		private void MiniGamePanelFalse()
 		{
-			map.GetComponent<Map>().mapSelectBtn.gameObject.SetActive(true);
+			AudioManager.Instance.StopBackgroundAudio();
+			
+			map.mapSelectBtn.gameObject.SetActive(true);
 			researchImageRoot.gameObject.SetActive(false);
 			canMinigameGetItem = true;
 			isControl = true;
@@ -339,8 +400,17 @@ namespace YouthSpice.GameScene
 			//인벤에 저장 
 			int index = ItemBuffer.Instance.GetIndex(item.name);
 			GameInfo.Instance.inventory.Add(index);
+
+			if (!UnlockedCGsManager.Instance.GetAllData().researchItems.Exists(target => target == index))
+			{
+				DefineUnlockedCGs data = UnlockedCGsManager.Instance.GetAllData();
+				data.researchItems.Add(index);
+				UnlockedCGsManager.Instance.Save(data);
+			}
 			
 			getItemImage.sprite = getResearchImage[index];
+			
+			AudioManager.Instance.PlayEffectAudio(lowRankClip);
 		}
 		private void OceanMediumLowRandom()
 		{
@@ -352,8 +422,17 @@ namespace YouthSpice.GameScene
 			//인벤에 저장 
 			int index = ItemBuffer.Instance.GetIndex(item.name);
 			GameInfo.Instance.inventory.Add(index);
+
+			if (!UnlockedCGsManager.Instance.GetAllData().researchItems.Exists(target => target == index))
+			{
+				DefineUnlockedCGs data = UnlockedCGsManager.Instance.GetAllData();
+				data.researchItems.Add(index);
+				UnlockedCGsManager.Instance.Save(data);
+			}
 			
 			getItemImage.sprite = getResearchImage[index];
+			
+			AudioManager.Instance.PlayEffectAudio(lowRankClip);
 		}
 		private void OceanMediumHighRandom()
 		{
@@ -365,8 +444,17 @@ namespace YouthSpice.GameScene
 			//인벤에 저장 
 			int index = ItemBuffer.Instance.GetIndex(item.name);
 			GameInfo.Instance.inventory.Add(index);
+
+			if (!UnlockedCGsManager.Instance.GetAllData().researchItems.Exists(target => target == index))
+			{
+				DefineUnlockedCGs data = UnlockedCGsManager.Instance.GetAllData();
+				data.researchItems.Add(index);
+				UnlockedCGsManager.Instance.Save(data);
+			}
 			
 			getItemImage.sprite = getResearchImage[index];
+			
+			AudioManager.Instance.PlayEffectAudio(lowRankClip);
 		}
 		private void OceanHighRandom()
 		{
@@ -378,8 +466,17 @@ namespace YouthSpice.GameScene
 			//인벤에 저장 
 			int index = ItemBuffer.Instance.GetIndex(item.name);
 			GameInfo.Instance.inventory.Add(index);
+
+			if (!UnlockedCGsManager.Instance.GetAllData().researchItems.Exists(target => target == index))
+			{
+				DefineUnlockedCGs data = UnlockedCGsManager.Instance.GetAllData();
+				data.researchItems.Add(index);
+				UnlockedCGsManager.Instance.Save(data);
+			}
 			
 			getItemImage.sprite = getResearchImage[index];
+			
+			AudioManager.Instance.PlayEffectAudio(lowRankClip);
 		}
 
 		private void GroundLowRandom() 
@@ -392,8 +489,17 @@ namespace YouthSpice.GameScene
 			//인벤에 저장 
 			int index = ItemBuffer.Instance.GetIndex(item.name);
 			GameInfo.Instance.inventory.Add(index);
+
+			if (!UnlockedCGsManager.Instance.GetAllData().researchItems.Exists(target => target == index))
+			{
+				DefineUnlockedCGs data = UnlockedCGsManager.Instance.GetAllData();
+				data.researchItems.Add(index);
+				UnlockedCGsManager.Instance.Save(data);
+			}
 			
 			getItemImage.sprite = getResearchImage[index];
+			
+			AudioManager.Instance.PlayEffectAudio(lowRankClip);
 		}
 		private void GroundMediumLowRandom()
 		{
@@ -405,8 +511,17 @@ namespace YouthSpice.GameScene
 			//인벤에 저장 
 			int index = ItemBuffer.Instance.GetIndex(item.name);
 			GameInfo.Instance.inventory.Add(index);
+
+			if (!UnlockedCGsManager.Instance.GetAllData().researchItems.Exists(target => target == index))
+			{
+				DefineUnlockedCGs data = UnlockedCGsManager.Instance.GetAllData();
+				data.researchItems.Add(index);
+				UnlockedCGsManager.Instance.Save(data);
+			}
 			
 			getItemImage.sprite = getResearchImage[index];
+			
+			AudioManager.Instance.PlayEffectAudio(lowRankClip);
 		}
 		private void GroundMediumHighRandom()
 		{
@@ -418,8 +533,17 @@ namespace YouthSpice.GameScene
 			//인벤에 저장 
 			int index = ItemBuffer.Instance.GetIndex(item.name);
 			GameInfo.Instance.inventory.Add(index);
+
+			if (!UnlockedCGsManager.Instance.GetAllData().researchItems.Exists(target => target == index))
+			{
+				DefineUnlockedCGs data = UnlockedCGsManager.Instance.GetAllData();
+				data.researchItems.Add(index);
+				UnlockedCGsManager.Instance.Save(data);
+			}
 			
 			getItemImage.sprite = getResearchImage[index];
+			
+			AudioManager.Instance.PlayEffectAudio(lowRankClip);
 		}
 		private void GroundHighRandom()
 		{
@@ -431,8 +555,17 @@ namespace YouthSpice.GameScene
 			//인벤에 저장 
 			int index = ItemBuffer.Instance.GetIndex(item.name);
 			GameInfo.Instance.inventory.Add(index);
+
+			if (!UnlockedCGsManager.Instance.GetAllData().researchItems.Exists(target => target == index))
+			{
+				DefineUnlockedCGs data = UnlockedCGsManager.Instance.GetAllData();
+				data.researchItems.Add(index);
+				UnlockedCGsManager.Instance.Save(data);
+			}
 			
 			getItemImage.sprite = getResearchImage[index];
+			
+			AudioManager.Instance.PlayEffectAudio(lowRankClip);
 		}
 
 		private void MountainLowRandom()
@@ -445,8 +578,17 @@ namespace YouthSpice.GameScene
 			//인벤에 저장 
 			int index = ItemBuffer.Instance.GetIndex(item.name);
 			GameInfo.Instance.inventory.Add(index);
+
+			if (!UnlockedCGsManager.Instance.GetAllData().researchItems.Exists(target => target == index))
+			{
+				DefineUnlockedCGs data = UnlockedCGsManager.Instance.GetAllData();
+				data.researchItems.Add(index);
+				UnlockedCGsManager.Instance.Save(data);
+			}
 			
 			getItemImage.sprite = getResearchImage[index];
+			
+			AudioManager.Instance.PlayEffectAudio(lowRankClip);
 		}
 		private void MountainMediumLowRandom()
 		{
@@ -458,8 +600,17 @@ namespace YouthSpice.GameScene
 			//인벤에 저장 
 			int index = ItemBuffer.Instance.GetIndex(item.name);
 			GameInfo.Instance.inventory.Add(index);
+
+			if (!UnlockedCGsManager.Instance.GetAllData().researchItems.Exists(target => target == index))
+			{
+				DefineUnlockedCGs data = UnlockedCGsManager.Instance.GetAllData();
+				data.researchItems.Add(index);
+				UnlockedCGsManager.Instance.Save(data);
+			}
 			
 			getItemImage.sprite = getResearchImage[index];
+			
+			AudioManager.Instance.PlayEffectAudio(lowRankClip);
 		}
 		private void MountainMediumHighRandom()
 		{
@@ -471,8 +622,17 @@ namespace YouthSpice.GameScene
 			//인벤에 저장 
 			int index = ItemBuffer.Instance.GetIndex(item.name);
 			GameInfo.Instance.inventory.Add(index);
+
+			if (!UnlockedCGsManager.Instance.GetAllData().researchItems.Exists(target => target == index))
+			{
+				DefineUnlockedCGs data = UnlockedCGsManager.Instance.GetAllData();
+				data.researchItems.Add(index);
+				UnlockedCGsManager.Instance.Save(data);
+			}
 			
 			getItemImage.sprite = getResearchImage[index];
+			
+			AudioManager.Instance.PlayEffectAudio(lowRankClip);
 		}
 		private void MountainHighRandom()
 		{
@@ -484,8 +644,17 @@ namespace YouthSpice.GameScene
 			//인벤에 저장 
 			int index = ItemBuffer.Instance.GetIndex(item.name);
 			GameInfo.Instance.inventory.Add(index);
+
+			if (!UnlockedCGsManager.Instance.GetAllData().researchItems.Exists(target => target == index))
+			{
+				DefineUnlockedCGs data = UnlockedCGsManager.Instance.GetAllData();
+				data.researchItems.Add(index);
+				UnlockedCGsManager.Instance.Save(data);
+			}
 			
 			getItemImage.sprite = getResearchImage[index];
+			
+			AudioManager.Instance.PlayEffectAudio(lowRankClip);
 		}
 
 		public void GetItemPanelFalse()
