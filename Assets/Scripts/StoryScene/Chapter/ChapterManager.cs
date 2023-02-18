@@ -95,7 +95,7 @@ namespace YouthSpice.StoryScene.Chapter
 			else
 			{
 				currentChapter = SourceFileManager.Instance.AvailableChapters[StorySceneLoadParams.Instance.chapterID];
-				GameInfo.Instance.slotName = currentChapter.Name;
+				if (!StorySceneLoadParams.Instance.isTutorialScene) GameInfo.Instance.slotName = currentChapter.Name;
 				StartCoroutine(nameof(LateStartCoroutine));
 			}
 		}

@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -8,30 +7,45 @@ using UnityEngine.UI;
 namespace YouthSpice.ShopScene
 {
 	/// <summary>
-	/// Description
+	/// 각 항목을 정의합니다.
 	/// </summary>
 	public class Slot : MonoBehaviour
 	{
-		public ItemProperty item;
-		public UnityEngine.UI.Image Image;
-		public UnityEngine.UI.Image foodInfoImage;
+		[SerializeField]
+		private ItemProperty item;
+		[SerializeField]
+		private Image itemImage;
+		[SerializeField]
+		private Text itemName;
+		[SerializeField]
+		private Text itemPrice;
 
-		public Button button;
+		[SerializeField]
+		private Button button;
 
-		public void SetItem(ItemProperty item, Action<Slot> buttonCallback = null)
+		public void SetItem(ItemProperty item, bool isSellArea = false, System.Action<Slot> buttonCallback = null)
 		{
 			this.item = item;
 			if (item == null)
 			{
-				Image.enabled = false;
+				itemImage.enabled = false;
+				itemName.text = "";
+				itemPrice.text = "0";
 
+				#if UNITY_EDITOR
 				gameObject.name = "Empty";
+				#endif
 			}
 			else
 			{
-				Image.enabled = true;
+				itemImage.enabled = true;
+				itemImage.sprite = item.sprite;
+				itemName.text = item.name;
+				itemPrice.text = (isSellArea ? Mathf.Round(item.sellPrice * 0.5f) : item.sellPrice).ToString();
+				
+				#if UNITY_EDITOR
 				gameObject.name = item.name;
-				Image.sprite = item.sprite;
+				#endif
 			}
 			
 			if (buttonCallback != null)

@@ -2,8 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
+using NaughtyAttributes;
+
 using YouthSpice.InGameMenuScene;
 using YouthSpice.PreloadScene.Audio;
 using YouthSpice.PreloadScene.Files;
@@ -14,67 +17,100 @@ using YouthSpice.PreloadScene.Scene;
 namespace YouthSpice.GameScene
 {
 	/// <summary>
-	/// Description
+	/// 탐색 게임을 관리합니다.
 	/// </summary>
 	public class Research : MonoBehaviour
 	{
-		public GameObject backGround;
-		public Map map;
-		
+		[SerializeField]
+		private BackGround backGround;
+		[SerializeField]
+		private Map map;
+
 		// audio
 		[SerializeField]
 		private AudioClip researchClip;
+
 		[SerializeField]
 		private AudioClip lowRankClip;
+
 		[SerializeField]
 		private AudioClip midHighRankClip;
+
 		[SerializeField]
 		private AudioClip midHighRankBackgroundClip;
-		
-		//ui
-		public int timer = 8; //왼쪽위 제한시간
-		[SerializeField] private GameObject needle;
-		[SerializeField] private Sprite[] researchImage; //탐색 상태 이미지
 
-		[SerializeField] private Image researchImageRoot; //탐색 이미지 변화 위치 
+		//ui
+		[SerializeField, ReadOnly]
+		private int timer = 8; //왼쪽위 제한시간
+
+		[SerializeField]
+		private GameObject needle;
+
+		[SerializeField]
+		private Sprite[] researchImage; //탐색 상태 이미지
+
+		[SerializeField]
+		private Image researchImageRoot; //탐색 이미지 변화 위치 
 
 		//탐색 기능
 		private bool startTimerTime = false; //cooldown 지속 시간 (초)
 		private float cooldownTimer; //cooldown 타이머
+
 		[SerializeField]
 		private bool onCooldown = false; //cooldown 중인지 여부
 
 		//값 변경
-		[Header("성공 확률 (%) , 미니게임성공확률과 성공 확률의 사이가")] [SerializeField]
+		[Header("성공 확률 (%) , 미니게임성공확률과 성공 확률의 사이가")]
+		[SerializeField]
 		private int successPercentage; //성공 확률
 
-		[Header("미니게임 성공 확률 (%) , 실패 확률 입니다")] [SerializeField]
+		[Header("미니게임 성공 확률 (%) , 실패 확률 입니다")]
+		[SerializeField]
 		private int minigamePercentage; //미니게임성공 확률
 
-		[Header("탐색 시간")] [SerializeField] private float cooldownDuration; //탐색 시간 
+		[Header("탐색 시간")]
+		[SerializeField]
+		private float cooldownDuration; //탐색 시간 
 
 		//미니게임
-		[Header("미니게임")] [SerializeField] private GameObject minigamePanel;
-		[SerializeField] private float minigameCount = 50f;
-		[SerializeField] private Slider clickSlider;
+		[Header("미니게임")]
+		[SerializeField]
+		private GameObject minigamePanel;
 
-		[SerializeField] private int sliderForce;
+		[SerializeField]
+		private float minigameCount = 50f;
+
+		[SerializeField]
+		private Slider clickSlider;
+
+		[SerializeField]
+		private int sliderForce;
 
 		//시스템 제어
-		[SerializeField] private bool isControl = true; //미니게임 할떄 다른 기능 사용 못하게 하는 전제 제어 불값
-		[SerializeField] private bool isMiniGameControl = false;
-		
+		[SerializeField]
+		private bool isControl = true; //미니게임 할떄 다른 기능 사용 못하게 하는 전제 제어 불값
+
+		[SerializeField]
+		private bool isMiniGameControl = false;
+
 		//아이템 불러오는 리스트 
 		private List<ItemProperty> items;
 
-		[SerializeField] private GameObject getItemPanel;
-		[SerializeField] private Image getItemImage;
+		[SerializeField]
+		private GameObject getItemPanel;
 
+		[SerializeField]
+		private Image getItemImage;
+
+		[ReadOnly]
 		public bool isOcean;
+		[ReadOnly]
 		public bool isGround;
+		[ReadOnly]
 		public bool isMountain;
 
-		[SerializeField] private Sprite[] getResearchImage;
+		[SerializeField]
+		private Sprite[] getResearchImage;
 
 		private bool canMinigameGetItem = true;
 
@@ -103,10 +139,10 @@ namespace YouthSpice.GameScene
 					}
 				}
 			}
-			
+
 			if (isControl)
 			{
-				Researchfunction();
+				ResearchFunction();
 
 				TimeLimit();
 			}
@@ -120,7 +156,7 @@ namespace YouthSpice.GameScene
 			{
 				researchImageRoot.sprite = researchImage[1];
 				researchImageRoot.gameObject.SetActive(true);
-				backGround.GetComponent<BackGround>().isGrow = false;
+				backGround.isGrow = false;
 				if (!runOnce)
 				{
 					StartCoroutine(ExitCoroutine());
@@ -136,21 +172,24 @@ namespace YouthSpice.GameScene
 			GameProgressManager.Instance.RunThisChapter();
 		}
 
-		private void Researchfunction()
+		/// <summary>
+		/// 탐색을 시작합니다.
+		/// </summary>
+		private void ResearchFunction()
 		{
 			// 창 열려 있으면 무시
 			if (SceneManager.sceneCount != 1) return;
-			
+
 			if (timer >= 0)
 			{
 				// spacebar가 눌렸고, cooldown이 아직 안되어있으면
 				if (Input.GetKeyDown(KeyCode.Space) && !onCooldown)
 				{
 					AudioManager.Instance.PlayEffectAudio(researchClip);
-					
+
 					map.mapSelectBtn.gameObject.SetActive(false);
 					getItemPanel.gameObject.SetActive(false);
-					backGround.GetComponent<BackGround>().isGrow = true;
+					backGround.isGrow = true;
 					researchImageRoot.gameObject.SetActive(false);
 					timer--; //남은 탐색횟수 감소;
 					onCooldown = true; // cooldown 중
@@ -164,50 +203,56 @@ namespace YouthSpice.GameScene
 					// 타이머가 0 이하면
 					if (cooldownTimer <= 0f)
 					{
-						Randomfunction(); //랜덤 함수 실행
+						RandomFunction(); //랜덤 함수 실행
 						onCooldown = false; // cooldown 완료
 					}
 				}
 			}
 		}
 
-		private void Randomfunction()
+		/// <summary>
+		/// 무작위로 성공/미니게임(희귀아이템)/실패를 실행합니다.
+		/// </summary>
+		private void RandomFunction()
 		{
 			float successChance = Random.Range(0f, 101f);
 			if (successChance <= successPercentage)
 			{
 				//성공
-				backGround.GetComponent<BackGround>().width = 0;
-				backGround.GetComponent<BackGround>().height = 0;
-				backGround.GetComponent<BackGround>().isGrow = false;
+				backGround.width = 0;
+				backGround.height = 0;
+				backGround.isGrow = false;
 				map.mapSelectBtn.gameObject.SetActive(true);
 				Success();
 			}
 			else if (successChance > successPercentage && successChance < 100f - minigamePercentage)
 			{
 				//실패
-				backGround.GetComponent<BackGround>().width = 0;
-				backGround.GetComponent<BackGround>().height = 0;
-				backGround.GetComponent<BackGround>().isGrow = false;
+				backGround.width = 0;
+				backGround.height = 0;
+				backGround.isGrow = false;
 				map.mapSelectBtn.gameObject.SetActive(true);
 				Fail();
 			}
 			else if (successChance >= 100f - minigamePercentage)
 			{
 				AudioManager.Instance.PlayEffectAudio(midHighRankClip);
-				
+
 				//미니게임
 				map.mapSelectBtn.gameObject.SetActive(false);
-				backGround.GetComponent<BackGround>().width = 0;
-				backGround.GetComponent<BackGround>().height = 0;
-				backGround.GetComponent<BackGround>().isGrow = false;
+				backGround.width = 0;
+				backGround.height = 0;
+				backGround.isGrow = false;
 				researchImageRoot.gameObject.SetActive(true);
 				researchImageRoot.sprite = researchImage[2];
 				isControl = false;
-				Invoke("MiniGamePanel", 3f);
+				Invoke(nameof(MiniGamePanel), 3f);
 			}
 		}
 
+		/// <summary>
+		/// 성공 시의 아이템 등급을 지정합니다. (저가/중저가)
+		/// </summary>
 		private void Success()
 		{
 			getItemPanel.gameObject.SetActive(true);
@@ -223,7 +268,7 @@ namespace YouthSpice.GameScene
 					OceanMediumLowRandom();
 				}
 			}
-			else if(isGround)
+			else if (isGround)
 			{
 				if (rand <= 0.6f)
 				{
@@ -234,7 +279,7 @@ namespace YouthSpice.GameScene
 					GroundMediumLowRandom();
 				}
 			}
-			else if(isMountain)
+			else if (isMountain)
 			{
 				if (rand <= 0.6f)
 				{
@@ -247,12 +292,19 @@ namespace YouthSpice.GameScene
 			}
 		}
 
+		/// <summary>
+		/// 실패시의 이벤트를 처리합니다.
+		/// </summary>
 		private void Fail()
 		{
 			researchImageRoot.gameObject.SetActive(true);
 			researchImageRoot.sprite = researchImage[0];
 			Debug.Log("실패");
 		}
+
+		/// <summary>
+		/// 시계를 갱신합니다.
+		/// </summary>
 		private void TimeLimit()
 		{
 			switch (timer)
@@ -293,13 +345,13 @@ namespace YouthSpice.GameScene
 		private void MiniGamePanel()
 		{
 			Debug.Log("미니게임창 켜짐");
-		
+
 			AudioManager.Instance.PlayBackgroundAudio(midHighRankBackgroundClip);
-			
+
 			isMiniGameControl = true;
 			minigamePanel.SetActive(true);
 		}
-		
+
 
 		/// <summary>
 		/// 미니게임 함수
@@ -308,7 +360,7 @@ namespace YouthSpice.GameScene
 		{
 			// 창 열려 있으면 무시
 			if (SceneManager.sceneCount != 1) return;
-			
+
 			if (minigameCount > 100)
 			{
 				getItemPanel.gameObject.SetActive(true);
@@ -373,10 +425,13 @@ namespace YouthSpice.GameScene
 			}
 		}
 
+		/// <summary>
+		/// 미니게임 창을 종료합니다.
+		/// </summary>
 		private void MiniGamePanelFalse()
 		{
 			AudioManager.Instance.StopBackgroundAudio();
-			
+
 			map.mapSelectBtn.gameObject.SetActive(true);
 			researchImageRoot.gameObject.SetActive(false);
 			canMinigameGetItem = true;
@@ -384,14 +439,19 @@ namespace YouthSpice.GameScene
 			isMiniGameControl = false;
 			minigameCount = 50;
 			minigamePanel.SetActive(false);
-			backGround.GetComponent<BackGround>().width = 0;
-			backGround.GetComponent<BackGround>().height = 0;
+			backGround.width = 0;
+			backGround.height = 0;
 			Debug.Log("미니게임창 꺼짐");
 		}
+
+		/// <summary>
+		/// 바다 지역의 저가 아이템을 하나 뽑고, UI를 갱신합니다.
+		/// </summary>
 		private void OceanLowRandom()
 		{
 			//바다에서 나오는 저가 상품 
-			List<ItemProperty> oceanItems = items.FindAll(target => target.field == ItemField.Ocean && target.rank == ItemRank.Low);
+			List<ItemProperty> oceanItems =
+				items.FindAll(target => target.field == ItemField.Ocean && target.rank == ItemRank.Low);
 			//랜덤으로 식재료를 뽑음 
 
 			int randomInt = Random.Range(0, oceanItems.Count);
@@ -407,15 +467,20 @@ namespace YouthSpice.GameScene
 				data.researchItems.Add(index);
 				UnlockedCGsManager.Instance.Save(data);
 			}
-			
+
 			getItemImage.sprite = getResearchImage[index];
-			
+
 			AudioManager.Instance.PlayEffectAudio(lowRankClip);
 		}
+
+		/// <summary>
+		/// 바다 지역의 중저가 아이템을 하나 뽑고, UI를 갱신합니다.
+		/// </summary>
 		private void OceanMediumLowRandom()
 		{
 			//바다에서 나오는 중저가 상품 
-			List<ItemProperty> oceanItems = items.FindAll(target => target.field == ItemField.Ocean && target.rank == ItemRank.MediumLow);
+			List<ItemProperty> oceanItems = items.FindAll(target =>
+				target.field == ItemField.Ocean && target.rank == ItemRank.MediumLow);
 			//랜덤으로 식재료를 뽑음 
 			int randomInt = Random.Range(0, oceanItems.Count);
 			ItemProperty item = oceanItems[randomInt];
@@ -429,15 +494,20 @@ namespace YouthSpice.GameScene
 				data.researchItems.Add(index);
 				UnlockedCGsManager.Instance.Save(data);
 			}
-			
+
 			getItemImage.sprite = getResearchImage[index];
-			
+
 			AudioManager.Instance.PlayEffectAudio(lowRankClip);
 		}
+
+		/// <summary>
+		/// 바다 지역의 중고가 아이템을 하나 뽑고, UI를 갱신합니다.
+		/// </summary>
 		private void OceanMediumHighRandom()
 		{
 			//바다에서 나오는 중고가 상품 
-			List<ItemProperty> oceanItems = items.FindAll(target => target.field == ItemField.Ocean && target.rank == ItemRank.MediumHigh);
+			List<ItemProperty> oceanItems = items.FindAll(target =>
+				target.field == ItemField.Ocean && target.rank == ItemRank.MediumHigh);
 			//랜덤으로 식재료를 뽑음 
 			int randomInt = Random.Range(0, oceanItems.Count);
 			ItemProperty item = oceanItems[randomInt];
@@ -451,15 +521,20 @@ namespace YouthSpice.GameScene
 				data.researchItems.Add(index);
 				UnlockedCGsManager.Instance.Save(data);
 			}
-			
+
 			getItemImage.sprite = getResearchImage[index];
-			
+
 			AudioManager.Instance.PlayEffectAudio(lowRankClip);
 		}
+
+		/// <summary>
+		/// 바다 지역의 고가 아이템을 하나 뽑고, UI를 갱신합니다.
+		/// </summary>
 		private void OceanHighRandom()
 		{
 			//바다에서 나오는 고가 상품 
-			List<ItemProperty> oceanItems = items.FindAll(target => target.field == ItemField.Ocean && target.rank == ItemRank.High);
+			List<ItemProperty> oceanItems =
+				items.FindAll(target => target.field == ItemField.Ocean && target.rank == ItemRank.High);
 			//랜덤으로 식재료를 뽑음 
 			int randomInt = Random.Range(0, oceanItems.Count);
 			ItemProperty item = oceanItems[randomInt];
@@ -473,16 +548,20 @@ namespace YouthSpice.GameScene
 				data.researchItems.Add(index);
 				UnlockedCGsManager.Instance.Save(data);
 			}
-			
+
 			getItemImage.sprite = getResearchImage[index];
-			
+
 			AudioManager.Instance.PlayEffectAudio(lowRankClip);
 		}
 
-		private void GroundLowRandom() 
+		/// <summary>
+		/// 논/밭 지역의 저가 아이템을 하나 뽑고, UI를 갱신합니다.
+		/// </summary>
+		private void GroundLowRandom()
 		{
 			//밭/논에서 나오는 저가 상품 
-			List<ItemProperty> groundItems = items.FindAll(target => target.field == ItemField.Ground && target.rank == ItemRank.Low);
+			List<ItemProperty> groundItems =
+				items.FindAll(target => target.field == ItemField.Ground && target.rank == ItemRank.Low);
 			//랜덤으로 식재료를 뽑음 
 			int randomInt = Random.Range(0, groundItems.Count);
 			ItemProperty item = groundItems[randomInt];
@@ -496,15 +575,20 @@ namespace YouthSpice.GameScene
 				data.researchItems.Add(index);
 				UnlockedCGsManager.Instance.Save(data);
 			}
-			
+
 			getItemImage.sprite = getResearchImage[index];
-			
+
 			AudioManager.Instance.PlayEffectAudio(lowRankClip);
 		}
+
+		/// <summary>
+		/// 논/밭 지역의 중저가 아이템을 하나 뽑고, UI를 갱신합니다.
+		/// </summary>
 		private void GroundMediumLowRandom()
 		{
 			//밭/논에서 나오는 중저가 상품 
-			List<ItemProperty> groundItems = items.FindAll(target => target.field == ItemField.Ground && target.rank == ItemRank.MediumLow);
+			List<ItemProperty> groundItems = items.FindAll(target =>
+				target.field == ItemField.Ground && target.rank == ItemRank.MediumLow);
 			//랜덤으로 식재료를 뽑음 
 			int randomInt = Random.Range(0, groundItems.Count);
 			ItemProperty item = groundItems[randomInt];
@@ -518,15 +602,20 @@ namespace YouthSpice.GameScene
 				data.researchItems.Add(index);
 				UnlockedCGsManager.Instance.Save(data);
 			}
-			
+
 			getItemImage.sprite = getResearchImage[index];
-			
+
 			AudioManager.Instance.PlayEffectAudio(lowRankClip);
 		}
+
+		/// <summary>
+		/// 논/밭 지역의 중고가 아이템을 하나 뽑고, UI를 갱신합니다.
+		/// </summary>
 		private void GroundMediumHighRandom()
 		{
 			//밭/논에서 나오는 중고가 상품 
-			List<ItemProperty> groundItems = items.FindAll(target => target.field == ItemField.Ground && target.rank == ItemRank.MediumHigh);
+			List<ItemProperty> groundItems = items.FindAll(target =>
+				target.field == ItemField.Ground && target.rank == ItemRank.MediumHigh);
 			//랜덤으로 식재료를 뽑음 
 			int randomInt = Random.Range(0, groundItems.Count);
 			ItemProperty item = groundItems[randomInt];
@@ -540,15 +629,20 @@ namespace YouthSpice.GameScene
 				data.researchItems.Add(index);
 				UnlockedCGsManager.Instance.Save(data);
 			}
-			
+
 			getItemImage.sprite = getResearchImage[index];
-			
+
 			AudioManager.Instance.PlayEffectAudio(lowRankClip);
 		}
+
+		/// <summary>
+		/// 논/밭 지역의 고가 아이템을 하나 뽑고, UI를 갱신합니다.
+		/// </summary>
 		private void GroundHighRandom()
 		{
 			//밭/논에서 나오는 중고가 상품 
-			List<ItemProperty> groundItems = items.FindAll(target => target.field == ItemField.Ground && target.rank == ItemRank.High);
+			List<ItemProperty> groundItems =
+				items.FindAll(target => target.field == ItemField.Ground && target.rank == ItemRank.High);
 			//랜덤으로 식재료를 뽑음 
 			int randomInt = Random.Range(0, groundItems.Count);
 			ItemProperty item = groundItems[randomInt];
@@ -562,16 +656,20 @@ namespace YouthSpice.GameScene
 				data.researchItems.Add(index);
 				UnlockedCGsManager.Instance.Save(data);
 			}
-			
+
 			getItemImage.sprite = getResearchImage[index];
-			
+
 			AudioManager.Instance.PlayEffectAudio(lowRankClip);
 		}
 
+		/// <summary>
+		/// 산 지역의 저가 아이템을 하나 뽑고, UI를 갱신합니다.
+		/// </summary>
 		private void MountainLowRandom()
 		{
 			//산에서 나오는 저가 상품 
-			List<ItemProperty> mountainItems = items.FindAll(target => target.field == ItemField.Mountain && target.rank == ItemRank.Low);
+			List<ItemProperty> mountainItems =
+				items.FindAll(target => target.field == ItemField.Mountain && target.rank == ItemRank.Low);
 			//랜덤으로 식재료를 뽑음 
 			int randomInt = Random.Range(0, mountainItems.Count);
 			ItemProperty item = mountainItems[randomInt];
@@ -585,15 +683,20 @@ namespace YouthSpice.GameScene
 				data.researchItems.Add(index);
 				UnlockedCGsManager.Instance.Save(data);
 			}
-			
+
 			getItemImage.sprite = getResearchImage[index];
-			
+
 			AudioManager.Instance.PlayEffectAudio(lowRankClip);
 		}
+
+		/// <summary>
+		/// 산 지역의 중저가 아이템을 하나 뽑고, UI를 갱신합니다.
+		/// </summary>
 		private void MountainMediumLowRandom()
 		{
 			//산에서 나오는 중저가 상품 
-			List<ItemProperty> mountainItems = items.FindAll(target => target.field == ItemField.Mountain && target.rank == ItemRank.MediumLow);
+			List<ItemProperty> mountainItems = items.FindAll(target =>
+				target.field == ItemField.Mountain && target.rank == ItemRank.MediumLow);
 			//랜덤으로 식재료를 뽑음 
 			int randomInt = Random.Range(0, mountainItems.Count);
 			ItemProperty item = mountainItems[randomInt];
@@ -607,15 +710,20 @@ namespace YouthSpice.GameScene
 				data.researchItems.Add(index);
 				UnlockedCGsManager.Instance.Save(data);
 			}
-			
+
 			getItemImage.sprite = getResearchImage[index];
-			
+
 			AudioManager.Instance.PlayEffectAudio(lowRankClip);
 		}
+
+		/// <summary>
+		/// 산 지역의 중고가 아이템을 하나 뽑고, UI를 갱신합니다.
+		/// </summary>
 		private void MountainMediumHighRandom()
 		{
 			//산에서 나오는 중고가 상품 
-			List<ItemProperty> mountainItems = items.FindAll(target => target.field == ItemField.Mountain && target.rank == ItemRank.MediumHigh);
+			List<ItemProperty> mountainItems = items.FindAll(target =>
+				target.field == ItemField.Mountain && target.rank == ItemRank.MediumHigh);
 			//랜덤으로 식재료를 뽑음 
 			int randomInt = Random.Range(0, mountainItems.Count);
 			ItemProperty item = mountainItems[randomInt];
@@ -629,15 +737,20 @@ namespace YouthSpice.GameScene
 				data.researchItems.Add(index);
 				UnlockedCGsManager.Instance.Save(data);
 			}
-			
+
 			getItemImage.sprite = getResearchImage[index];
-			
+
 			AudioManager.Instance.PlayEffectAudio(lowRankClip);
 		}
+
+		/// <summary>
+		/// 산 지역의 고가 아이템을 하나 뽑고, UI를 갱신합니다.
+		/// </summary>
 		private void MountainHighRandom()
 		{
 			//산에서 나오는 고가 상품 
-			List<ItemProperty> mountainItems = items.FindAll(target => target.field == ItemField.Mountain && target.rank == ItemRank.High);
+			List<ItemProperty> mountainItems =
+				items.FindAll(target => target.field == ItemField.Mountain && target.rank == ItemRank.High);
 			//랜덤으로 식재료를 뽑음 
 			int randomInt = Random.Range(0, mountainItems.Count);
 			ItemProperty item = mountainItems[randomInt];
@@ -651,12 +764,15 @@ namespace YouthSpice.GameScene
 				data.researchItems.Add(index);
 				UnlockedCGsManager.Instance.Save(data);
 			}
-			
+
 			getItemImage.sprite = getResearchImage[index];
-			
+
 			AudioManager.Instance.PlayEffectAudio(lowRankClip);
 		}
 
+		/// <summary>
+		/// 아이템 창을 종료합니다.
+		/// </summary>
 		public void GetItemPanelFalse()
 		{
 			getItemPanel.gameObject.SetActive(false);

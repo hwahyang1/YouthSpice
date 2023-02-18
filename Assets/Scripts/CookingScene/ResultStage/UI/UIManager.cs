@@ -33,6 +33,10 @@ namespace YouthSpice.CookingScene.ResultStage.UI
 		[SerializeField]
 		private Image speechTextImageArea;
 
+		/// <summary>
+		/// 음식명과 결과 텍스트를 설정합니다.
+		/// </summary>
+		/// <param name="success">음식의 성공 여부를 지정합니다.</param>
 		public void Set(bool success)
 		{
 			menuTitleImageArea.sprite = menuTitleImages[(int)CookingLoadParams.Instance.menu];

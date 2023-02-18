@@ -40,6 +40,7 @@ namespace YouthSpice.SaveLoadSlotScene.UI
 		{
 			animator.SetTrigger("Off");
 			
+			SaveLoadSlotLoadParams.Instance.Exit();
 			AudioManager.Instance.PlayEffectAudio(backClip);
 
 			StartCoroutine(DelayedExitCoroutine());
@@ -49,7 +50,6 @@ namespace YouthSpice.SaveLoadSlotScene.UI
 		{
 			yield return new WaitForSeconds(1.05f);
 			
-			SaveLoadSlotLoadParams.Instance.Exit();
 			if (SceneManager.sceneCount != 1) SceneChange.Instance.Unload("SaveLoadSlotScene");
 			else
 			{

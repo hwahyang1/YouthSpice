@@ -18,9 +18,11 @@ namespace YouthSpice.PreloadScene.Game
 		[Tooltip("MajorChapter 순서대로 지정합니다.")]
 		[SerializeField]
 		private List<string> minorChapter1StoryIds;
+
 		[Tooltip("MajorChapter 순서대로 지정합니다.")]
 		[SerializeField]
 		private List<string> minorChapter2StoryIds;
+
 		[Tooltip("MajorChapter 순서대로 지정합니다.")]
 		[SerializeField]
 		private List<string> minorChapter3StoryIds;
@@ -31,15 +33,18 @@ namespace YouthSpice.PreloadScene.Game
 
 		[SerializeField]
 		public string recipeTutorial;
+
 		[SerializeField]
 		public string itemTutorial;
+
 		[SerializeField]
 		public string shopTutorial;
+
 		[SerializeField]
 		public string researchTutorial;
 
 		private bool re = false;
-		
+
 		public void CountUp()
 		{
 			// 대챕터 0 -> 바로 넘김
@@ -56,18 +61,18 @@ namespace YouthSpice.PreloadScene.Game
 			else
 			{
 				GameInfo.Instance.minorChapter++;
-				
+
 				if (GameInfo.Instance.majorChapter == 3 && GameInfo.Instance.minorChapter == 2)
 				{
-					GameInfo.Instance.minorChapter= 6;
+					GameInfo.Instance.minorChapter += 2;
 				}
-				
+
 				// 대챕터 끝난 경우 -> 돈/인벤 리셋하고 대챕터 넘김
 				if (GameInfo.Instance.minorChapter == 8)
 				{
 					GameInfo.Instance.inventory.Clear();
 					GameInfo.Instance.money = 0;
-					
+
 					GameInfo.Instance.majorChapter++;
 					GameInfo.Instance.minorChapter = 0;
 				}
@@ -80,7 +85,7 @@ namespace YouthSpice.PreloadScene.Game
 			re = true;
 			RunThisChapter();
 		}
-		
+
 		public void RunThisChapter()
 		{
 			int majorChapter = GameInfo.Instance.majorChapter;
@@ -97,9 +102,8 @@ namespace YouthSpice.PreloadScene.Game
 			switch (minorChapter)
 			{
 				case 0:
-					SceneChange.Instance.ChangeScene("BlankScene", true, true, ()=>{
-						SceneChange.Instance.Add("StoryScene");
-					} );
+					SceneChange.Instance.ChangeScene("BlankScene", true, true,
+						() => { SceneChange.Instance.Add("StoryScene"); });
 					StorySceneLoadParams.Instance.chapterID = minorChapter1StoryIds[majorChapter];
 					break;
 				case 1:
@@ -107,9 +111,8 @@ namespace YouthSpice.PreloadScene.Game
 					SceneChange.Instance.ChangeScene("GameScene");
 					break;
 				case 2:
-					SceneChange.Instance.ChangeScene("BlankScene", true, true, ()=>{
-						SceneChange.Instance.Add("StoryScene");
-					} );
+					SceneChange.Instance.ChangeScene("BlankScene", true, true,
+						() => { SceneChange.Instance.Add("StoryScene"); });
 					StorySceneLoadParams.Instance.chapterID = minorChapter2StoryIds[majorChapter];
 					break;
 				case 3:
@@ -117,9 +120,8 @@ namespace YouthSpice.PreloadScene.Game
 					SceneChange.Instance.ChangeScene("GameScene");
 					break;
 				case 4:
-					SceneChange.Instance.ChangeScene("BlankScene", true, true, ()=>{
-						SceneChange.Instance.Add("StoryScene");
-					} );
+					SceneChange.Instance.ChangeScene("BlankScene", true, true,
+						() => { SceneChange.Instance.Add("StoryScene"); });
 					StorySceneLoadParams.Instance.chapterID = minorChapter3StoryIds[majorChapter];
 					break;
 				case 5:

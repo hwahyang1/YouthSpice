@@ -1187,6 +1187,7 @@ GameObject:
   - component: {fileID: 818041452}
   - component: {fileID: 818041451}
   - component: {fileID: 818041453}
+  - component: {fileID: 818041454}
   m_Layer: 0
   m_Name: Managers
   m_TagString: Untagged
@@ -1248,6 +1249,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 20626284}
   backClip: {fileID: 8300000, guid: f633f394ca071a54390427b00f947ddb, type: 3}
+--- !u!114 &818041454
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 818041450}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bd1d99f97575214882cc99ff4a434c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  versionText: {fileID: 1432957863}
 --- !u!1 &842586761
 GameObject:
   m_ObjectHideFlags: 0
@@ -1386,82 +1400,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1189392871332237515, guid: ccde8319a2f7e744f8d6c245a72cb38f, type: 3}
   m_PrefabInstance: {fileID: 1189392872122718090}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &887036909
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 887036910}
-  - component: {fileID: 887036912}
-  - component: {fileID: 887036911}
-  m_Layer: 5
-  m_Name: KeyImage (Edited)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &887036910
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 887036909}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 2106147914}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 25, y: -35}
-  m_SizeDelta: {x: 1003, y: 539}
-  m_Pivot: {x: 0, y: 1}
---- !u!114 &887036911
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 887036909}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 9eebf2ca73c42d7419517d2498209b4f, type: 3}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &887036912
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 887036909}
-  m_CullTransparentMesh: 1
 --- !u!1 &899469751
 GameObject:
   m_ObjectHideFlags: 0
@@ -1892,8 +1830,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1.2
-  m_Text: "[\uAE30\uD68D]\n \uD56B\uCD08\uCF54\n \uB9CC\uAC1C\n\n[\uADF8\uB798\uD53D]\n\uC18C\uBCF4\uB85C\n\uC775\uBA85\uC758\uC624\uC18C\uB9AC\n
-    \uD504\uB8E8\n\n[\uD504\uB85C\uADF8\uB798\uBC0D]\n\uD5A5\uB2E8\n\uADF8\uBC18\uC9DD\uC774\uB294\uBBF8\uC18C\uC783\uC9C0\uB9D0\uC544\uC918"
+  m_Text: "[\uAE30\uD68D]\n \uD56B\uCD08\uCF54\n \uB9CC\uAC1C\n\n[\uADF8\uB798\uD53D]\n\uC18C\uBCF4\uB85C\n\uC775\uBA85\uC758\uC624\uC18C\uB9AC\n\uD504\uB8E8\n\n[\uD504\uB85C\uADF8\uB798\uBC0D]\n\uD5A5\uB2E8\n\uADF8\uBC18\uC9DD\uC774\uB294\uBBF8\uC18C\uC783\uC9C0\uB9D0\uC544\uC918"
 --- !u!222 &1113888959
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3385,7 +3322,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1316957388}
-  - {fileID: 887036910}
   m_Father: {fileID: 1283635458}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

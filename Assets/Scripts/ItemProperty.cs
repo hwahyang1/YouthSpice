@@ -45,7 +45,7 @@ namespace YouthSpice
 		기본약과,
 		없음
 	}
-    
+
 	[System.Serializable]
 	public class ItemProperty
 	{

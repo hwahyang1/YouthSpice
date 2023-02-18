@@ -17,7 +17,7 @@ namespace YouthSpice.ConfigScene.SettingElements
 	{
 		[SerializeField]
 		private AudioClip selectClip;
-		
+
 		[Header("Images")]
 		[Tooltip("선택되지 않은 경우, 선택된 경우 순으로 지정합니다.")]
 		[SerializeField]
@@ -49,6 +49,9 @@ namespace YouthSpice.ConfigScene.SettingElements
 			UpdateUI();
 		}
 
+		/// <summary>
+		/// UI를 갱신합니다.
+		/// </summary>
 		protected virtual void UpdateUI()
 		{
 			onButton.interactable = !currentSelection;
@@ -58,21 +61,30 @@ namespace YouthSpice.ConfigScene.SettingElements
 			offButton.GetComponent<Image>().sprite = buttonImages[currentSelection ? 0 : 1];
 		}
 
+		/// <summary>
+		/// 값이 변경되었을 때의 이벤트를 처리합니다.
+		/// </summary>
 		protected abstract void OnValueChanged();
 
+		/// <summary>
+		/// On 버튼이 클릭되었을 때의 이벤트를 처리합니다.
+		/// </summary>
 		protected virtual void OnOnButtonClicked()
 		{
 			AudioManager.Instance.PlayEffectAudio(selectClip);
-			
+
 			currentSelection = true;
 			OnValueChanged();
 			UpdateUI();
 		}
 
+		/// <summary>
+		/// Off 버튼이 클릭되었을 때의 이벤트를 처리합니다.
+		/// </summary>
 		protected virtual void OnOffButtonClicked()
 		{
 			AudioManager.Instance.PlayEffectAudio(selectClip);
-			
+
 			currentSelection = false;
 			OnValueChanged();
 			UpdateUI();

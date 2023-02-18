@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 using NaughtyAttributes;
-using UnityEngine.SceneManagement;
+
 using YouthSpice.CookingScene.Extern;
 using YouthSpice.CookingScene.RecipeStage;
 using YouthSpice.CookingScene.ResultStage.UI;
@@ -27,17 +28,22 @@ namespace YouthSpice.CookingScene
 	{
 		[SerializeField]
 		private AudioClip backgroundClip;
+
 		[SerializeField]
 		private AudioClip startClip;
+
 		[SerializeField]
 		private AudioClip nextClip;
-		
+
 		[Header("Status")]
 		[SerializeField, ReadOnly]
 		private CookingFlow currentChapter;
+
 		public CookingFlow CurrentChapter => currentChapter;
+
 		[SerializeField, ReadOnly]
 		private bool isFirstRecipe = true;
+
 		[SerializeField, ReadOnly]
 		private bool isFirstResult = true;
 
@@ -47,14 +53,19 @@ namespace YouthSpice.CookingScene
 		[Header("Classes")]
 		[SerializeField]
 		private SelectionManager selectionManager;
+
 		[SerializeField]
 		private ButtonManager buttonManager;
+
 		[SerializeField]
 		private RecipeManager recipeManager;
+
 		[SerializeField]
 		private GenerateFood generateFood;
+
 		[SerializeField]
 		private UIManager uiManager;
+
 		[SerializeField]
 		private UIAnimator uiAnimator;
 
@@ -64,9 +75,9 @@ namespace YouthSpice.CookingScene
 		private void Start()
 		{
 			stageManager = GetComponent<StageManager>();
-			
+
 			AudioManager.Instance.PlayBackgroundAudio(backgroundClip);
-			
+
 			Set();
 		}
 
@@ -109,9 +120,9 @@ namespace YouthSpice.CookingScene
 			{
 				AudioManager.Instance.PlayEffectAudio(startClip);
 			}
-			
+
 			currentChapter = (CookingFlow)((int)currentChapter + 1);
-			
+
 			Set();
 		}
 
@@ -153,7 +164,7 @@ namespace YouthSpice.CookingScene
 				else
 				{
 					stageManager.GoNext();
-					
+
 					bool success = generateFood.TryGenerate();
 
 					if (success)
@@ -162,7 +173,7 @@ namespace YouthSpice.CookingScene
 						unlockedCGs.recipeFoods.Add((int)CookingLoadParams.Instance.menu);
 						UnlockedCGsManager.Instance.Save(unlockedCGs);
 					}
-					
+
 					uiManager.Set(success);
 					uiAnimator.Run();
 				}
@@ -174,6 +185,7 @@ namespace YouthSpice.CookingScene
 					recipeManager.Set();
 					isFirstRecipe = false;
 				}
+
 				stageManager.GoNext();
 				selectionManager.GoNext();
 			}

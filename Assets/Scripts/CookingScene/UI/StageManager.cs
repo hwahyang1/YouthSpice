@@ -20,6 +20,9 @@ namespace YouthSpice.CookingScene.UI
 			gameManager = GetComponent<GameManager>();
 		}
 
+		/// <summary>
+		/// 현재 항목으로 UI를 갱신합니다.
+		/// </summary>
 		public void GoNext()
 		{
 			CookingFlow current = gameManager.CurrentChapter;

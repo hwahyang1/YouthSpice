@@ -14,12 +14,14 @@ namespace YouthSpice
 		[Header("Configs")]
 		[SerializeField]
 		private float changeValue = 50f;
-		
+
 		[Header("GameObjects")]
 		[SerializeField]
 		private RectTransform[] target;
+
 		[SerializeField]
 		private Button upButton;
+
 		[SerializeField]
 		private Button downButton;
 
@@ -29,6 +31,9 @@ namespace YouthSpice
 			downButton.onClick.AddListener(OnDownButtonClicked);
 		}
 
+		/// <summary>
+		/// 위 버튼이 클릭되었을 때의 이벤트를 처리합니다.
+		/// </summary>
 		private void OnUpButtonClicked()
 		{
 			foreach (RectTransform current in target)
@@ -39,6 +44,9 @@ namespace YouthSpice
 			}
 		}
 
+		/// <summary>
+		/// 아래 버튼이 클릭되었을 때의 이벤트를 처리합니다.
+		/// </summary>
 		private void OnDownButtonClicked()
 		{
 			foreach (RectTransform current in target)
