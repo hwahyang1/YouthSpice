@@ -7,6 +7,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+
 using YouthSpice.PreloadScene.Audio;
 using YouthSpice.PreloadScene.Scene;
 using YouthSpice.SaveLoadSlotScene.Extern;
@@ -23,11 +24,11 @@ namespace YouthSpice.SaveLoadSlotScene.UI
 
 		[SerializeField]
 		private AudioClip backClip;
-		
+
 		[SerializeField]
 		[Tooltip("SaveLoadSlotMode 기준으로 이미지를 지정합니다.")]
 		private Sprite[] titleTextImages;
-		
+
 		[SerializeField]
 		private Image titleTextImageArea;
 
@@ -39,7 +40,7 @@ namespace YouthSpice.SaveLoadSlotScene.UI
 		public void Exit()
 		{
 			animator.SetTrigger("Off");
-			
+
 			SaveLoadSlotLoadParams.Instance.Exit();
 			AudioManager.Instance.PlayEffectAudio(backClip);
 
@@ -49,7 +50,7 @@ namespace YouthSpice.SaveLoadSlotScene.UI
 		private IEnumerator DelayedExitCoroutine()
 		{
 			yield return new WaitForSeconds(1.05f);
-			
+
 			if (SceneManager.sceneCount != 1) SceneChange.Instance.Unload("SaveLoadSlotScene");
 			else
 			{

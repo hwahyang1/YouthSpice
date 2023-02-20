@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Random = UnityEngine.Random;
 
 using NaughtyAttributes;
 
@@ -21,6 +23,9 @@ namespace YouthSpice.GameScene
 	/// </summary>
 	public class Research : MonoBehaviour
 	{
+		[SerializeField]
+		private GameObject mapCanvas;
+		
 		[SerializeField]
 		private BackGround backGround;
 		[SerializeField]
@@ -124,21 +129,29 @@ namespace YouthSpice.GameScene
 		private void Update()
 		{
 			// 다른 창 열렸을 때 입력되는 현상 방지
-			if (SceneManager.sceneCount < 3 && !isMiniGameControl && isControl && !onCooldown && timer != -1)
+			if (!isMiniGameControl && isControl && !onCooldown && timer != -1)
 			{
 				if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.F1))
 				{
-					if (SceneManager.sceneCount == 3)
+					#pragma warning disable CS0618 // Type or member is obsolete
+					foreach (Scene scene in SceneManager.GetAllScenes())
+						if (scene.name == "StoryScene_Tutorial") return;
+					#pragma warning restore CS0618 // Type or member is obsolete
+					
+					switch (SceneManager.sceneCount)
 					{
-						//SceneChange.Instance.Unload("InGameMenuScene");
-						GameObject.FindObjectOfType<MenuManager>().Exit();
-					}
-					else
-					{
-						SceneChange.Instance.Add("InGameMenuScene");
+						case 1:
+							SceneChange.Instance.Add("InGameMenuScene");
+							break;
+						case 2:
+							//SceneChange.Instance.Unload("InGameMenuScene");
+							GameObject.FindObjectOfType<MenuManager>().Exit();
+							break;
 					}
 				}
 			}
+			
+			if (mapCanvas.activeInHierarchy) return;
 
 			if (isControl)
 			{

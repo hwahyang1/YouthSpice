@@ -6,6 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 using NaughtyAttributes;
+
 using YouthSpice.PreloadScene.Audio;
 
 namespace YouthSpice.PreloadScene.Alert
@@ -17,7 +18,7 @@ namespace YouthSpice.PreloadScene.Alert
 	{
 		[SerializeField]
 		private AudioClip clickClip;
-		
+
 		[Header("GameObject")]
 		[SerializeField]
 		private GameObject screenCover;
@@ -54,6 +55,15 @@ namespace YouthSpice.PreloadScene.Alert
 			gameObject.SetActive(false);
 		}
 
+		/// <summary>
+		/// 알림창을 설정합니다.
+		/// </summary>
+		/// <param name="alertType">알림의 종류를 지정합니다.</param>
+		/// <param name="title">알림의 제목을 지정합니다.</param>
+		/// <param name="description">알림의 설명을 지정합니다.</param>
+		/// <param name="buttons">알림에 사용될 버튼들을 지정합니다.</param>
+		/// <param name="useCloseButton">닫기 버튼을 사용 할 지 지정합니다.</param>
+		/// <param name="onDestroy">알림창이 종료 될 때 callback을 지정합니다. 없을 경우, null을 지정합니다.</param>
 		public void Init(
 			AlertType alertType,
 			string title,
@@ -83,16 +93,23 @@ namespace YouthSpice.PreloadScene.Alert
 			targetButtonGroup.SetActive(true);
 		}
 
+		/// <summary>
+		/// 알림창을 노출합니다.
+		/// </summary>
 		public void Show()
 		{
 			gameObject.SetActive(true);
 			screenCover.SetActive(true);
 		}
 
+		/// <summary>
+		/// 버튼이 클릭되었을 때의 이벤트를 처리합니다.
+		/// </summary>
+		/// <param name="index">클릭된 버튼의 위치를 지정합니다.</param>
 		public void OnButtonClicked(int index)
 		{
 			AudioManager.Instance.PlayEffectAudio(clickClip);
-			
+
 			if (alertType == AlertType.None) return;
 			if ((int)alertType < index)
 			{
@@ -104,6 +121,9 @@ namespace YouthSpice.PreloadScene.Alert
 			onDestroy();
 		}
 
+		/// <summary>
+		/// 닫기 버튼이 클릭되었을 때의 이벤트를 처리합니다.
+		/// </summary>
 		public void OnCloseButtonClicked()
 		{
 			onDestroy();

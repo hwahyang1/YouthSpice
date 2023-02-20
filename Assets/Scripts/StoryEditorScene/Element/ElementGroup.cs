@@ -29,7 +29,12 @@ namespace YouthSpice.StoryEditorScene.Element
 
 		public ChapterElementType Type => type;
 
-		public void Init(ElementManager elementManager, ChapterElementType type, Dictionary<string, string> data, bool subElement = false)
+		public void Init(
+			ElementManager elementManager,
+			ChapterElementType type,
+			Dictionary<string, string> data,
+			bool subElement = false
+		)
 		{
 			this.elementManager = elementManager;
 			this.type = type;

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -8,6 +9,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 using YouthSpice.CookingScene.Extern;
+using YouthSpice.PreloadScene.Alert;
 using YouthSpice.PreloadScene.Scene;
 using YouthSpice.SaveLoadSlotScene.Extern;
 using YouthSpice.StoryScene.Extern;
@@ -58,11 +60,22 @@ namespace YouthSpice.InGameMenuScene
 		/// </summary>
 		public void OnExitButtonClicked()
 		{
-			GameInfo.Instance.Exit();
-			CookingLoadParams.Instance.Exit();
-			StorySceneLoadParams.Instance.Exit();
-			Exit();
-			SceneChange.Instance.ChangeScene("MenuScene");
+			AlertManager.Instance.Show(AlertType.Double, "경고", "메인 화면으로 돌아갈 경우 저장되지 않은 진행 상황이 초기화됩니다.\n계속하시겠습니까?",
+				new Dictionary<string, Action>()
+				{
+					{
+						"예",
+						() =>
+						{
+							GameInfo.Instance.Exit();
+							CookingLoadParams.Instance.Exit();
+							StorySceneLoadParams.Instance.Exit();
+							Exit();
+							SceneChange.Instance.ChangeScene("MenuScene");
+						}
+					},
+					{ "아니오", null }
+				});
 		}
 
 		/// <summary>

@@ -26,7 +26,7 @@ namespace YouthSpice.CookingScene.UI
 		public void GoNext()
 		{
 			CookingFlow current = gameManager.CurrentChapter;
-
+			
 			for (int i = 0; i < stages.Length; i++)
 			{
 				stages[i].SetActive((int)current == i);

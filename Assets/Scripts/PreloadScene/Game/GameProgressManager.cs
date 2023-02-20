@@ -45,6 +45,9 @@ namespace YouthSpice.PreloadScene.Game
 
 		private bool re = false;
 
+		/// <summary>
+		/// 다음 챕터로 넘어갑니다. (변수만 갱신합니다.)
+		/// </summary>
 		public void CountUp()
 		{
 			// 대챕터 0 -> 바로 넘김
@@ -86,6 +89,9 @@ namespace YouthSpice.PreloadScene.Game
 			RunThisChapter();
 		}
 
+		/// <summary>
+		/// 현재 챕터를 실행합니다.
+		/// </summary>
 		public void RunThisChapter()
 		{
 			int majorChapter = GameInfo.Instance.majorChapter;

@@ -76,16 +76,19 @@ namespace YouthSpice.StoryEditorScene.Element
 				case ChapterElementType.BackgroundImage:
 					data.Add("AvailableImages", string.Join(" | ", editorDataManager.AvailableBackgroundImages));
 					data.Add("AvailableTransitions", string.Join(" | ", editorDataManager.AvailableImageTransitions));
-					child.GetComponent<BackgroundImageElementGroup>().Init(this, type, data, parent != elementContentParent);
+					child.GetComponent<BackgroundImageElementGroup>()
+					     .Init(this, type, data, parent != elementContentParent);
 					break;
 				case ChapterElementType.BackgroundMusic:
 					data.Add("AvailableAudios", string.Join(" | ", editorDataManager.AvailableAudios));
 					data.Add("AvailableTransitions", string.Join(" | ", editorDataManager.AvailableAudioTransitions));
-					child.GetComponent<BackgroundMusicElementGroup>().Init(this, type, data, parent != elementContentParent);
+					child.GetComponent<BackgroundMusicElementGroup>()
+					     .Init(this, type, data, parent != elementContentParent);
 					break;
 				case ChapterElementType.EffectSound:
 					data.Add("AvailableAudios", string.Join(" | ", editorDataManager.AvailableAudios));
-					child.GetComponent<EffectMusicElementGroup>().Init(this, type, data, parent != elementContentParent);
+					child.GetComponent<EffectMusicElementGroup>()
+					     .Init(this, type, data, parent != elementContentParent);
 					break;
 				case ChapterElementType.StandingImage:
 					data.Add("AvailableCharacters", string.Join(" | ", editorDataManager.AvailableStandingIllusts));
@@ -97,13 +100,15 @@ namespace YouthSpice.StoryEditorScene.Element
 					child.GetComponent<FriendshipElementGroup>().Init(this, type, data, parent != elementContentParent);
 					break;
 				case ChapterElementType.GetPlayerName:
-					child.GetComponent<GetPlayerNameElementGroup>().Init(this, type, data, parent != elementContentParent);
+					child.GetComponent<GetPlayerNameElementGroup>()
+					     .Init(this, type, data, parent != elementContentParent);
 					break;
 				case ChapterElementType.Selection:
 					child.GetComponent<SelectionElementGroup>().Init(this, type, data);
 					break;
 				case ChapterElementType.SelectionName:
-					child.GetComponent<SelectionNameSubElementGroup>().Init(this, type, data, parent != elementContentParent);
+					child.GetComponent<SelectionNameSubElementGroup>()
+					     .Init(this, type, data, parent != elementContentParent);
 					break;
 			}
 
@@ -130,10 +135,12 @@ namespace YouthSpice.StoryEditorScene.Element
 				AlertManager.Instance.Show(AlertType.Double, "확인", "이동하려는 위치에 분기점이 있습니다.\n항목을 분기점 안으로 넣으시겠습니까?",
 					new Dictionary<string, Action>()
 					{
-						{ "예\n(분기점 안으로 넣기)", () =>
+						{
+							"예\n(분기점 안으로 넣기)", () =>
 							{
 								// 기존 GameObject 제거 후 분기점 안에 새로운 GameObject 생성
-								NewElement(fromElement.Type, elementConverter.GetData(fromElement), to.SelectionParent, toIndex - fromIndex);
+								NewElement(fromElement.Type, elementConverter.GetData(fromElement), to.SelectionParent,
+									toIndex - fromIndex);
 								DeleteElement(fromIndex);
 							}
 						},
@@ -151,14 +158,15 @@ namespace YouthSpice.StoryEditorScene.Element
 		{
 			Transform from = selectionParent.GetChild(fromIndex);
 			ElementGroup fromElement = from.GetComponent<ElementGroup>();
-			
+
 			// (분기점 이름 제외) 맨 위 또는 아래에 있는 경우 분기점 밖으로 뺄 건지 확인
 			if (toIndex < 1 || toIndex == selectionParent.childCount)
 			{
 				AlertManager.Instance.Show(AlertType.Double, "확인", "이동하려는 위치는 분기점 밖입니다.\n항목을 분기점 밖으로 꺼내시겠습니까?",
 					new Dictionary<string, Action>()
 					{
-						{"예\n(분기점 밖으로 꺼내기)", () =>
+						{
+							"예\n(분기점 밖으로 꺼내기)", () =>
 							{
 								int newIndex = selectionParent.parent.GetSiblingIndex() + (toIndex - fromIndex);
 								if (newIndex < 0) newIndex = 0;
@@ -166,7 +174,7 @@ namespace YouthSpice.StoryEditorScene.Element
 								DeleteElementInSelection(selectionParent, fromIndex);
 							}
 						},
-						{"아니요", null}
+						{ "아니요", null }
 					});
 			}
 			else

@@ -2,9 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using YouthSpice.CookingScene;
+using UnityEngine.SceneManagement;
+
 using YouthSpice.InGameMenuScene;
 using YouthSpice.PreloadScene.Game;
 using YouthSpice.PreloadScene.Scene;
@@ -13,20 +13,33 @@ using YouthSpice.StoryScene.Extern;
 namespace YouthSpice.ShopScene
 {
 	/// <summary>
-	/// Description
+	/// 상점 UI를 관리합니다.
 	/// </summary>
 	public class Shop : MonoBehaviour
 	{
-		[SerializeField] private bool dealCondition = true; //true 일떄가 구매 false일떄가 판매 
-		[SerializeField] private GameObject buyPanel;//구매하는 창 
-		[SerializeField] private GameObject sellPanel;//판매하는창
+		[SerializeField]
+		private bool dealCondition = true; //true 일떄가 구매 false일떄가 판매 
 
-		[SerializeField] private GameObject buyBtnColor;
-		[SerializeField] private GameObject sellBtnColor;
+		[SerializeField]
+		private GameObject buyPanel; //구매하는 창 
 
-		[SerializeField] private Text foodText;
-		[SerializeField] private Text costText;
-		[SerializeField] private Text havingMoney;
+		[SerializeField]
+		private GameObject sellPanel; //판매하는창
+
+		[SerializeField]
+		private GameObject buyBtnColor;
+
+		[SerializeField]
+		private GameObject sellBtnColor;
+
+		[SerializeField]
+		private Text foodText;
+
+		[SerializeField]
+		private Text costText;
+
+		[SerializeField]
+		private Text havingMoney;
 
 		private void Start()
 		{
@@ -47,6 +60,7 @@ namespace YouthSpice.ShopScene
 					SceneChange.Instance.Add("InGameMenuScene");
 				}
 			}
+
 			if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.F1))
 			{
 				if (SceneManager.sceneCount == 2)
@@ -57,7 +71,7 @@ namespace YouthSpice.ShopScene
 			}
 
 			// 이 아래는 상점
-			
+
 			buyPanel.SetActive(dealCondition);
 
 			sellPanel.SetActive(!dealCondition);
@@ -75,10 +89,12 @@ namespace YouthSpice.ShopScene
 
 			havingMoney.text = "" + GameInfo.Instance.money;
 		}
+
 		public void BuySelect()
 		{
 			dealCondition = true;
 		}
+
 		public void SellSelect()
 		{
 			dealCondition = false;

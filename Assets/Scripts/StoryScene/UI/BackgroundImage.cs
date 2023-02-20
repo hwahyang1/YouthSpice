@@ -19,7 +19,7 @@ namespace YouthSpice.StoryScene.UI
 	{
 		[SerializeField]
 		private Sprite blank;
-		
+
 		[SerializeField]
 		private Image[] backgroundImageAreas;
 
@@ -27,7 +27,7 @@ namespace YouthSpice.StoryScene.UI
 		// false -> Back(0) / true -> Front(1)
 		[SerializeField, ReadOnly]
 		private bool activePosition = false;
-		
+
 		[Header("Time")]
 		[SerializeField, Tooltip("이 값은 Dissolve 기준으로, Fade의 경우 지정된 시간의 2배를 사용합니다.")]
 		private float totalAnimationTime = 1.5f;
@@ -58,7 +58,11 @@ namespace YouthSpice.StoryScene.UI
 		/// <summary>
 		/// 스탠딩 일러스트를 변경합니다.
 		/// </summary>
-		public void ChangeImage(Dictionary<string, string> data, bool forceDisableTransition = false, Action callback = null)
+		public void ChangeImage(
+			Dictionary<string, string> data,
+			bool forceDisableTransition = false,
+			Action callback = null
+		)
 		{
 			this.callback = callback;
 
@@ -79,10 +83,14 @@ namespace YouthSpice.StoryScene.UI
 				StartCoroutine(ChangeImageCoroutine(image, forceDisableTransition, transition));
 		}
 
-		private IEnumerator ChangeImageCoroutine(Sprite image, bool forceDisableTransition, DefineImageTransitions transitionType)
+		private IEnumerator ChangeImageCoroutine(
+			Sprite image,
+			bool forceDisableTransition,
+			DefineImageTransitions transitionType
+		)
 		{
 			if (forceDisableTransition) transitionType = DefineImageTransitions.None;
-			
+
 			WaitForSeconds timeout = new WaitForSeconds(animationDelay);
 
 			Image currentArea = backgroundImageAreas[activePosition ? 1 : 0];
@@ -111,7 +119,7 @@ namespace YouthSpice.StoryScene.UI
 						nextArea.color = new Color(1f, 1f, 1f, currentTime / totalAnimationTime);
 						yield return timeout;
 					}
-					
+
 					yield return new WaitForSeconds(totalAnimationTime / 2f);
 
 					break;
@@ -133,13 +141,13 @@ namespace YouthSpice.StoryScene.UI
 						nextArea.color = new Color(1f, 1f, 1f, currentTime / totalAnimationTime);
 						yield return timeout;
 					}
-					
+
 					yield return new WaitForSeconds(totalAnimationTime / 2f);
 
 					break;
 				case DefineImageTransitions.BlinkFade:
 					yield return new WaitForSeconds(blankAnimationTime[1] / 2f);
-					
+
 					while (currentTime < blankAnimationTime[0])
 					{
 						currentTime += animationDelay;
@@ -157,9 +165,9 @@ namespace YouthSpice.StoryScene.UI
 						nextArea.color = new Color(1f, 1f, 1f, currentTime / blankAnimationTime[1]);
 						yield return timeout;
 					}
-					
+
 					yield return new WaitForSeconds(blankAnimationTime[1] / 2f);
-					
+
 					break;
 			}
 

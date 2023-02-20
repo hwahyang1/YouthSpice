@@ -32,10 +32,10 @@ namespace YouthSpice.ShopScene
 		private GameObject sellFoodInfo;
 
 		[SerializeField]
-		private UnityEngine.UI.Button buyBnt;
+		private Button buyBnt;
 
 		[SerializeField]
-		private UnityEngine.UI.Button sellBnt;
+		private Button sellBnt;
 
 		[SerializeField]
 		private Image buyInfoImage;
@@ -70,6 +70,9 @@ namespace YouthSpice.ShopScene
 			RefreshSellSlots();
 		}
 
+		/// <summary>
+		/// 판매 창의 슬롯을 다시 생성합니다.
+		/// </summary>
 		private void RefreshSellSlots()
 		{
 			for (int i = 0; i < sellSlotRoot.childCount; i++)
@@ -87,17 +90,18 @@ namespace YouthSpice.ShopScene
 			}
 		}
 
-		private void BuyFoodInfo()
+		/// <summary>
+		/// 구매창의 활성화 여부를 지정합니다.
+		/// </summary>
+		private void BuyFoodInfoSetActive(bool active)
 		{
-			buyFoodInfo.SetActive(true);
+			buyFoodInfo.SetActive(active);
 		}
 
-		public void BuyFoodInfoFalse()
-		{
-			buyFoodInfo.SetActive(false);
-		}
-
-		// 구매 확인창 띄우는 부분
+		/// <summary>
+		/// 구매 확인창을 띄웁니다.
+		/// </summary>
+		/// <param name="slot">구매할 아이템의 슬롯 정보를 지정합니다.</param>
 		public void OnClickBuySlot(Slot slot)
 		{
 			int index = ItemBuffer.Instance.GetIndex(slot.name);
@@ -109,7 +113,7 @@ namespace YouthSpice.ShopScene
 				return;
 			}
 
-			BuyFoodInfo();
+			BuyFoodInfoSetActive(true);
 			buyBnt.onClick = new Button.ButtonClickedEvent();
 			buyBnt.onClick.AddListener(() => { BuyItem(slot); });
 			ItemProperty item = ItemBuffer.Instance.items[index];
@@ -118,30 +122,43 @@ namespace YouthSpice.ShopScene
 			buyInfoPriceText.text = item.sellPrice + "G";
 		}
 
-		// 구매 진행
+		/// <summary>
+		/// 구매를 진행합니다.
+		/// </summary>
+		/// <param name="slot">구매할 아이템의 슬롯 정보를 지정합니다.</param>
 		private void BuyItem(Slot slot)
 		{
 			int index = ItemBuffer.Instance.GetIndex(slot.name);
+			if (GameInfo.Instance.money < ItemBuffer.Instance.items[index].sellPrice)
+			{
+				AlertManager.Instance.Show(AlertType.Single, "알림",
+					$"돈이 부족합니다.\n선택한 아이템의 가격은 {ItemBuffer.Instance.items[index].sellPrice.ToString()}G 입니다.",
+					new Dictionary<string, Action>() { { "확인", null } });
+				return;
+			}
+			
 			GameInfo.Instance.money -= ItemBuffer.Instance.items[index].sellPrice;
 			GameInfo.Instance.inventory.Add(index);
-			BuyFoodInfoFalse();
+			BuyFoodInfoSetActive(false);
 
 			RefreshSellSlots();
 		}
-
-		private void SellFoodInfo()
+		
+		/// <summary>
+		/// 판매창의 활성화 여부를 지정합니다.
+		/// </summary>
+		private void SellFoodInfoSetActive(bool active)
 		{
-			sellFoodInfo.SetActive(true);
+			sellFoodInfo.SetActive(active);
 		}
 
-		public void SellFoodInfoFalse()
-		{
-			sellFoodInfo.SetActive(false);
-		}
-
+		/// <summary>
+		/// 판매 확인창을 띄웁니다.
+		/// </summary>
+		/// <param name="slot">판매할 아이템의 슬롯 정보를 지정합니다.</param>
 		private void OnClickSellSlot(Slot slot)
 		{
-			SellFoodInfo();
+			SellFoodInfoSetActive(true);
 			sellBnt.onClick = new Button.ButtonClickedEvent();
 			sellBnt.onClick.AddListener(() => { SellItem(slot); });
 			int index = ItemBuffer.Instance.GetIndex(slot.name);
@@ -151,17 +168,24 @@ namespace YouthSpice.ShopScene
 			sellInfoPriceText.text = Mathf.RoundToInt(item.sellPrice) * 0.5f + "G";
 		}
 
+		/// <summary>
+		/// 판매를 진행합니다.
+		/// </summary>
+		/// <param name="slot">판매할 아이템의 슬롯 정보를 지정합니다.</param>
 		public void SellItem(Slot slot)
 		{
 			Debug.Log("팔림");
 			int index = ItemBuffer.Instance.GetIndex(slot.name);
 			GameInfo.Instance.money += Mathf.RoundToInt(ItemBuffer.Instance.items[index].sellPrice * 0.5f);
 			GameInfo.Instance.inventory.Remove(index);
-			SellFoodInfoFalse();
+			SellFoodInfoSetActive(false);
 
 			RefreshSellSlots();
 		}
 
+		/// <summary>
+		/// 상점을 나가고 다음 챕터로 넘어갑니다.
+		/// </summary>
 		public void Exit()
 		{
 			GameProgressManager.Instance.CountUp();

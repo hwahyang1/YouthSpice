@@ -18,7 +18,7 @@ namespace YouthSpice.StoryScene.UI
 	{
 		[SerializeField]
 		private Sprite blank;
-		
+
 		[SerializeField]
 		private Image[] frontStandingIllustAreas;
 
@@ -97,13 +97,18 @@ namespace YouthSpice.StoryScene.UI
 				: SourceFileManager.Instance.AvailableStandingIllusts[imageIndex3 - 1]);
 
 			DefineImageTransitions transition = (DefineImageTransitions)int.Parse(data["Transition"]);
-			activeCoroutine = StartCoroutine(ChangeIllustCoroutine(images.ToArray(), forceDisableTransition, transition));
+			activeCoroutine =
+				StartCoroutine(ChangeIllustCoroutine(images.ToArray(), forceDisableTransition, transition));
 		}
 
-		private IEnumerator ChangeIllustCoroutine(Sprite[] image, bool forceDisableTransition, DefineImageTransitions transitionType)
+		private IEnumerator ChangeIllustCoroutine(
+			Sprite[] image,
+			bool forceDisableTransition,
+			DefineImageTransitions transitionType
+		)
 		{
 			if (forceDisableTransition) transitionType = DefineImageTransitions.None;
-			
+
 			WaitForSeconds timeout = new WaitForSeconds(animationDelay);
 
 			Image[] currentAreas = activePosition ? frontStandingIllustAreas : backStandingIllustAreas;

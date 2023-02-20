@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using UnityEngine;
 using UnityEngine.UI;
+
 using TMPro;
 
 namespace YouthSpice.StoryEditorScene.Element.Child
@@ -31,10 +32,14 @@ namespace YouthSpice.StoryEditorScene.Element.Child
 			if (data.ContainsKey("Character")) characterNameDropdown.value = int.Parse(data["Character"]);
 			if (data.ContainsKey("Friendship")) characterFriendshipInputField.text = data["Friendship"];
 		}
-		
+
 		public override Dictionary<string, string> GetData()
 		{
-			return new Dictionary<string, string>(){{"Character", characterNameDropdown.value.ToString()}, {"Friendship", characterFriendshipInputField.text}};
+			return new Dictionary<string, string>()
+			{
+				{ "Character", characterNameDropdown.value.ToString() },
+				{ "Friendship", characterFriendshipInputField.text }
+			};
 		}
 	}
 }

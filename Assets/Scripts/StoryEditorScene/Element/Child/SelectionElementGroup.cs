@@ -57,12 +57,13 @@ namespace YouthSpice.StoryEditorScene.Element.Child
 		{
 			Dictionary<string, string> data = new Dictionary<string, string>()
 				{ { "Count", (selectionDropdown.value + 1).ToString() } };
-			
+
 			for (int i = 0; i < selectionParent.childCount; i++)
 			{
 				ElementGroup targetElement = selectionParent.GetChild(i).GetComponent<ElementGroup>();
 				Dictionary<string, string> elementData = base.ElementManager.ElementConverter.GetData(targetElement);
-				data.Add(i.ToString(), JsonConvert.SerializeObject(new ChapterElement(targetElement.Type, elementData)));
+				data.Add(i.ToString(),
+					JsonConvert.SerializeObject(new ChapterElement(targetElement.Type, elementData)));
 			}
 
 			return data;

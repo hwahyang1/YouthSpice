@@ -113,18 +113,21 @@ namespace YouthSpice.StoryEditorScene.Files
 					availableAudios[i] = availableAudios[i].Replace($@"{rootPath}/{rootPathFolders[0]}\", "");
 
 				availableBackgroundImages = Directory.GetFiles($"{rootPath}/{rootPathFolders[1]}");
-				availableBackgroundImages = Array.FindAll(availableBackgroundImages, target => !target.EndsWith(".gitkeep")).ToArray();
+				availableBackgroundImages =
+					Array.FindAll(availableBackgroundImages, target => !target.EndsWith(".gitkeep")).ToArray();
 				for (int i = 0; i < availableBackgroundImages.Length; i++)
 					availableBackgroundImages[i] =
 						availableBackgroundImages[i].Replace($@"{rootPath}/{rootPathFolders[1]}\", "");
 
 				availableDayImages = Directory.GetFiles($"{rootPath}/{rootPathFolders[2]}");
-				availableDayImages = Array.FindAll(availableDayImages, target => !target.EndsWith(".gitkeep")).ToArray();
+				availableDayImages =
+					Array.FindAll(availableDayImages, target => !target.EndsWith(".gitkeep")).ToArray();
 				for (int i = 0; i < availableDayImages.Length; i++)
 					availableDayImages[i] = availableDayImages[i].Replace($@"{rootPath}/{rootPathFolders[2]}\", "");
 
 				availableStandingIllusts = Directory.GetFiles($"{rootPath}/{rootPathFolders[3]}");
-				availableStandingIllusts = Array.FindAll(availableStandingIllusts, target => !target.EndsWith(".gitkeep")).ToArray();
+				availableStandingIllusts =
+					Array.FindAll(availableStandingIllusts, target => !target.EndsWith(".gitkeep")).ToArray();
 				for (int i = 0; i < availableStandingIllusts.Length; i++)
 					availableStandingIllusts[i] =
 						availableStandingIllusts[i].Replace($@"{rootPath}/{rootPathFolders[3]}\", "");

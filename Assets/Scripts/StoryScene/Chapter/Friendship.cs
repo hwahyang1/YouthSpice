@@ -22,7 +22,7 @@ namespace YouthSpice.StoryScene.Chapter
 			int character = int.Parse(data.ContainsKey("Character") ? data["Character"] : "0");
 			int adjust = int.Parse(data.ContainsKey("Friendship") ? data["Friendship"] : "0");
 			Adjust(character, adjust);
-			
+
 			callback?.Invoke();
 		}
 
