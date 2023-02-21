@@ -78,12 +78,12 @@ namespace YouthSpice.StoryScene.Chapter
 			selectionArea = GetComponent<SelectionArea>();
 			getNameArea = GetComponent<GetNameArea>();
 			friendship = GetComponent<Friendship>();
-
-			frontTop.SetSkipButtonActive(false);
 		}
 
 		private void Start()
 		{
+			if (!StorySceneLoadParams.Instance.isTutorialScene) frontTop.SetSkipButtonActive(false);
+			
 			if (StorySceneLoadParams.Instance.chapterID == null ||
 			    !SourceFileManager.Instance.AvailableChapters.ContainsKey(StorySceneLoadParams.Instance.chapterID))
 			{

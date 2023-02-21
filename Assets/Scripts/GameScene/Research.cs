@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -12,7 +11,6 @@ using NaughtyAttributes;
 using YouthSpice.InGameMenuScene;
 using YouthSpice.PreloadScene.Audio;
 using YouthSpice.PreloadScene.Files;
-using YouthSpice.PreloadScene.Game;
 using YouthSpice.PreloadScene.Item;
 using YouthSpice.PreloadScene.Scene;
 
@@ -121,9 +119,15 @@ namespace YouthSpice.GameScene
 
 		private bool runOnce = false;
 
+		[SerializeField]
+		private AlertBox alertBox;
+		
+		private List<int> foundItems;
+
 		private void Start()
 		{
 			items = ItemBuffer.Instance.items;
+			foundItems = new List<int>();
 		}
 
 		private void Update()
@@ -172,17 +176,17 @@ namespace YouthSpice.GameScene
 				backGround.isGrow = false;
 				if (!runOnce)
 				{
-					StartCoroutine(ExitCoroutine());
 					runOnce = true;
+					alertBox.Init(foundItems);
+					StartCoroutine(nameof(AlertBoxCoroutine));
 				}
 			}
 		}
 
-		private IEnumerator ExitCoroutine()
+		private IEnumerator AlertBoxCoroutine()
 		{
 			yield return new WaitForSeconds(1.5f);
-			GameProgressManager.Instance.CountUp();
-			GameProgressManager.Instance.RunThisChapter();
+			alertBox.Show();
 		}
 
 		/// <summary>
@@ -482,6 +486,8 @@ namespace YouthSpice.GameScene
 			}
 
 			getItemImage.sprite = getResearchImage[index];
+			
+			foundItems.Add(index);
 
 			AudioManager.Instance.PlayEffectAudio(lowRankClip);
 		}
@@ -509,6 +515,8 @@ namespace YouthSpice.GameScene
 			}
 
 			getItemImage.sprite = getResearchImage[index];
+			
+			foundItems.Add(index);
 
 			AudioManager.Instance.PlayEffectAudio(lowRankClip);
 		}
@@ -536,6 +544,8 @@ namespace YouthSpice.GameScene
 			}
 
 			getItemImage.sprite = getResearchImage[index];
+			
+			foundItems.Add(index);
 
 			AudioManager.Instance.PlayEffectAudio(lowRankClip);
 		}
@@ -563,6 +573,8 @@ namespace YouthSpice.GameScene
 			}
 
 			getItemImage.sprite = getResearchImage[index];
+			
+			foundItems.Add(index);
 
 			AudioManager.Instance.PlayEffectAudio(lowRankClip);
 		}
@@ -590,6 +602,8 @@ namespace YouthSpice.GameScene
 			}
 
 			getItemImage.sprite = getResearchImage[index];
+			
+			foundItems.Add(index);
 
 			AudioManager.Instance.PlayEffectAudio(lowRankClip);
 		}
@@ -617,6 +631,8 @@ namespace YouthSpice.GameScene
 			}
 
 			getItemImage.sprite = getResearchImage[index];
+			
+			foundItems.Add(index);
 
 			AudioManager.Instance.PlayEffectAudio(lowRankClip);
 		}
@@ -644,6 +660,8 @@ namespace YouthSpice.GameScene
 			}
 
 			getItemImage.sprite = getResearchImage[index];
+			
+			foundItems.Add(index);
 
 			AudioManager.Instance.PlayEffectAudio(lowRankClip);
 		}
@@ -671,6 +689,8 @@ namespace YouthSpice.GameScene
 			}
 
 			getItemImage.sprite = getResearchImage[index];
+			
+			foundItems.Add(index);
 
 			AudioManager.Instance.PlayEffectAudio(lowRankClip);
 		}
@@ -698,6 +718,8 @@ namespace YouthSpice.GameScene
 			}
 
 			getItemImage.sprite = getResearchImage[index];
+			
+			foundItems.Add(index);
 
 			AudioManager.Instance.PlayEffectAudio(lowRankClip);
 		}
@@ -725,6 +747,8 @@ namespace YouthSpice.GameScene
 			}
 
 			getItemImage.sprite = getResearchImage[index];
+			
+			foundItems.Add(index);
 
 			AudioManager.Instance.PlayEffectAudio(lowRankClip);
 		}
@@ -752,6 +776,8 @@ namespace YouthSpice.GameScene
 			}
 
 			getItemImage.sprite = getResearchImage[index];
+			
+			foundItems.Add(index);
 
 			AudioManager.Instance.PlayEffectAudio(lowRankClip);
 		}
@@ -779,16 +805,10 @@ namespace YouthSpice.GameScene
 			}
 
 			getItemImage.sprite = getResearchImage[index];
+			
+			foundItems.Add(index);
 
 			AudioManager.Instance.PlayEffectAudio(lowRankClip);
-		}
-
-		/// <summary>
-		/// 아이템 창을 종료합니다.
-		/// </summary>
-		public void GetItemPanelFalse()
-		{
-			getItemPanel.gameObject.SetActive(false);
 		}
 	}
 }
