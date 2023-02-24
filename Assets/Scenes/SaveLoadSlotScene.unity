@@ -935,6 +935,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 1483216234}
   backClip: {fileID: 8300000, guid: f633f394ca071a54390427b00f947ddb, type: 3}
+  tabClip: {fileID: 8300000, guid: 19731ad5bdea8ab4e8fcc5e29c5a45f6, type: 3}
   titleTextImages:
   - {fileID: 21300000, guid: 49f8c275e22667547a3953445be53208, type: 3}
   - {fileID: 21300000, guid: ad3e131cc202c6f4ebd1fe7a714c3751, type: 3}
@@ -953,7 +954,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   changeValue: 50
   target:
-  - {fileID: 0}
+  - {fileID: 1446937776}
   upButton: {fileID: 1334773734}
   downButton: {fileID: 1677543786}
 --- !u!1001 &1134295494

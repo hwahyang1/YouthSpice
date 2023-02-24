@@ -126,6 +126,8 @@ namespace YouthSpice.PreloadScene.Alert
 		/// </summary>
 		public void OnCloseButtonClicked()
 		{
+			AudioManager.Instance.PlayEffectAudio(clickClip);
+
 			onDestroy();
 		}
 	}

@@ -24,6 +24,9 @@ namespace YouthSpice.StoryScene.Chapter
 	/// </summary>
 	public class ChapterManager : MonoBehaviour
 	{
+		[SerializeField, ReadOnly]
+		private string currentChapterName = "";
+		
 		[ReadOnly]
 		public bool isSpeechEnded = true;
 
@@ -83,7 +86,7 @@ namespace YouthSpice.StoryScene.Chapter
 		private void Start()
 		{
 			if (!StorySceneLoadParams.Instance.isTutorialScene) frontTop.SetSkipButtonActive(false);
-			
+
 			if (StorySceneLoadParams.Instance.chapterID == null ||
 			    !SourceFileManager.Instance.AvailableChapters.ContainsKey(StorySceneLoadParams.Instance.chapterID))
 			{
@@ -99,6 +102,7 @@ namespace YouthSpice.StoryScene.Chapter
 			{
 				currentChapter = SourceFileManager.Instance.AvailableChapters[StorySceneLoadParams.Instance.chapterID];
 				//if (!StorySceneLoadParams.Instance.isTutorialScene) GameInfo.Instance.slotName = currentChapter.Name;
+				currentChapterName = currentChapter.Name;
 				StartCoroutine(nameof(LateStartCoroutine));
 			}
 		}
@@ -233,6 +237,9 @@ namespace YouthSpice.StoryScene.Chapter
 			// 앞에 분기점 있으면 -> 직전 항목으로 이동시킴
 			else
 			{
+				// 위 작업으로 빠진 앞부분 Index를 다시 채워넣음
+				index += currentChapterIndex - 3;
+				
 				for (; currentChapterIndex < index; currentChapterIndex++)
 				{
 					currentElement = currentChapter.Elements[currentChapterIndex];

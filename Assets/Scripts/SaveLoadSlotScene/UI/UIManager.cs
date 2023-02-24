@@ -24,6 +24,9 @@ namespace YouthSpice.SaveLoadSlotScene.UI
 
 		[SerializeField]
 		private AudioClip backClip;
+		
+		[SerializeField]
+		private AudioClip tabClip;
 
 		[SerializeField]
 		[Tooltip("SaveLoadSlotMode 기준으로 이미지를 지정합니다.")]
@@ -35,6 +38,7 @@ namespace YouthSpice.SaveLoadSlotScene.UI
 		private void Start()
 		{
 			animator.SetTrigger("On");
+			AudioManager.Instance.PlayEffectAudio(tabClip);
 		}
 
 		public void Exit()

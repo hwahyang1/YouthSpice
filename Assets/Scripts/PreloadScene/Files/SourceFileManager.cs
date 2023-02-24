@@ -67,7 +67,7 @@ namespace YouthSpice.PreloadScene.Files
 		/// 모든 리소스를 다시 불러옵니다.
 		/// </summary>
 		/// <remarks>
-		///	이 작업은 사양에 따라 수 분 이상 걸리는 작업입니다.
+		///	이 작업은 사양에 따라 적게는 수 초, 많게는 수 분 이상 걸리는 작업입니다.
 		/// </remarks>
 		public async Task RefreshAll()
 		{

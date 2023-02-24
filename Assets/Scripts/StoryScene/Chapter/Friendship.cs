@@ -28,9 +28,9 @@ namespace YouthSpice.StoryScene.Chapter
 
 		public void Adjust(int character, int value)
 		{
-			character -= 3; // 이름없음, ???, 플레이어
+			character -= 2; // 이름없음, ???, 플레이어
 			if (character < 0 || character >= friendshipAdjustValue.Length) return;
-			friendshipAdjustValue[character - 3] += value;
+			friendshipAdjustValue[character] += value;
 		}
 
 		public void Apply()

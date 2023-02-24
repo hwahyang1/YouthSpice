@@ -22,7 +22,7 @@ namespace YouthSpice
 
 		public DefineConfig()
 		{
-			backgroundVolume = 0.5f;
+			backgroundVolume = 0.25f;
 			effectVolume = 0.5f;
 
 			useTypingEffect = true;

@@ -6,6 +6,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 using YouthSpice.PreloadScene.Alert;
+using YouthSpice.PreloadScene.Audio;
+using YouthSpice.PreloadScene.Files;
 using YouthSpice.PreloadScene.Game;
 using YouthSpice.PreloadScene.Item;
 
@@ -16,6 +18,12 @@ namespace YouthSpice.ShopScene
 	/// </summary>
 	public class Store : MonoBehaviour
 	{
+		[SerializeField]
+		private AudioClip slotClickClip;
+
+		[SerializeField]
+		private AudioClip buttonClickClip;
+
 		[SerializeField]
 		private Transform buySlotRoot;
 
@@ -93,7 +101,7 @@ namespace YouthSpice.ShopScene
 		/// <summary>
 		/// 구매창의 활성화 여부를 지정합니다.
 		/// </summary>
-		private void BuyFoodInfoSetActive(bool active)
+		public void BuyFoodInfoSetActive(bool active)
 		{
 			buyFoodInfo.SetActive(active);
 		}
@@ -109,9 +117,12 @@ namespace YouthSpice.ShopScene
 			{
 				AlertManager.Instance.Show(AlertType.Single, "알림",
 					$"돈이 부족합니다.\n선택한 아이템의 가격은 {ItemBuffer.Instance.items[index].sellPrice.ToString()}G 입니다.",
-					new Dictionary<string, Action>() { { "확인", null } });
+					new Dictionary<string, Action>()
+						{ { "확인", () => { AudioManager.Instance.PlayEffectAudio(buttonClickClip); } } });
 				return;
 			}
+
+			AudioManager.Instance.PlayEffectAudio(slotClickClip);
 
 			BuyFoodInfoSetActive(true);
 			buyBnt.onClick = new Button.ButtonClickedEvent();
@@ -133,21 +144,32 @@ namespace YouthSpice.ShopScene
 			{
 				AlertManager.Instance.Show(AlertType.Single, "알림",
 					$"돈이 부족합니다.\n선택한 아이템의 가격은 {ItemBuffer.Instance.items[index].sellPrice.ToString()}G 입니다.",
-					new Dictionary<string, Action>() { { "확인", null } });
+					new Dictionary<string, Action>()
+						{ { "확인", () => { AudioManager.Instance.PlayEffectAudio(buttonClickClip); } } });
 				return;
 			}
-			
+
+			AudioManager.Instance.PlayEffectAudio(buttonClickClip);
+
 			GameInfo.Instance.money -= ItemBuffer.Instance.items[index].sellPrice;
 			GameInfo.Instance.inventory.Add(index);
+
+			if (!UnlockedCGsManager.Instance.GetAllData().researchItems.Exists(target => target == index))
+			{
+				DefineUnlockedCGs data = UnlockedCGsManager.Instance.GetAllData();
+				data.researchItems.Add(index);
+				UnlockedCGsManager.Instance.Save(data);
+			}
+
 			BuyFoodInfoSetActive(false);
 
 			RefreshSellSlots();
 		}
-		
+
 		/// <summary>
 		/// 판매창의 활성화 여부를 지정합니다.
 		/// </summary>
-		private void SellFoodInfoSetActive(bool active)
+		public void SellFoodInfoSetActive(bool active)
 		{
 			sellFoodInfo.SetActive(active);
 		}
@@ -158,6 +180,8 @@ namespace YouthSpice.ShopScene
 		/// <param name="slot">판매할 아이템의 슬롯 정보를 지정합니다.</param>
 		private void OnClickSellSlot(Slot slot)
 		{
+			AudioManager.Instance.PlayEffectAudio(slotClickClip);
+
 			SellFoodInfoSetActive(true);
 			sellBnt.onClick = new Button.ButtonClickedEvent();
 			sellBnt.onClick.AddListener(() => { SellItem(slot); });
@@ -174,7 +198,8 @@ namespace YouthSpice.ShopScene
 		/// <param name="slot">판매할 아이템의 슬롯 정보를 지정합니다.</param>
 		public void SellItem(Slot slot)
 		{
-			Debug.Log("팔림");
+			AudioManager.Instance.PlayEffectAudio(buttonClickClip);
+
 			int index = ItemBuffer.Instance.GetIndex(slot.name);
 			GameInfo.Instance.money += Mathf.RoundToInt(ItemBuffer.Instance.items[index].sellPrice * 0.5f);
 			GameInfo.Instance.inventory.Remove(index);
@@ -188,6 +213,7 @@ namespace YouthSpice.ShopScene
 		/// </summary>
 		public void Exit()
 		{
+			AudioManager.Instance.PlayEffectAudio(buttonClickClip);
 			GameProgressManager.Instance.CountUp();
 			GameProgressManager.Instance.RunThisChapter();
 		}

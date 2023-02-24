@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 using YouthSpice.InGameMenuScene;
+using YouthSpice.PreloadScene.Audio;
 using YouthSpice.PreloadScene.Game;
 using YouthSpice.PreloadScene.Scene;
 using YouthSpice.StoryScene.Extern;
@@ -17,6 +18,9 @@ namespace YouthSpice.ShopScene
 	/// </summary>
 	public class Shop : MonoBehaviour
 	{
+		[SerializeField]
+		private AudioClip tabClip;
+		
 		[SerializeField]
 		private bool dealCondition = true; //true 일떄가 구매 false일떄가 판매 
 
@@ -71,7 +75,6 @@ namespace YouthSpice.ShopScene
 			}
 
 			// 이 아래는 상점
-
 			buyPanel.SetActive(dealCondition);
 
 			sellPanel.SetActive(!dealCondition);
@@ -93,11 +96,17 @@ namespace YouthSpice.ShopScene
 		public void BuySelect()
 		{
 			dealCondition = true;
+			AudioManager.Instance.PlayEffectAudio(tabClip);
+			buyPanel.transform.GetChild(0).GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+			sellPanel.transform.GetChild(0).GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
 		}
 
 		public void SellSelect()
 		{
 			dealCondition = false;
+			AudioManager.Instance.PlayEffectAudio(tabClip);
+			buyPanel.transform.GetChild(0).GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+			sellPanel.transform.GetChild(0).GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
 		}
 	}
 }
