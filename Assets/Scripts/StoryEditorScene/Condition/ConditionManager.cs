@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro;
 
+using TMPro;
 using NaughtyAttributes;
 
 using YouthSpice.StoryEditorScene.UI;
@@ -54,7 +54,10 @@ namespace YouthSpice.StoryEditorScene.Condition
 		[ReadOnly]
 		public bool reset = true;
 
-		// 사용하지 않는 데이터는 null로 지정합니다.
+		/// <summary>
+		/// 실행 조건을 지정합니다.
+		/// 사용하지 않는 데이터는 null로 지정합니다.
+		/// </summary>
 		public void ApplyCustom(
 			string formerChapter,
 			string minDay,
@@ -150,7 +153,10 @@ namespace YouthSpice.StoryEditorScene.Condition
 			GetComponent<UIManager>().SetCustomAlertActive(false);
 		}
 
-		// 비활성화 된 데이터 -> 반환 X
+		/// <summary>
+		/// 현재 설정된 데이터를 반환합니다.
+		/// </summary>
+		/// <remarks>비활성화(선택되지 않은) 데이터는 반환하지 않습니다.</remarks>
 		public Dictionary<ChapterCondition, string> GetData()
 		{
 			Dictionary<ChapterCondition, string> data = new Dictionary<ChapterCondition, string>();
@@ -170,6 +176,9 @@ namespace YouthSpice.StoryEditorScene.Condition
 			return data;
 		}
 
+		/// <summary>
+		/// reset = true인 경우, 입력란을 초기화 합니다.
+		/// </summary>
 		public void ApplyReset()
 		{
 			if (!reset) return;
@@ -197,6 +206,8 @@ namespace YouthSpice.StoryEditorScene.Condition
 			reset = false;
 		}
 
+		/* ===================================== ToggleButton Events ===================================== */
+		
 		public void ToggleFormerChapter() => formerChapterInput.interactable = formerChapterToggle.isOn;
 
 		public void ToggleMinDay() => minDayInput.interactable = minDayToggle.isOn;

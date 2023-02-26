@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 using NaughtyAttributes;
+
 using YouthSpice.PreloadScene.Config;
 using YouthSpice.StoryScene.Chapter;
 using YouthSpice.StoryScene.Extern;
@@ -82,6 +83,7 @@ namespace YouthSpice.StoryScene.UI
 						StopCoroutine(activeCoroutine);
 						activeCoroutine = null;
 					}
+
 					speechArea.text = fullScript;
 					scriptEndedArea.color = new Color(1f, 1f, 1f, 1f);
 					isPrinting = false;
@@ -164,9 +166,10 @@ namespace YouthSpice.StoryScene.UI
 					speechArea.color = new Color(0f, 0f, 0f, 1f);
 				}
 			}
+
 			speechArea.text = "";
 			scriptEndedArea.color = new Color(1f, 1f, 1f, 0f);
-			
+
 			yield return null;
 
 			isRunning = true;

@@ -13,7 +13,7 @@ namespace YouthSpice.StoryEditorScene.Element.Child
 	{
 		[SerializeField]
 		private Dropdown effectMusicDropdown;
-		
+
 		protected override void Init(Dictionary<string, string> data)
 		{
 			if (data.ContainsKey("AvailableAudios") && data["AvailableAudios"] != "")
@@ -23,13 +23,13 @@ namespace YouthSpice.StoryEditorScene.Element.Child
 					effectMusicDropdown.options.Add(new Dropdown.OptionData(musicName));
 				}
 			}
-			
+
 			if (data.ContainsKey("Effect")) effectMusicDropdown.value = int.Parse(data["Effect"]);
 		}
-		
+
 		public override Dictionary<string, string> GetData()
 		{
-			return new Dictionary<string, string>(){{"Effect", effectMusicDropdown.value.ToString()}};
+			return new Dictionary<string, string>() { { "Effect", effectMusicDropdown.value.ToString() } };
 		}
 	}
 }

@@ -17,7 +17,7 @@ namespace YouthSpice.ConfigScene.SettingElements.SubElements
 			currentSelection = ConfigManager.Instance.GetConfig().useTypingEffect;
 			base.Start();
 		}
-		
+
 		protected override void OnValueChanged()
 		{
 			DefineConfig config = ConfigManager.Instance.GetConfig();

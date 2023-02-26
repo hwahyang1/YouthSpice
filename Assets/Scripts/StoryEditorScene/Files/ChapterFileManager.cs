@@ -26,7 +26,7 @@ namespace YouthSpice.StoryEditorScene.Files
 		private string pastFileName = "";
 		public string PastFileName => pastFileName;
 		public bool IsNewFile => pastFilePath == "" && pastFileName == "";
-		
+
 		private void Start()
 		{
 			chapterManager = GetComponent<ChapterManager>();
@@ -83,7 +83,9 @@ namespace YouthSpice.StoryEditorScene.Files
 
 			yield return null;
 
-			if (callback == null) AlertManager.Instance.Show(AlertType.Single, "알림", $"파일을 성공적으로 저장했습니다.: {path}", new Dictionary<string, Action>() { { "확인", null } });
+			if (callback == null)
+				AlertManager.Instance.Show(AlertType.Single, "알림", $"파일을 성공적으로 저장했습니다.: {path}",
+					new Dictionary<string, Action>() { { "확인", null } });
 			else callback.Invoke();
 		}
 
@@ -114,7 +116,9 @@ namespace YouthSpice.StoryEditorScene.Files
 
 				yield return null;
 
-				if (callback == null) AlertManager.Instance.Show(AlertType.Single, "알림", $"파일을 성공적으로 저장했습니다.: {FileBrowser.Result[0]}", new Dictionary<string, Action>() { { "확인", null } });
+				if (callback == null)
+					AlertManager.Instance.Show(AlertType.Single, "알림", $"파일을 성공적으로 저장했습니다.: {FileBrowser.Result[0]}",
+						new Dictionary<string, Action>() { { "확인", null } });
 				else callback.Invoke();
 			}
 		}
@@ -148,7 +152,8 @@ namespace YouthSpice.StoryEditorScene.Files
 
 					yield return new WaitForSeconds(0.1f);
 
-					DefineChapter data = JsonConvert.DeserializeObject<DefineChapter>(File.ReadAllText(FileBrowser.Result[0]));
+					DefineChapter data =
+						JsonConvert.DeserializeObject<DefineChapter>(File.ReadAllText(FileBrowser.Result[0]));
 					chapterManager.LoadData(data);
 
 					pastFilePath = Path.GetDirectoryName(FileBrowser.Result[0]);

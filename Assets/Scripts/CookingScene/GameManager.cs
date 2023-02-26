@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 using NaughtyAttributes;
-using UnityEngine.SceneManagement;
+
 using YouthSpice.CookingScene.Extern;
 using YouthSpice.CookingScene.RecipeStage;
 using YouthSpice.CookingScene.ResultStage.UI;
@@ -27,17 +28,22 @@ namespace YouthSpice.CookingScene
 	{
 		[SerializeField]
 		private AudioClip backgroundClip;
+
 		[SerializeField]
 		private AudioClip startClip;
+
 		[SerializeField]
 		private AudioClip nextClip;
-		
+
 		[Header("Status")]
 		[SerializeField, ReadOnly]
 		private CookingFlow currentChapter;
+
 		public CookingFlow CurrentChapter => currentChapter;
+
 		[SerializeField, ReadOnly]
 		private bool isFirstRecipe = true;
+
 		[SerializeField, ReadOnly]
 		private bool isFirstResult = true;
 
@@ -47,14 +53,19 @@ namespace YouthSpice.CookingScene
 		[Header("Classes")]
 		[SerializeField]
 		private SelectionManager selectionManager;
+
 		[SerializeField]
 		private ButtonManager buttonManager;
+
 		[SerializeField]
 		private RecipeManager recipeManager;
+
 		[SerializeField]
 		private GenerateFood generateFood;
+
 		[SerializeField]
 		private UIManager uiManager;
+
 		[SerializeField]
 		private UIAnimator uiAnimator;
 
@@ -64,27 +75,33 @@ namespace YouthSpice.CookingScene
 		private void Start()
 		{
 			stageManager = GetComponent<StageManager>();
-			
+
 			AudioManager.Instance.PlayBackgroundAudio(backgroundClip);
-			
+
 			Set();
 		}
 
 		private void Update()
 		{
 			// 다른 창 열렸을 때 입력되는 현상 방지
-			if (SceneManager.sceneCount == 1 && currentChapter != CookingFlow.Result)
+			if (currentChapter != CookingFlow.Result)
 			{
 				if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.F1))
 				{
-					if (SceneManager.sceneCount == 3)
+					#pragma warning disable CS0618 // Type or member is obsolete
+					foreach (Scene scene in SceneManager.GetAllScenes())
+						if (scene.name == "StoryScene_Tutorial") return;
+					#pragma warning restore CS0618 // Type or member is obsolete
+					
+					switch (SceneManager.sceneCount)
 					{
-						//SceneChange.Instance.Unload("InGameMenuScene");
-						GameObject.FindObjectOfType<MenuManager>().Exit();
-					}
-					else
-					{
-						SceneChange.Instance.Add("InGameMenuScene");
+						case 1:
+							SceneChange.Instance.Add("InGameMenuScene");
+							break;
+						case 2:
+							//SceneChange.Instance.Unload("InGameMenuScene");
+							GameObject.FindObjectOfType<MenuManager>().Exit();
+							break;
 					}
 				}
 			}
@@ -109,9 +126,9 @@ namespace YouthSpice.CookingScene
 			{
 				AudioManager.Instance.PlayEffectAudio(startClip);
 			}
-			
+
 			currentChapter = (CookingFlow)((int)currentChapter + 1);
-			
+
 			Set();
 		}
 
@@ -124,14 +141,14 @@ namespace YouthSpice.CookingScene
 			switch (currentChapter)
 			{
 				case CookingFlow.Selection:
-					if (GameInfo.Instance.viewedItem) return;
+					if (GameInfo.Instance.viewedItem) break;
 					StorySceneLoadParams.Instance.isTutorialScene = true;
 					StorySceneLoadParams.Instance.chapterID = GameProgressManager.Instance.itemTutorial;
 					SceneChange.Instance.Add("StoryScene_Tutorial");
 					GameInfo.Instance.viewedItem = true;
 					break;
 				case CookingFlow.Recipe:
-					if (GameInfo.Instance.viewedRecipe) return;
+					if (GameInfo.Instance.viewedRecipe) break;
 					StorySceneLoadParams.Instance.isTutorialScene = true;
 					StorySceneLoadParams.Instance.chapterID = GameProgressManager.Instance.recipeTutorial;
 					SceneChange.Instance.Add("StoryScene_Tutorial");
@@ -140,7 +157,7 @@ namespace YouthSpice.CookingScene
 				case CookingFlow.Result:
 					break;
 			}
-
+			
 			// 처리
 			if (currentChapter == CookingFlow.Result)
 			{
@@ -153,7 +170,7 @@ namespace YouthSpice.CookingScene
 				else
 				{
 					stageManager.GoNext();
-					
+
 					bool success = generateFood.TryGenerate();
 
 					if (success)
@@ -162,7 +179,7 @@ namespace YouthSpice.CookingScene
 						unlockedCGs.recipeFoods.Add((int)CookingLoadParams.Instance.menu);
 						UnlockedCGsManager.Instance.Save(unlockedCGs);
 					}
-					
+
 					uiManager.Set(success);
 					uiAnimator.Run();
 				}
@@ -174,6 +191,7 @@ namespace YouthSpice.CookingScene
 					recipeManager.Set();
 					isFirstRecipe = false;
 				}
+				
 				stageManager.GoNext();
 				selectionManager.GoNext();
 			}

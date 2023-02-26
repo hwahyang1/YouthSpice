@@ -19,19 +19,31 @@ namespace YouthSpice.CookingScene.RecipeStage.UI
 
 		[SerializeField]
 		private Image foodImage;
+
 		[SerializeField]
 		private Image foodImageUnknown;
 
+		/// <summary>
+		/// 설명을 변경합니다.
+		/// </summary>
 		public void ChangeDescription(string text)
 		{
 			description.text = text.Replace(@"\n", "\n");
 		}
 
+		/// <summary>
+		/// 식재료 아이템 이미지를 변경합니다.
+		/// </summary>
+		/// <param name="itemID">변경할 ID를 지정합니다.</param>
 		public void ChangeFoodImage(int itemID)
 		{
 			ChangeFoodImage(itemID == -1 ? null : ItemBuffer.Instance.items[itemID].sprite);
 		}
 
+		/// <summary>
+		/// 식재료 아이템 이미지를 변경합니다.
+		/// </summary>
+		/// <param name="image">변경할 이미지를 지정합니다.</param>
 		public void ChangeFoodImage(Sprite image = null)
 		{
 			if (image == null)

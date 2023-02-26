@@ -17,7 +17,7 @@ namespace YouthSpice
 
 		public int MajorChapter;
 		public int MinorChapter;
-		
+
 		public string PlayerName;
 
 		public int[] Inventory;
@@ -35,7 +35,20 @@ namespace YouthSpice
 			//
 		}
 
-		public DefineGame(string slotName, long dateTime, int majorChapter, int minorChapter, string playerName, int[] inventory, int money, int[] friendship, bool viewedRecipe, bool viewedItem, bool viewedShop, bool viewedResearch)
+		public DefineGame(
+			string slotName,
+			long dateTime,
+			int majorChapter,
+			int minorChapter,
+			string playerName,
+			int[] inventory,
+			int money,
+			int[] friendship,
+			bool viewedRecipe,
+			bool viewedItem,
+			bool viewedShop,
+			bool viewedResearch
+		)
 		{
 			SlotName = slotName;
 			DateTime = dateTime;
@@ -59,10 +72,10 @@ namespace YouthSpice
 	{
 		public string slotName;
 		public long dateTime;
-		
+
 		public int majorChapter;
 		public int minorChapter;
-		
+
 		public string playerName;
 
 		public List<int> inventory = new List<int>();
@@ -77,14 +90,15 @@ namespace YouthSpice
 
 		public DefineGame ConvertToDefineGame()
 		{
-			return new DefineGame(slotName, dateTime, majorChapter, minorChapter, playerName, inventory.ToArray(), money, friendship, viewedRecipe, viewedItem, viewedShop, viewedResearch);
+			return new DefineGame(slotName, dateTime, majorChapter, minorChapter, playerName, inventory.ToArray(),
+				money, friendship, viewedRecipe, viewedItem, viewedShop, viewedResearch);
 		}
 
 		public void ConvertFromDefineGame(DefineGame data)
 		{
 			slotName = data.SlotName;
 			dateTime = data.DateTime;
-			
+
 			majorChapter = data.MajorChapter;
 			minorChapter = data.MinorChapter;
 

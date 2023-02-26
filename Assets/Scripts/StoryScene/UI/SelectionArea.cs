@@ -21,7 +21,7 @@ namespace YouthSpice.StoryScene.UI
 	{
 		[SerializeField]
 		private AudioClip selectClip;
-		
+
 		[SerializeField]
 		private GameObject selectionBackground;
 
@@ -61,7 +61,7 @@ namespace YouthSpice.StoryScene.UI
 			speechArea = GetComponent<SpeechArea>();
 			getNameArea = GetComponent<GetNameArea>();
 			friendship = GetComponent<Friendship>();
-			
+
 			chapterManager = GetComponent<ChapterManager>();
 		}
 
@@ -76,7 +76,8 @@ namespace YouthSpice.StoryScene.UI
 
 			for (int i = 0; i < currentSelections.Count; i++)
 			{
-				selectionButtons[i].transform.GetChild(1).GetComponent<Text>().text = currentSelections[i].Data["SelectionName"];
+				selectionButtons[i].transform.GetChild(1).GetComponent<Text>().text =
+					currentSelections[i].Data["SelectionName"];
 				selectionButtons[i].gameObject.SetActive(true);
 			}
 		}
@@ -84,9 +85,9 @@ namespace YouthSpice.StoryScene.UI
 		public void OnButtonInteract(int order)
 		{
 			HideSelection();
-			
+
 			EventSystem.current?.SetSelectedGameObject(null);
-			
+
 			PreloadScene.Audio.AudioManager.Instance.PlayEffectAudio(selectClip);
 
 			currentElementIndex = currentElements.FindIndex(target =>
@@ -94,7 +95,7 @@ namespace YouthSpice.StoryScene.UI
 				target.Data["SelectionName"] == currentSelections[order].Data["SelectionName"]);
 
 			ready = true;
-			
+
 			PlayNext();
 		}
 
@@ -112,14 +113,14 @@ namespace YouthSpice.StoryScene.UI
 		{
 			currentElements = new List<ChapterElement>();
 			currentSelections = new List<ChapterElement>();
-			
+
 			for (int i = 0;; i++)
 			{
 				if (!data.ContainsKey(i.ToString())) break;
 				ChapterElement currentData = JsonConvert.DeserializeObject<ChapterElement>(data[i.ToString()]);
 				currentElements.Add(currentData);
 			}
-			
+
 			currentSelections = currentElements.FindAll(target => target.Type == ChapterElementType.SelectionName);
 
 			ready = false;
@@ -131,11 +132,13 @@ namespace YouthSpice.StoryScene.UI
 		public void SkipCurrent()
 		{
 			// 남은 구간만 List로 가져오기
-			List<ChapterElement> list = new List<ChapterElement>(currentElements.Skip(currentElementIndex).Take(currentElements.Count - currentElementIndex));
-			int index = list.FindIndex(target => target.Type == ChapterElementType.Selection || target.Type == ChapterElementType.GetPlayerName);
+			List<ChapterElement> list = new List<ChapterElement>(currentElements.Skip(currentElementIndex)
+				.Take(currentElements.Count - currentElementIndex));
+			int index = list.FindIndex(target =>
+				target.Type == ChapterElementType.Selection || target.Type == ChapterElementType.GetPlayerName);
 
 			ChapterElement currentElement;
-			
+
 			// 앞에 분기점 & 이름 획득 없음
 			if (index == -1)
 			{
@@ -151,7 +154,8 @@ namespace YouthSpice.StoryScene.UI
 							frontTop.ChangeImage(currentElement.Data);
 							break;
 						case ChapterElementType.BackgroundImage:
-							backgroundImage.ChangeImage(currentElement.Data, true, () => { speechArea.SetActive(true); });
+							backgroundImage.ChangeImage(currentElement.Data, true,
+								() => { speechArea.SetActive(true); });
 							break;
 						case ChapterElementType.BackgroundMusic:
 							audioManager.PlayBackgroundAudio(currentElement.Data, true);
@@ -175,6 +179,7 @@ namespace YouthSpice.StoryScene.UI
 							break;
 					}
 				}
+
 				chapterManager.isSelectionEnded = true;
 				chapterManager.PlayNext();
 			}
@@ -196,7 +201,7 @@ namespace YouthSpice.StoryScene.UI
 			{
 				currentElementIndex++;
 
-				if (currentElements.Count >= currentElementIndex)
+				if (currentElements.Count <= currentElementIndex)
 				{
 					// 분기점 종료
 					loop = false;

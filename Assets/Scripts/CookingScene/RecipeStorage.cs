@@ -6,13 +6,19 @@ using UnityEngine;
 
 namespace YouthSpice.CookingScene
 {
+	/// <summary>
+	/// 스테이지 순서를 정의합니다.
+	/// </summary>
 	public enum CookingFlow
 	{
 		Selection,
 		Recipe,
 		Result
 	}
-	
+
+	/// <summary>
+	/// 조리 가능한 메뉴들을 정의합니다.
+	/// </summary>
 	public enum AvailableMenus
 	{
 		떡볶이,
@@ -38,7 +44,7 @@ namespace YouthSpice.CookingScene
 			this.stepCorrectItems = stepCorrectItems;
 		}
 	}
-	
+
 	/// <summary>
 	/// 레시피를 저장합니다.
 	/// </summary>

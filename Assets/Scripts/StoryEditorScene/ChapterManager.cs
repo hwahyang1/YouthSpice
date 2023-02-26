@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -13,7 +12,6 @@ using YouthSpice.StoryEditorScene.Element;
 using YouthSpice.StoryEditorScene.Files;
 using YouthSpice.StoryEditorScene.UI;
 using YouthSpice.StoryScene.Extern;
-using Random = UnityEngine.Random;
 
 namespace YouthSpice.StoryEditorScene
 {
@@ -142,7 +140,7 @@ namespace YouthSpice.StoryEditorScene
 			StorySceneLoadParams.Instance.chapterCustomPath = chapterFileManager.PastFilePath;
 			StorySceneLoadParams.Instance.resourceCustomPath = Application.dataPath + @"/.StoryEditor_Data";
 			StorySceneLoadParams.Instance.chapterID = chapterID;
-			
+
 			GameInfo.Instance.playerName = "(플레이어 이름)";
 
 			await SourceFileManager.Instance.RefreshAll();

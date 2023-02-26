@@ -3,23 +3,31 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
+using NaughtyAttributes;
+
 using YouthSpice.PreloadScene.Config;
 
 namespace YouthSpice.GameScene
 {
 	/// <summary>
-	/// Description
+	/// 배경 애니메이션을 처리합니다.
 	/// </summary>
 	public class BackGround : MonoBehaviour
 	{
-		//배경
 		private RectTransform rectTransform;
+
+		[ReadOnly]
 		public float width;
+
+		[ReadOnly]
 		public float height;
+
+		[ReadOnly]
 		public bool isGrow;
 
 		[SerializeField]
 		private float growthSpeed;
+
 		private void Update()
 		{
 			if (isGrow && ConfigManager.Instance.GetConfig().useResearchEffect)
@@ -27,7 +35,7 @@ namespace YouthSpice.GameScene
 				width += Time.deltaTime * growthSpeed * 2f;
 				height += Time.deltaTime * growthSpeed;
 			}
-			
+
 			rectTransform = GetComponent<RectTransform>();
 			rectTransform.sizeDelta = new Vector2(1920 + width, 1080 + height);
 		}

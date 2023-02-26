@@ -13,7 +13,7 @@ namespace YouthSpice.StoryEditorScene.Element.Child
 	{
 		[SerializeField]
 		private Dropdown dayImageDropdown;
-		
+
 		[SerializeField]
 		private Dropdown imageTransitionDropdown;
 
@@ -27,7 +27,7 @@ namespace YouthSpice.StoryEditorScene.Element.Child
 					dayImageDropdown.options.Add(new Dropdown.OptionData(imageName));
 				}
 			}
-			
+
 			if (data.ContainsKey("AvailableTransitions") && data["AvailableTransitions"] != "")
 			{
 				foreach (string transitionName in data["AvailableTransitions"].Split(" | "))
@@ -42,7 +42,11 @@ namespace YouthSpice.StoryEditorScene.Element.Child
 
 		public override Dictionary<string, string> GetData()
 		{
-			return new Dictionary<string, string>() { { "Day", (dayImageDropdown.value - 1).ToString() },{ "Transition", (imageTransitionDropdown.value - 1).ToString() } };
+			return new Dictionary<string, string>()
+			{
+				{ "Day", (dayImageDropdown.value - 1).ToString() },
+				{ "Transition", (imageTransitionDropdown.value - 1).ToString() }
+			};
 		}
 	}
 }

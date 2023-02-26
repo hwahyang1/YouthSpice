@@ -4,9 +4,10 @@ using Action = System.Action;
 
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 using NaughtyAttributes;
-using UnityEngine.EventSystems;
+
 using YouthSpice.PreloadScene.Alert;
 using YouthSpice.PreloadScene.Files;
 using YouthSpice.StoryScene.Chapter;
@@ -20,7 +21,7 @@ namespace YouthSpice.StoryScene.UI
 	{
 		[SerializeField]
 		private Sprite blank;
-		
+
 		[SerializeField]
 		private Image[] dayImageAreas;
 
@@ -47,17 +48,23 @@ namespace YouthSpice.StoryScene.UI
 		private void Start()
 		{
 			chapterManager = GetComponent<ChapterManager>();
-			
+
 			EventTrigger eventTrigger = skipButton.GetComponent<EventTrigger>();
 
 			EventTrigger.Entry entry_PointerEnter = new EventTrigger.Entry();
 			entry_PointerEnter.eventID = EventTriggerType.PointerEnter;
-			entry_PointerEnter.callback.AddListener((data) => { OnSkipButtonMouseEnterCallback((PointerEventData)data); });
+			entry_PointerEnter.callback.AddListener((data) =>
+			{
+				OnSkipButtonMouseEnterCallback((PointerEventData)data);
+			});
 			eventTrigger.triggers.Add(entry_PointerEnter);
 
 			EventTrigger.Entry entry_PointerExit = new EventTrigger.Entry();
 			entry_PointerExit.eventID = EventTriggerType.PointerExit;
-			entry_PointerExit.callback.AddListener((data) => { OnSkipButtonMouseExitCallback((PointerEventData)data); });
+			entry_PointerExit.callback.AddListener((data) =>
+			{
+				OnSkipButtonMouseExitCallback((PointerEventData)data);
+			});
 			eventTrigger.triggers.Add(entry_PointerExit);
 		}
 
@@ -65,7 +72,12 @@ namespace YouthSpice.StoryScene.UI
 		{
 			//
 		}
-		
+
+		public void SetSkipButtonActive(bool active)
+		{
+			skipButton.gameObject.SetActive(active);
+		}
+
 		private void OnSkipButtonMouseEnterCallback(PointerEventData data)
 		{
 			chapterManager.isMouseOverButton = true;
@@ -109,7 +121,7 @@ namespace YouthSpice.StoryScene.UI
 			//yield return null;
 
 			activePosition = !activePosition;
-			
+
 			float currentTime = 0f;
 
 			switch (transitionType)

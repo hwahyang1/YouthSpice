@@ -13,6 +13,7 @@
  : UI
   - ElementsManager: 항목 표출 관리
   - Element: 각 항목 정보
+  - MenuText: 조리해야 하는 메뉴명 표기
 
 : RecipeStage
  - RecipeManager: 조리 순서 관리

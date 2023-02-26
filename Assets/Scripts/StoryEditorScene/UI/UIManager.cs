@@ -5,6 +5,7 @@ using DateTime = System.DateTime;
 
 using UnityEngine;
 using UnityEngine.UI;
+
 using TMPro;
 
 using YouthSpice.PreloadScene.Alert;
@@ -117,11 +118,13 @@ namespace YouthSpice.StoryEditorScene.UI
 					"챕터 테스트를 진행하기 전, 파일을 저장해야 합니다.",
 					new Dictionary<string, Action>()
 					{
-						{ "확인", () =>
 						{
-							StartCoroutine(
-								chapterFileManager.SaveNewFileCoroutine(chapterManager.StartChapterPreview));
-						} }
+							"확인", () =>
+							{
+								StartCoroutine(
+									chapterFileManager.SaveNewFileCoroutine(chapterManager.StartChapterPreview));
+							}
+						}
 					});
 			}
 			else

@@ -13,7 +13,7 @@ namespace YouthSpice.StoryEditorScene.Element.Child
 	{
 		[SerializeField]
 		private Dropdown backgroundMusicDropdown;
-		
+
 		[SerializeField]
 		private Dropdown audioTransitionDropdown;
 
@@ -27,7 +27,7 @@ namespace YouthSpice.StoryEditorScene.Element.Child
 					backgroundMusicDropdown.options.Add(new Dropdown.OptionData(musicName));
 				}
 			}
-			
+
 			if (data.ContainsKey("AvailableTransitions") && data["AvailableTransitions"] != "")
 			{
 				foreach (string transitionName in data["AvailableTransitions"].Split(" | "))
@@ -43,7 +43,10 @@ namespace YouthSpice.StoryEditorScene.Element.Child
 		public override Dictionary<string, string> GetData()
 		{
 			return new Dictionary<string, string>()
-				{ { "Background", (backgroundMusicDropdown.value - 1).ToString() },{ "Transition", (audioTransitionDropdown.value - 1).ToString() } };
+			{
+				{ "Background", (backgroundMusicDropdown.value - 1).ToString() },
+				{ "Transition", (audioTransitionDropdown.value - 1).ToString() }
+			};
 		}
 	}
 }

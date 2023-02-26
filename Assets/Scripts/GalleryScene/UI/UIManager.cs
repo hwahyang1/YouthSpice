@@ -27,11 +27,11 @@ namespace YouthSpice.GalleryScene.UI
 		{
 			animator.SetTrigger("On");
 		}
-		
+
 		public void Exit()
 		{
 			animator.SetTrigger("Off");
-			
+
 			AudioManager.Instance.PlayEffectAudio(backClip);
 
 			StartCoroutine(DelayedExitCoroutine());
@@ -40,7 +40,7 @@ namespace YouthSpice.GalleryScene.UI
 		private IEnumerator DelayedExitCoroutine()
 		{
 			yield return new WaitForSeconds(1.05f);
-			
+
 			if (SceneManager.sceneCount != 1) SceneChange.Instance.Unload("GalleryScene");
 			else
 			{

@@ -21,8 +21,9 @@ namespace YouthSpice.CookingScene.RecipeStage
 		[Header("Statuses")]
 		[SerializeField, ReadOnly]
 		private bool isEnded = false;
+
 		public bool IsEnded => isEnded;
-		
+
 		[SerializeField, ReadOnly]
 		private List<int> selectedItems;
 
@@ -40,10 +41,13 @@ namespace YouthSpice.CookingScene.RecipeStage
 		[Header("Classes")]
 		[SerializeField]
 		private RecipeStorage recipeStorage;
+
 		[SerializeField]
 		private SelectionManager selectionManager;
+
 		[SerializeField]
 		private ButtonManager buttonManager;
+
 		[SerializeField]
 		private GameManager gameManager;
 
@@ -65,6 +69,11 @@ namespace YouthSpice.CookingScene.RecipeStage
 			isEnded = false;
 		}
 
+		/// <summary>
+		/// 아이템이 선택되었을 때의 이벤트를 처리합니다.
+		/// </summary>
+		/// <param name="index">선택한 아이템의 슬롯 위치를 지정합니다.</param>
+		/// <param name="itemID">선택한 아이템의 ID를 지정합니다.</param>
 		public void SelectItem(int index, int itemID)
 		{
 			if (currentItems[currentIndex] == -2) return;
@@ -92,10 +101,13 @@ namespace YouthSpice.CookingScene.RecipeStage
 			itemSelectManager.ChangeFoodImage(itemID);
 		}
 
+		/// <summary>
+		/// 다음 레시피로 넘어갑니다.
+		/// </summary>
 		public void GoNext()
 		{
 			currentIndex++;
-			
+
 			selectedItems.Add(tempItem);
 
 			if (currentIndex == currentTexts.Count)
@@ -104,13 +116,16 @@ namespace YouthSpice.CookingScene.RecipeStage
 				gameManager.GoNext();
 				return;
 			}
-			
+
 			tempItem = -2;
 			tempIndex = -2;
 
 			Set();
 		}
 
+		/// <summary>
+		/// 현재 Index에 따라 UI를 갱신합니다.
+		/// </summary>
 		public void Set()
 		{
 			if (currentIndex == currentTexts.Count - 1) buttonManager.SetButtonText(2);
