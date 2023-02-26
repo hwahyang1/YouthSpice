@@ -436,7 +436,7 @@ MonoBehaviour:
   mapCanvas: {fileID: 232472508}
   backGround: {fileID: 181742176}
   map: {fileID: 1197151531}
-  researchClip: {fileID: 8300000, guid: 16eadf334d843eb4d8abd473aa96ab67, type: 3}
+  researchClip: {fileID: 8300000, guid: 102cca2500e3e3e4780b95a92e078814, type: 3}
   lowRankClip: {fileID: 8300000, guid: 583aa62796dba4b48b6d897992b4b8b1, type: 3}
   midHighRankClip: {fileID: 8300000, guid: 357e3487c17ce5c49bad51fc39141aca, type: 3}
   midHighRankBackgroundClip: {fileID: 8300000, guid: f2e59dd54645c804d8efeea22c339f93, type: 3}

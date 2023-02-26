@@ -41,9 +41,7 @@ namespace YouthSpice.ShopScene
 				itemName.text = "";
 				itemPrice.text = "0";
 
-				#if UNITY_EDITOR
 				gameObject.name = "Empty";
-				#endif
 			}
 			else
 			{
@@ -52,9 +50,7 @@ namespace YouthSpice.ShopScene
 				itemName.text = item.name;
 				itemPrice.text = (isSellArea ? Mathf.Round(item.sellPrice * 0.5f) : item.sellPrice).ToString();
 
-				#if UNITY_EDITOR
 				gameObject.name = item.name;
-				#endif
 			}
 
 			if (buttonCallback != null)
