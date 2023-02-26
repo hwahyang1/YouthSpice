@@ -16,11 +16,13 @@ namespace YouthSpice.PreloadScene.Audio
 	{
 		[SerializeField]
 		private AudioSource backgroundAudio;
+
 		[SerializeField, ReadOnly]
 		private float backgroundAudioMax;
-		
+
 		[SerializeField]
 		private AudioSource effectAudio;
+
 		[SerializeField, ReadOnly]
 		private float effectAudioMax;
 
@@ -50,6 +52,9 @@ namespace YouthSpice.PreloadScene.Audio
 			backgroundAudio.Play();
 		}
 
+		/// <summary>
+		/// 배경음의 재생을 중지합니다.
+		/// </summary>
 		public void StopBackgroundAudio()
 		{
 			StartCoroutine(nameof(StopBackgroundAudioCoroutine));
@@ -64,6 +69,7 @@ namespace YouthSpice.PreloadScene.Audio
 				backgroundAudio.volume -= 0.03f;
 				yield return new WaitForSeconds(0.01f);
 			}
+
 			backgroundAudio.Stop();
 		}
 	}

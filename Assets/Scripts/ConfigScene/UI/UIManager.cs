@@ -31,7 +31,7 @@ namespace YouthSpice.ConfigScene.UI
 		public void Exit()
 		{
 			animator.SetTrigger("Off");
-			
+
 			AudioManager.Instance.PlayEffectAudio(backClip);
 
 			StartCoroutine(DelayedExitCoroutine());
@@ -40,7 +40,7 @@ namespace YouthSpice.ConfigScene.UI
 		private IEnumerator DelayedExitCoroutine()
 		{
 			yield return new WaitForSeconds(1.15f);
-			
+
 			if (SceneManager.sceneCount != 1) SceneChange.Instance.Unload("ConfigScene");
 			else
 			{

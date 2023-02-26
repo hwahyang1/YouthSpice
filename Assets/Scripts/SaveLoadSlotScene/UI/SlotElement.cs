@@ -17,7 +17,7 @@ namespace YouthSpice.SaveLoadSlotScene.UI
 		[Header("GameObjects")]
 		[SerializeField]
 		private Image slotBackgroundImageArea;
-		
+
 		[SerializeField]
 		private Text slotIndexText;
 
@@ -46,11 +46,11 @@ namespace YouthSpice.SaveLoadSlotScene.UI
 		public void Init(int index, Sprite previewImage, string title, long dateTime, ActionInt callback = null)
 		{
 			this.index = index;
-			
+
 			slotIndexText.text = $"SLOT {(index + 1).ToString("00")}";
 			slotPreviewImageArea.sprite = previewImage;
 			slotTitleText.text = title;
-			
+
 			if (dateTime == 0)
 			{
 				slotDateTimeText.text = "----/--/-- --:--:--";
@@ -64,7 +64,10 @@ namespace YouthSpice.SaveLoadSlotScene.UI
 
 			this.callback = callback;
 		}
-		
+
+		/// <summary>
+		/// 슬롯이 클릭되었을 때의 이벤트를 처리합니다.
+		/// </summary>
 		public void OnClicked()
 		{
 			callback?.Invoke(index);

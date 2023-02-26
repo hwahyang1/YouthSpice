@@ -21,7 +21,7 @@ namespace YouthSpice.SaveLoadSlotScene.Slots
 	{
 		[SerializeField]
 		private AudioClip clickClip;
-		
+
 		[SerializeField]
 		private Transform parent;
 
@@ -30,12 +30,15 @@ namespace YouthSpice.SaveLoadSlotScene.Slots
 
 		[SerializeField, ReadOnly]
 		private SaveLoadSlotMode mode;
-		
+
 		private void Awake()
 		{
 			RebuildSlots();
 		}
 
+		/// <summary>
+		/// 슬롯을 처음부터 다시 생성합니다.
+		/// </summary>
 		private void RebuildSlots()
 		{
 			for (int i = 0; i < parent.childCount; i++)
@@ -44,13 +47,14 @@ namespace YouthSpice.SaveLoadSlotScene.Slots
 			}
 
 			mode = SaveLoadSlotLoadParams.Instance.mode;
-			
+
 			List<DefineGame> slots = SaveSlotManager.Instance.GetAllData();
 
 			for (int i = 0; i < slots.Count; i++)
 			{
 				DefineGame slot = slots[i];
-				SlotElement child = Instantiate(prefab, Vector3.zero, Quaternion.identity, parent).GetComponent<SlotElement>();
+				SlotElement child = Instantiate(prefab, Vector3.zero, Quaternion.identity, parent)
+					.GetComponent<SlotElement>();
 
 				if (slot == null)
 				{
@@ -58,17 +62,22 @@ namespace YouthSpice.SaveLoadSlotScene.Slots
 				}
 				else
 				{
-					child.Init(i, SaveSlotManager.Instance.GetScreenShot(i), slot.SlotName, slot.DateTime, InteractionSlot);
+					child.Init(i, SaveSlotManager.Instance.GetScreenShot(i), slot.SlotName, slot.DateTime,
+						InteractionSlot);
 				}
 			}
 		}
 
+		/// <summary>
+		/// 슬롯이 클릭되었을 때 이벤트를 처리합니다.
+		/// </summary>
+		/// <param name="index">클릭된 슬롯의 번호를 지정합니다.</param>
 		private void InteractionSlot(int index)
 		{
 			AudioManager.Instance.PlayEffectAudio(clickClip);
-			
+
 			DefineGame data = SaveSlotManager.Instance.GetData(index);
-			
+
 			if (mode == SaveLoadSlotMode.Save)
 			{
 				if (data == null)
@@ -77,28 +86,43 @@ namespace YouthSpice.SaveLoadSlotScene.Slots
 					RebuildSlots();
 					return;
 				}
-				
-				AlertManager.Instance.Show(AlertType.Double, "경고", "기존의 데이터를 덮어쓰시겠습니까?", new Dictionary<string, Action>(){{"저장하기",
-					()=>
+
+				AlertManager.Instance.Show(AlertType.Double, "경고", "기존의 데이터를 덮어쓰시겠습니까?",
+					new Dictionary<string, Action>()
 					{
-						SaveSlotManager.Instance.Save(index);
-						RebuildSlots();
-					}}, {"취소", null}});
+						{
+							"저장하기",
+							() =>
+							{
+								SaveSlotManager.Instance.Save(index);
+								RebuildSlots();
+							}
+						},
+						{ "취소", null }
+					});
 			}
 			else
 			{
 				if (data == null)
 				{
-					AlertManager.Instance.Show(AlertType.Single, "알림", "비어있는 슬롯은 불러올 수 없습니다.", new Dictionary<string, Action>(){{"닫기", null}});
+					AlertManager.Instance.Show(AlertType.Single, "알림", "비어있는 슬롯은 불러올 수 없습니다.",
+						new Dictionary<string, Action>() { { "닫기", null } });
 					return;
 				}
-				
-				AlertManager.Instance.Show(AlertType.Double, "경고", "정말로 불러오시겠습니까?\n저장되지 않은 데이터는 사라집니다.", new Dictionary<string, Action>(){{"불러오기",
-					() =>
+
+				AlertManager.Instance.Show(AlertType.Double, "경고", "정말로 불러오시겠습니까?\n저장되지 않은 데이터는 사라집니다.",
+					new Dictionary<string, Action>()
 					{
-						AudioManager.Instance.StopBackgroundAudio();
-						SaveSlotManager.Instance.Load(index);
-					}}, {"취소", null}});
+						{
+							"불러오기",
+							() =>
+							{
+								AudioManager.Instance.StopBackgroundAudio();
+								SaveSlotManager.Instance.Load(index);
+							}
+						},
+						{ "취소", null }
+					});
 			}
 		}
 	}

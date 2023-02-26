@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using UnityEngine;
 using UnityEngine.UI;
+
 using YouthSpice.PreloadScene.Audio;
 
 namespace YouthSpice.GalleryScene.UI
@@ -18,7 +19,7 @@ namespace YouthSpice.GalleryScene.UI
 		[Header("ButtonImages")]
 		[SerializeField]
 		private Sprite[] buttonImages;
-		
+
 		[Header("Object")]
 		[SerializeField]
 		private Button[] tabButtons;
@@ -30,10 +31,15 @@ namespace YouthSpice.GalleryScene.UI
 
 		private void Awake()
 		{
-			if (tabButtons.Length != tabPanels.Length) Debug.LogWarning("WARN:: 'Tab Buttons' and 'Tab Panels' Count doesn't match. might cause error.");
+			if (tabButtons.Length != tabPanels.Length)
+				Debug.LogWarning("WARN:: 'Tab Buttons' and 'Tab Panels' Count doesn't match. might cause error.");
 			MoveTab(0);
 		}
 
+		/// <summary>
+		/// 탭을 이동합니다.
+		/// </summary>
+		/// <param name="to">이동할 탭을 지정합니다.</param>
 		public void MoveTab(int to)
 		{
 			AudioManager.Instance.PlayEffectAudio(tabClip);
@@ -42,10 +48,12 @@ namespace YouthSpice.GalleryScene.UI
 			int buttonImageIndex = 1; // 0번은 Active에 사용됨
 			for (int i = 0; i < tabButtons.Length; i++)
 			{
-				tabButtons[i].GetComponent<Image>().sprite = i == currentSelection ? buttonImages[0] : buttonImages[buttonImageIndex++];
+				tabButtons[i].GetComponent<Image>().sprite =
+					i == currentSelection ? buttonImages[0] : buttonImages[buttonImageIndex++];
 				tabButtons[i].enabled = i != currentSelection;
 				tabPanels[i].SetActive(i == currentSelection);
-				tabPanels[i].transform.GetChild(0).GetChild(0).GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+				tabPanels[i].transform.GetChild(0).GetChild(0).GetComponent<RectTransform>().anchoredPosition =
+					Vector2.zero;
 			}
 		}
 	}

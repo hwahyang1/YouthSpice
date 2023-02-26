@@ -1028,10 +1028,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 3926425212039090136}
-        m_TargetAssemblyTypeName: CKGame_EolAlS_GameJam_2023.PreloadScene.Alert.AlertBox,
-          Assembly-CSharp
-        m_MethodName: OnButtonClicked
-        m_Mode: 3
+        m_TargetAssemblyTypeName: YouthSpice.PreloadScene.Alert.AlertBox, Assembly-CSharp
+        m_MethodName: OnCloseButtonClicked
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

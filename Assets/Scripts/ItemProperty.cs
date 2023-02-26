@@ -5,6 +5,9 @@ using UnityEngine;
 
 namespace YouthSpice
 {
+	/// <summary>
+	/// 아이템의 등급을 정의합니다.
+	/// </summary>
 	public enum ItemRank
 	{
 		Low,
@@ -13,6 +16,9 @@ namespace YouthSpice
 		High
 	}
 
+	/// <summary>
+	/// 아이템의 색상을 정의합니다.
+	/// </summary>
 	public enum ItemColor
 	{
 		Red,
@@ -26,6 +32,9 @@ namespace YouthSpice
 		None
 	}
 
+	/// <summary>
+	/// 아이템의 출현 지역을 정의합니다.
+	/// </summary>
 	public enum ItemField
 	{
 		Mountain,
@@ -34,6 +43,9 @@ namespace YouthSpice
 		ShopOnly
 	}
 
+	/// <summary>
+	/// 아이템의 대구분을 지정합니다.
+	/// </summary>
 	public enum ItemSet
 	{
 		과일모둠,
@@ -45,7 +57,10 @@ namespace YouthSpice
 		기본약과,
 		없음
 	}
-    
+
+	/// <summary>
+	/// 개별 아이템을 정의합니다.
+	/// </summary>
 	[System.Serializable]
 	public class ItemProperty
 	{

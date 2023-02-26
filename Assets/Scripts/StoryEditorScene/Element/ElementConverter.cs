@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -20,6 +19,10 @@ namespace YouthSpice.StoryEditorScene.Element
 			elementManager = GetComponent<ElementManager>();
 		}
 
+		/// <summary>
+		/// 클래스를 Element로 변환합니다.
+		/// </summary>
+		/// <param name="data">변환할 데이터를 지정합니다.</param>
 		public void ConvertClassToElement(ChapterElement[] data)
 		{
 			foreach (ChapterElement element in data)
@@ -28,6 +31,10 @@ namespace YouthSpice.StoryEditorScene.Element
 			}
 		}
 
+		/// <summary>
+		/// Element를 클래스로 변환합니다.
+		/// </summary>
+		/// <returns>변환된 데이터가 반환됩니다.</returns>
 		public ChapterElement[] ConvertElementToClass()
 		{
 			List<ChapterElement> data = new List<ChapterElement>();
@@ -95,6 +102,9 @@ namespace YouthSpice.StoryEditorScene.Element
 			return data.ToArray();
 		}
 
+		/// <summary>
+		/// ElementGroup을 하위 클래스로 변환하여 반환합니다.
+		/// </summary>
 		public Dictionary<string, string> GetData(ElementGroup from)
 		{
 			ElementGroup target = null;

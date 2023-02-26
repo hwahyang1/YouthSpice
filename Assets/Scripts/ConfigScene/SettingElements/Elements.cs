@@ -10,6 +10,5 @@ namespace YouthSpice.ConfigScene.SettingElements
 	/// </summary>
 	public abstract class Elements : MonoBehaviour
 	{
-		
 	}
 }

@@ -19,7 +19,7 @@ namespace YouthSpice.StoryScene.Audio
 		[Header("Background")]
 		[SerializeField]
 		private AudioSource[] backgroundAudios;
-		
+
 		[Header("Status")]
 		// false -> Back(0) / true -> Front(1)
 		[SerializeField, ReadOnly]
@@ -27,6 +27,7 @@ namespace YouthSpice.StoryScene.Audio
 
 		[SerializeField, ReadOnly]
 		private float backgroundAudioMax;
+
 		[SerializeField, ReadOnly]
 		private float effectAudioMax;
 
@@ -49,7 +50,7 @@ namespace YouthSpice.StoryScene.Audio
 		{
 			chapterManager = GetComponent<ChapterManager>();
 		}
-		
+
 		public void OnKeyDown()
 		{
 			//
@@ -60,7 +61,7 @@ namespace YouthSpice.StoryScene.Audio
 			DefineConfig config = ConfigManager.Instance.GetConfig();
 			backgroundAudioMax = config.backgroundVolume;
 			effectAudioMax = config.effectVolume;
-			
+
 			effectAudio.volume = effectAudioMax;
 			if (activeCoroutine == null)
 			{
@@ -77,7 +78,8 @@ namespace YouthSpice.StoryScene.Audio
 		public void PlayEffectAudio(Dictionary<string, string> data)
 		{
 			effectAudio.volume = effectAudioMax;
-			effectAudio.PlayOneShot(SourceFileManager.Instance.AvailableAudios[int.Parse(data["Effect"]) - 1], effectAudioMax);
+			effectAudio.PlayOneShot(SourceFileManager.Instance.AvailableAudios[int.Parse(data["Effect"]) - 1],
+				effectAudioMax);
 			chapterManager.isEffectSoundEnded = true;
 		}
 
@@ -94,10 +96,14 @@ namespace YouthSpice.StoryScene.Audio
 					(DefineAudioTransitions)int.Parse(data["Transition"])));
 		}
 
-		private IEnumerator PlayBackgroundAudioCoroutine(AudioClip clip, bool forceDisableTransition, DefineAudioTransitions transitionType)
+		private IEnumerator PlayBackgroundAudioCoroutine(
+			AudioClip clip,
+			bool forceDisableTransition,
+			DefineAudioTransitions transitionType
+		)
 		{
 			if (forceDisableTransition) transitionType = DefineAudioTransitions.None;
-			
+
 			WaitForSeconds timeout = new WaitForSeconds(animationDelay);
 
 			AudioSource currentSource = backgroundAudios[activePosition ? 1 : 0];
@@ -126,18 +132,22 @@ namespace YouthSpice.StoryScene.Audio
 						nextSource.volume = backgroundAudioMax;
 						nextSource.Play();
 					}
+
 					break;
 				case DefineAudioTransitions.Dissolve:
 					if (nextSource.clip != null) nextSource.Play();
 					while (currentTime < totalAnimationTime)
 					{
 						currentTime += animationDelay;
-						if (currentSource.clip != null) currentSource.volume = backgroundAudioMax - (currentTime / totalAnimationTime);
-						if (nextSource.clip != null) nextSource.volume = currentTime / totalAnimationTime * backgroundAudioMax;
+						if (currentSource.clip != null)
+							currentSource.volume = backgroundAudioMax - (currentTime / totalAnimationTime);
+						if (nextSource.clip != null)
+							nextSource.volume = currentTime / totalAnimationTime * backgroundAudioMax;
 						yield return timeout;
 					}
+
 					if (currentSource.clip != null) currentSource.Stop();
-					
+
 					yield return new WaitForSeconds(totalAnimationTime / 2f);
 
 					break;
@@ -145,9 +155,11 @@ namespace YouthSpice.StoryScene.Audio
 					while (currentTime < totalAnimationTime)
 					{
 						currentTime += animationDelay;
-						if (currentSource.clip != null) currentSource.volume = backgroundAudioMax - (currentTime / totalAnimationTime);
+						if (currentSource.clip != null)
+							currentSource.volume = backgroundAudioMax - (currentTime / totalAnimationTime);
 						yield return timeout;
 					}
+
 					if (currentSource.clip != null) currentSource.Stop();
 
 					yield return new WaitForSeconds(totalAnimationTime / 2f);
@@ -158,10 +170,11 @@ namespace YouthSpice.StoryScene.Audio
 					while (currentTime < totalAnimationTime)
 					{
 						currentTime += animationDelay;
-						if (nextSource.clip != null) nextSource.volume = currentTime / totalAnimationTime * backgroundAudioMax;
+						if (nextSource.clip != null)
+							nextSource.volume = currentTime / totalAnimationTime * backgroundAudioMax;
 						yield return timeout;
 					}
-					
+
 					yield return new WaitForSeconds(totalAnimationTime / 2f);
 
 					break;

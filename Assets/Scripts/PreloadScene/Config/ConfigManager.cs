@@ -30,17 +30,17 @@ namespace YouthSpice.PreloadScene.Config
 			LoadConfig();
 			ApplyConfig();
 		}
-		
-		private float lastWidth;
-		private float lastHeight;
+
+		private int lastWidth;
+		private int lastHeight;
 
 		protected override void Update()
 		{
-			if(lastWidth != Screen.width)
+			if (lastWidth != Screen.width)
 			{
 				Screen.SetResolution(Screen.width, Mathf.RoundToInt(Screen.width * (9f / 16f)), fullScreenMode);
 			}
-			else if(lastHeight != Screen.height)
+			else if (lastHeight != Screen.height)
 			{
 				Screen.SetResolution(Mathf.RoundToInt(Screen.height * (16f / 9f)), Screen.height, fullScreenMode);
 			}
@@ -85,7 +85,7 @@ namespace YouthSpice.PreloadScene.Config
 		public void ApplyConfig()
 		{
 			fullScreenMode = (config.useFullscreen) ? FullScreenMode.FullScreenWindow : FullScreenMode.Windowed;
-			Screen.SetResolution(Screen.width, Screen.height, fullScreenMode);
+			Screen.SetResolution(Screen.currentResolution.width, Screen.currentResolution.height, fullScreenMode);
 
 			QualitySettings.vSyncCount = 1;
 			Application.targetFrameRate = 144; // 사실 의미 없음

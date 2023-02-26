@@ -8,7 +8,7 @@ using YouthSpice.PreloadScene.Scene;
 namespace YouthSpice.OpeningScene
 {
 	/// <summary>
-	/// Description
+	/// 오프닝의 전반적인 실행을 관리합니다.
 	/// </summary>
 	public class Manager : MonoBehaviour
 	{

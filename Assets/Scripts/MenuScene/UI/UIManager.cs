@@ -14,7 +14,7 @@ namespace YouthSpice.MenuScene.UI
 	{
 		[SerializeField]
 		private AudioClip backgroundAudioClip;
-		
+
 		private void Start()
 		{
 			AudioManager.Instance.PlayBackgroundAudio(backgroundAudioClip);

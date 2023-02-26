@@ -19,14 +19,22 @@ namespace YouthSpice.GameScene
 		// audio
 		[SerializeField]
 		private AudioClip clickClip;
+
 		[SerializeField]
 		private AudioClip mapButtonClip;
-		
-		public Research research;
-		[SerializeField] private GameObject mapCanvas;
-		[SerializeField] private Sprite[] backgroundSprite; //탐색 상태 이미지
 
-		[SerializeField] private Image backgroundImage;
+		[SerializeField]
+		private Research research;
+
+		[SerializeField]
+		private GameObject mapCanvas;
+
+		[SerializeField]
+		private Sprite[] backgroundSprite; //탐색 상태 이미지
+
+		[SerializeField]
+		private Image backgroundImage;
+		
 		public Button mapSelectBtn;
 
 		private void Start()
@@ -38,8 +46,11 @@ namespace YouthSpice.GameScene
 			GameInfo.Instance.viewedResearch = true;
 		}
 
+		/// <summary>
+		/// 바다가 선택되었을 때의 이벤트를 처리합니다.
+		/// </summary>
 		public void OceanMap()
-		{ 
+		{
 			AudioManager.Instance.PlayEffectAudio(clickClip);
 			research.isOcean = true;
 			research.isGround = false;
@@ -48,6 +59,9 @@ namespace YouthSpice.GameScene
 			mapCanvas.SetActive(false);
 		}
 
+		/// <summary>
+		/// 논/밭이 선택되었을 때의 이벤트를 처리합니다.
+		/// </summary>
 		public void GroundMap()
 		{
 			AudioManager.Instance.PlayEffectAudio(clickClip);
@@ -57,6 +71,10 @@ namespace YouthSpice.GameScene
 			backgroundImage.sprite = backgroundSprite[1];
 			mapCanvas.SetActive(false);
 		}
+
+		/// <summary>
+		/// 산이 선택되었을 때의 이벤트를 처리합니다.
+		/// </summary>
 		public void MountainMap()
 		{
 			AudioManager.Instance.PlayEffectAudio(clickClip);
@@ -67,10 +85,13 @@ namespace YouthSpice.GameScene
 			mapCanvas.SetActive(false);
 		}
 
+		/// <summary>
+		/// 맵 선택창을 표시합니다.
+		/// </summary>
 		public void MapSelect()
 		{
 			AudioManager.Instance.PlayEffectAudio(mapButtonClip);
 			mapCanvas.SetActive(true);
-		} 
+		}
 	}
 }

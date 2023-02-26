@@ -22,15 +22,15 @@ namespace YouthSpice.StoryScene.Chapter
 			int character = int.Parse(data.ContainsKey("Character") ? data["Character"] : "0");
 			int adjust = int.Parse(data.ContainsKey("Friendship") ? data["Friendship"] : "0");
 			Adjust(character, adjust);
-			
+
 			callback?.Invoke();
 		}
 
 		public void Adjust(int character, int value)
 		{
-			character -= 3; // 이름없음, ???, 플레이어
+			character -= 2; // 이름없음, ???, 플레이어
 			if (character < 0 || character >= friendshipAdjustValue.Length) return;
-			friendshipAdjustValue[character - 3] += value;
+			friendshipAdjustValue[character] += value;
 		}
 
 		public void Apply()

@@ -31,32 +31,9 @@ namespace YouthSpice.PreloadScene.Alert
 		[SerializeField]
 		private GameObject prefab;
 
-		private Stack<AlertBox> currentAlert = new Stack<AlertBox>();
+		private Stack<AlertBox> currentAlerts = new Stack<AlertBox>();
 
-		public bool IsRunning
-		{
-			get { return currentAlert.Count > 0; }
-		}
-
-		protected override void Update()
-		{
-			return;
-			if (IsRunning)
-			{
-				if (Input.GetKeyDown(KeyCode.Escape)) // Esc 입력 시 -> 맨 우측 버튼 클릭과 동일하게 취급
-				{
-					AlertBox current = currentAlert.Peek();
-					current.OnButtonClicked((int)current.AlertType - 1);
-				}
-				// Space 키는 경우에 따라 사용, Enter키(NumPad 포함) 입력 시 -> 0번째 버튼 클릭과 동일하게 취급
-				else if ( /*Input.GetKeyDown(KeyCode.Space) || */
-				         Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
-				{
-					AlertBox current = currentAlert.Peek();
-					current.OnButtonClicked(0);
-				}
-			}
-		}
+		public bool IsRunning => currentAlerts.Count > 0;
 
 		/// <summary>
 		/// 알림을 표시합니다.
@@ -85,17 +62,23 @@ namespace YouthSpice.PreloadScene.Alert
 			AlertBox alertBox = parent.transform.GetChild(1).GetComponent<AlertBox>();
 			alertBox.Init(alertType, title, description, buttons, useCloseButton, ChildDestroy);
 			alertBox.Show();
-			currentAlert.Push(alertBox);
+			currentAlerts.Push(alertBox);
 		}
 
+		/// <summary>
+		/// 알림을 제거합니다.
+		/// </summary>
 		public void Pop()
 		{
 			ChildDestroy();
 		}
 
+		/// <summary>
+		/// 알림창을 제거합니다.
+		/// </summary>
 		private void ChildDestroy()
 		{
-			AlertBox current = currentAlert.Pop();
+			AlertBox current = currentAlerts.Pop();
 			Destroy(current.transform.parent.gameObject);
 		}
 	}

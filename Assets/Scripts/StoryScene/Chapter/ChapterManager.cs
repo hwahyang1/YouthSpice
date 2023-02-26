@@ -7,6 +7,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 using NaughtyAttributes;
+
 using YouthSpice.InGameMenuScene;
 using YouthSpice.PreloadScene.Scene;
 using YouthSpice.PreloadScene.Alert;
@@ -23,6 +24,9 @@ namespace YouthSpice.StoryScene.Chapter
 	/// </summary>
 	public class ChapterManager : MonoBehaviour
 	{
+		[SerializeField, ReadOnly]
+		private string currentChapterName = "";
+		
 		[ReadOnly]
 		public bool isSpeechEnded = true;
 
@@ -52,7 +56,7 @@ namespace YouthSpice.StoryScene.Chapter
 
 		[ReadOnly]
 		public bool isMouseOverButton = false;
-		
+
 		private bool calledExit = false;
 
 		private AudioManager audioManager;
@@ -81,6 +85,8 @@ namespace YouthSpice.StoryScene.Chapter
 
 		private void Start()
 		{
+			if (!StorySceneLoadParams.Instance.isTutorialScene) frontTop.SetSkipButtonActive(false);
+
 			if (StorySceneLoadParams.Instance.chapterID == null ||
 			    !SourceFileManager.Instance.AvailableChapters.ContainsKey(StorySceneLoadParams.Instance.chapterID))
 			{
@@ -95,7 +101,8 @@ namespace YouthSpice.StoryScene.Chapter
 			else
 			{
 				currentChapter = SourceFileManager.Instance.AvailableChapters[StorySceneLoadParams.Instance.chapterID];
-				GameInfo.Instance.slotName = currentChapter.Name;
+				//if (!StorySceneLoadParams.Instance.isTutorialScene) GameInfo.Instance.slotName = currentChapter.Name;
+				currentChapterName = currentChapter.Name;
 				StartCoroutine(nameof(LateStartCoroutine));
 			}
 		}
@@ -109,9 +116,10 @@ namespace YouthSpice.StoryScene.Chapter
 		private void Update()
 		{
 			if (AlertManager.Instance.IsRunning) return;
-			
+
 			// 다른 창 열렸을 때 입력되는 현상 방지
-			if ((!StorySceneLoadParams.Instance.isTutorialScene && SceneManager.sceneCount <= 2) || (StorySceneLoadParams.Instance.isTutorialScene && SceneManager.sceneCount == 2))
+			if ((!StorySceneLoadParams.Instance.isTutorialScene && SceneManager.sceneCount <= 2) ||
+			    (StorySceneLoadParams.Instance.isTutorialScene && SceneManager.sceneCount == 2))
 			{
 				if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return) ||
 				    Input.GetKeyDown(KeyCode.KeypadEnter))
@@ -173,13 +181,16 @@ namespace YouthSpice.StoryScene.Chapter
 				selectionArea.SkipCurrent();
 				return;
 			}
-			
+
 			// 남은 구간만 List로 가져오기
-			List<ChapterElement> list = new List<ChapterElement>(currentChapter.Elements.Skip(currentChapterIndex).Take(currentChapter.Elements.Length - currentChapterIndex));
-			int index = list.FindIndex(target => target.Type == ChapterElementType.Selection || target.Type == ChapterElementType.GetPlayerName);
+			List<ChapterElement> list = new List<ChapterElement>(currentChapter.Elements.Skip(currentChapterIndex)
+			                                                                   .Take(currentChapter.Elements.Length -
+				                                                                   currentChapterIndex));
+			int index = list.FindIndex(target =>
+				target.Type == ChapterElementType.Selection || target.Type == ChapterElementType.GetPlayerName);
 
 			ChapterElement currentElement;
-			
+
 			// 앞에 분기점 & 이름 획득 없음
 			if (index == -1)
 			{
@@ -195,7 +206,8 @@ namespace YouthSpice.StoryScene.Chapter
 							frontTop.ChangeImage(currentElement.Data);
 							break;
 						case ChapterElementType.BackgroundImage:
-							backgroundImage.ChangeImage(currentElement.Data, true, () => { speechArea.SetActive(true); });
+							backgroundImage.ChangeImage(currentElement.Data, true,
+								() => { speechArea.SetActive(true); });
 							break;
 						case ChapterElementType.BackgroundMusic:
 							audioManager.PlayBackgroundAudio(currentElement.Data, true);
@@ -219,11 +231,15 @@ namespace YouthSpice.StoryScene.Chapter
 							break;
 					}
 				}
+
 				Exit();
 			}
 			// 앞에 분기점 있으면 -> 직전 항목으로 이동시킴
 			else
 			{
+				// 위 작업으로 빠진 앞부분 Index를 다시 채워넣음
+				index += currentChapterIndex - 3;
+				
 				for (; currentChapterIndex < index; currentChapterIndex++)
 				{
 					currentElement = currentChapter.Elements[currentChapterIndex];
@@ -236,7 +252,8 @@ namespace YouthSpice.StoryScene.Chapter
 							frontTop.ChangeImage(currentElement.Data);
 							break;
 						case ChapterElementType.BackgroundImage:
-							backgroundImage.ChangeImage(currentElement.Data, true, () => { speechArea.SetActive(true); });
+							backgroundImage.ChangeImage(currentElement.Data, true,
+								() => { speechArea.SetActive(true); });
 							break;
 						case ChapterElementType.BackgroundMusic:
 							audioManager.PlayBackgroundAudio(currentElement.Data, true);
@@ -311,7 +328,12 @@ namespace YouthSpice.StoryScene.Chapter
 						isBackgroundImageEnded = false;
 						speechArea.SetBlank();
 						speechArea.SetActive(false);
-						backgroundImage.ChangeImage(currentElement.Data, false, () => { speechArea.SetActive(true); });
+						frontTop.SetSkipButtonActive(false);
+						backgroundImage.ChangeImage(currentElement.Data, false, () =>
+						{
+							speechArea.SetActive(true);
+							frontTop.SetSkipButtonActive(true);
+						});
 						break;
 					case ChapterElementType.BackgroundMusic:
 						isBackgroundMusicEnded = false;
@@ -362,7 +384,7 @@ namespace YouthSpice.StoryScene.Chapter
 		public void Exit()
 		{
 			calledExit = true;
-			
+
 			if (StorySceneLoadParams.Instance.isTutorialScene)
 			{
 				StorySceneLoadParams.Instance.Exit();
@@ -371,10 +393,10 @@ namespace YouthSpice.StoryScene.Chapter
 			else
 			{
 				StorySceneLoadParams.Instance.Exit();
-			
+
 				// GameInfo에 변경사항 반영
 				friendship.Apply();
-				
+
 				GameProgressManager.Instance.CountUp();
 				GameProgressManager.Instance.RunThisChapter();
 				if (SceneManager.sceneCount != 1) SceneChange.Instance.Unload("StoryScene");

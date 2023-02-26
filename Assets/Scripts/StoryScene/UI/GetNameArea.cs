@@ -5,6 +5,7 @@ using Action = System.Action;
 
 using UnityEngine;
 using UnityEngine.UI;
+
 using TMPro;
 
 namespace YouthSpice.StoryScene.UI
@@ -16,7 +17,7 @@ namespace YouthSpice.StoryScene.UI
 	{
 		[SerializeField]
 		private AudioClip selectClip;
-		
+
 		[SerializeField]
 		private Image background;
 
@@ -28,7 +29,7 @@ namespace YouthSpice.StoryScene.UI
 
 		[SerializeField]
 		private Button confirmButton;
-		
+
 		private readonly Regex nameRegex = new Regex(@"^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9]+$");
 
 		private Action callback = null;
@@ -78,15 +79,15 @@ namespace YouthSpice.StoryScene.UI
 		public void OnConfirmButtonClicked()
 		{
 			PreloadScene.Audio.AudioManager.Instance.PlayEffectAudio(selectClip);
-			
+
 			string name = nameInput.text;
 			bool isValid = CheckValidate(name);
 			if (!isValid) return;
 
 			GameInfo.Instance.playerName = name;
-			
+
 			SetActive(false);
-			
+
 			callback?.Invoke();
 			callback = null;
 		}

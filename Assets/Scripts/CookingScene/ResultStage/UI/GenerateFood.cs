@@ -11,6 +11,9 @@ using YouthSpice.PreloadScene.Item;
 
 namespace YouthSpice.CookingScene.ResultStage.UI
 {
+	/// <summary>
+	/// 레시피 아이템의 정보를 정의합니다.
+	/// </summary>
 	[System.Serializable]
 	public class DefineFoodSet
 	{
@@ -27,26 +30,33 @@ namespace YouthSpice.CookingScene.ResultStage.UI
 		[Header("Data - 떡볶이")]
 		[SerializeField]
 		private Sprite tbk_base;
+
 		[SerializeField]
 		private List<DefineFoodSet> tbk_select1;
+
 		[SerializeField]
 		private List<DefineFoodSet> tbk_select2;
 
 		[Header("Data - 약과")]
 		[SerializeField]
 		private Sprite yk_base;
+
 		[SerializeField]
 		private List<DefineFoodSet> yk_select1;
+
 		[SerializeField]
 		private List<DefineFoodSet> yk_select2;
 
 		[Header("Data - 우럭매운탕")]
 		[SerializeField]
 		private Sprite mt_base;
+
 		[SerializeField]
 		private List<DefineFoodSet> mt_select1;
+
 		[SerializeField]
 		private List<DefineFoodSet> mt_select2;
+
 		[SerializeField]
 		private List<DefineFoodSet> mt_select3;
 
@@ -61,6 +71,7 @@ namespace YouthSpice.CookingScene.ResultStage.UI
 		[Header("Classes")]
 		[SerializeField]
 		private RecipeManager recipeManager;
+
 		[SerializeField]
 		private RecipeStorage recipeStorage;
 
@@ -69,6 +80,9 @@ namespace YouthSpice.CookingScene.ResultStage.UI
 			RemoveAll();
 		}
 
+		/// <summary>
+		/// 결과 이미지를 제거합니다.
+		/// </summary>
 		public void RemoveAll()
 		{
 			for (int i = 0; i < parent.childCount; i++)
@@ -84,7 +98,7 @@ namespace YouthSpice.CookingScene.ResultStage.UI
 		public bool TryGenerate()
 		{
 			AvailableMenus menu = CookingLoadParams.Instance.menu;
-			
+
 			List<Image> images = new List<Image>();
 			List<int> userRecipe = recipeManager.SelectedItems;
 			List<ItemProperty> data = new List<ItemProperty>();
@@ -99,14 +113,14 @@ namespace YouthSpice.CookingScene.ResultStage.UI
 				// -1 == 등록 포기
 				else if (itemID == -1)
 				{
-					data.Add(new ItemProperty() { name = "(선택 안 함)", color = ItemColor.None, set = ItemSet.없음});
+					data.Add(new ItemProperty() { name = "(선택 안 함)", color = ItemColor.None, set = ItemSet.없음 });
 				}
 				else
 				{
 					data.Add(ItemBuffer.Instance.items[itemID]);
 				}
 			}
-			
+
 			// 고추-고추장 복수정답 -> 고추 선택 시, 내부적으로 아이템 코드를 고추장으로 변환함.
 			int index = userRecipe.FindIndex(target => target == 9);
 			if (index != -1) userRecipe[index] = 56;
@@ -115,11 +129,11 @@ namespace YouthSpice.CookingScene.ResultStage.UI
 			{
 				Image child = Instantiate(imagePrefab, Vector3.zero, Quaternion.identity, parent).GetComponent<Image>();
 				child.sprite = null;
-				
+
 				RectTransform childRect = child.GetComponent<RectTransform>();
 				childRect.offsetMin = Vector2.zero;
 				childRect.offsetMax = Vector2.zero;
-				
+
 				images.Add(child);
 			}
 
@@ -127,8 +141,10 @@ namespace YouthSpice.CookingScene.ResultStage.UI
 			{
 				case AvailableMenus.떡볶이:
 					images[0].sprite = tbk_base;
-					if (data[0].name != "(선택 안 함)") images[1].sprite = tbk_select1.Find(target => target.set == data[0].set).sprite;
-					if (data[1].name != "(선택 안 함)") images[2].sprite = tbk_select2.Find(target => target.color == data[1].color).sprite;
+					if (data[0].name != "(선택 안 함)")
+						images[1].sprite = tbk_select1.Find(target => target.set == data[0].set).sprite;
+					if (data[1].name != "(선택 안 함)")
+						images[2].sprite = tbk_select2.Find(target => target.color == data[1].color).sprite;
 					break;
 				case AvailableMenus.약과:
 					images[0].sprite = yk_base;
@@ -143,13 +159,18 @@ namespace YouthSpice.CookingScene.ResultStage.UI
 							images[1].sprite = yk_select1.Find(target => target.set == data[0].set).sprite;
 						}
 					}
-					if (data[1].name != "(선택 안 함)") images[2].sprite = yk_select2.Find(target => target.color == data[1].color).sprite;
+
+					if (data[1].name != "(선택 안 함)")
+						images[2].sprite = yk_select2.Find(target => target.color == data[1].color).sprite;
 					break;
 				case AvailableMenus.우럭매운탕:
 					images[0].sprite = mt_base;
-					if (data[2].name != "(선택 안 함)") images[2].sprite = mt_select3.Find(target => target.set == data[2].set).sprite;
-					if (data[3].name != "(선택 안 함)") images[1].sprite = mt_select2.Find(target => target.color == data[3].color).sprite;
-					if (data[5].name != "(선택 안 함)") images[3].sprite = mt_select1.Find(target => target.set == data[5].set).sprite;
+					if (data[2].name != "(선택 안 함)")
+						images[2].sprite = mt_select3.Find(target => target.set == data[2].set).sprite;
+					if (data[3].name != "(선택 안 함)")
+						images[1].sprite = mt_select2.Find(target => target.color == data[3].color).sprite;
+					if (data[5].name != "(선택 안 함)")
+						images[3].sprite = mt_select1.Find(target => target.set == data[5].set).sprite;
 					break;
 			}
 

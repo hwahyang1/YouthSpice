@@ -20,6 +20,11 @@ namespace YouthSpice.PreloadScene.MouseCursor
 			Cursor.SetCursor(cursor[0], Vector3.zero, CursorMode.ForceSoftware);
 		}
 
-		public void SetCursorImage(int index) => Cursor.SetCursor(cursor[index], Vector3.zero, CursorMode.ForceSoftware);
+		/// <summary>
+		/// 커서 이미지를 변경합니다.
+		/// </summary>
+		/// <param name="index">변경할 커서의 index를 지정합니다.</param>
+		public void SetCursorImage(int index) =>
+			Cursor.SetCursor(cursor[index], Vector3.zero, CursorMode.ForceSoftware);
 	}
 }
